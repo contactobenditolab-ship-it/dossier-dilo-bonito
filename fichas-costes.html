@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fichas de Coste — Dilo Bonito INTERNO</title>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0F1117;
+    --surface:  #1A1D27;
+    --surface2: #22263A;
+    --border:   #2A2F45;
+    --accent:   #F2C94C;
+    --accent2:  #A8C8E8;
+    --red:      #E85555;
+    --green:    #4CAF7D;
+    --orange:   #F0A050;
+    --text:     #E8EAF0;
+    --text-mid: #8892AA;
+    --text-dim: #4A5068;
+    --white:    #FFFFFF;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .topbar-logo {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+
+  .topbar-badge {
+    background: var(--red);
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+  }
+
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-sm {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary { background: var(--accent); color: #1A1D27; }
+  .btn-primary:hover { background: #e0b73a; }
+  .btn-ghost { background: transparent; color: var(--text-mid); border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--accent2); color: var(--text); }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+
+  .sidebar-label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0 20px;
+    margin-bottom: 12px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+  }
+
+  .sidebar-item:hover {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .sidebar-item.active {
+    background: rgba(242,201,76,0.08);
+    border-left-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .sidebar-item-icon { font-size: 16px; flex-shrink: 0; }
+
+  .sidebar-item-name {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: inherit;
+  }
+
+  .sidebar-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 16px 0;
+  }
+
+  /* ── MAIN ── */
+  .main { padding: 40px; overflow-x: auto; }
+
+  /* ── SERVICE PAGE ── */
+  .service-page { display: none; }
+  .service-page.active { display: block; }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-title-group {}
+
+  .page-pretitle {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .page-title {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 40px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+
+  .page-icon { font-size: 48px; }
+
+  /* ── SUMMARY CARDS ── */
+  .summary-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    border-top: 3px solid var(--border);
+  }
+
+  .summary-card.green { border-top-color: var(--green); }
+  .summary-card.yellow { border-top-color: var(--accent); }
+  .summary-card.red { border-top-color: var(--red); }
+  .summary-card.blue { border-top-color: var(--accent2); }
+
+  .summary-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .summary-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .summary-value.green { color: var(--green); }
+  .summary-value.yellow { color: var(--accent); }
+  .summary-value.red { color: var(--red); }
+  .summary-value.blue { color: var(--accent2); }
+
+  .summary-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    font-family: 'Lato';
+  }
+
+  /* ── MARGIN BAR ── */
+  .margin-bar-wrap {
+    margin-bottom: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .margin-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .margin-bar-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-mid);
+  }
+
+  .margin-bar-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .margin-bar-track {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .margin-bar-fill {
+    height: 100%;
+    transition: width 0.4s ease, background 0.4s ease;
+  }
+
+  .margin-warning {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    margin-top: 8px;
+    display: none;
+  }
+
+  /* ── COST TABLE ── */
+  .section-title {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    font-size: 13px;
+  }
+
+  .cost-table th {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .cost-table th:last-child { text-align: right; }
+
+  .cost-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(42,47,69,0.5);
+    vertical-align: middle;
+  }
+
+  .cost-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .cost-table tr.total-row td {
+    background: var(--surface);
+    border-top: 2px solid var(--border);
+    font-weight: 700;
+    padding: 14px 16px;
+  }
+
+  .item-name {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .item-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Editable inputs */
+  .cost-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    width: 80px;
+    padding: 4px 6px;
+    text-align: right;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .cost-input:focus {
+    border-bottom-color: var(--accent);
+    background: rgba(242,201,76,0.05);
+  }
+
+  .cost-input:hover { border-bottom-color: var(--text-mid); }
+
+  .unit-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-left: 4px;
+  }
+
+  .computed {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    text-align: right;
+  }
+
+  .computed.positive { color: var(--green); }
+  .computed.neutral { color: var(--text); }
+  .computed.accent { color: var(--accent); }
+
+  /* ── NOTAS ── */
+  .notes-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+
+  .notes-label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .notes-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-mid);
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 60px;
+    outline: none;
+  }
+
+  .notes-input::placeholder { color: var(--text-dim); }
+
+  /* ── ADD ROW ── */
+  .add-row-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .add-row-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(242,201,76,0.04);
+  }
+
+  /* ── PDF PRINT STYLES ── */
+  @media print {
+    .topbar, .sidebar, .btn-sm, .add-row-btn, .cost-input:focus { display: none !important; }
+    .layout { grid-template-columns: 1fr; }
+    .main { padding: 20px; }
+    body { background: white; color: #1a1a1a; }
+    .surface, .surface2 { background: #f8f8f8; }
+    .service-page { display: block !important; page-break-after: always; }
+    .service-page:last-child { page-break-after: avoid; }
+    .cost-input { border: none; color: #1a1a1a; background: transparent; }
+    .summary-value { color: #1a1a1a !important; }
+    .topbar-badge, .margin-bar-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* ── OVERVIEW PAGE ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .overview-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .overview-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .overview-icon { font-size: 28px; margin-bottom: 12px; }
+
+  .overview-name {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .overview-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .overview-coste {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'Lato';
+  }
+
+  .overview-pvp {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    color: var(--accent);
+  }
+
+  .overview-margin {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; }
+    .summary-row { grid-template-columns: repeat(2, 1fr); }
+    .overview-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">DILO BONITO</div>
+    <div class="topbar-badge">⚠ Solo uso interno</div>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-sm btn-ghost" onclick="window.print()">🖨 Imprimir ficha actual</button>
+    <button class="btn-sm btn-primary" onclick="exportPDF()">↓ Exportar PDF</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-label">Resumen</div>
+    <a class="sidebar-item active" onclick="showPage('overview')">
+      <span class="sidebar-item-icon">📊</span>
+      <span class="sidebar-item-name">Vista general</span>
+    </a>
+    <hr class="sidebar-divider">
+    <div class="sidebar-label">Servicios</div>
+    <a class="sidebar-item" onclick="showPage('personalizacion')">
+      <span class="sidebar-item-icon">✍️</span>
+      <span class="sidebar-item-name">Personalización en directo</span>
+    </a>
+    <a class="sidebar-item" onclick="showPage('seating')">
+      <span class="sidebar-item-icon">🗺️</span>
+      <span class="sidebar-item-name">Seating Plan</span>
+    </a>
+    <a class="sidebar-item" onclick="showPage('expendedora')">
+      <span class="sidebar-item-icon">🎰</span>
+      <span class="sidebar-item-name">Máquina expendedora</span>
+    </a>
+    <a class="sidebar-item" onclick="showPage('gancho')">
+      <span class="sidebar-item-icon">🪝</span>
+      <span class="sidebar-item-name">Máquina gancho</span>
+    </a>
+    <a class="sidebar-item" onclick="showPage('merch')">
+      <span class="sidebar-item-icon">🛍️</span>
+      <span class="sidebar-item-name">Merch Corner</span>
+    </a>
+    <a class="sidebar-item" onclick="showPage('b2b')">
+      <span class="sidebar-item-icon">📦</span>
+      <span class="sidebar-item-name">B2B Productos</span>
+    </a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ═══════════ OVERVIEW ═══════════ -->
+    <div class="service-page active" id="page-overview">
+      <div class="page-header">
+        <div class="page-title-group">
+          <div class="page-pretitle">Dilo Bonito · Fichas internas</div>
+          <div class="page-title">RESUMEN DE SERVICIOS</div>
+        </div>
+        <div class="page-icon">📊</div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-card yellow">
+          <div class="summary-label">Servicios activos</div>
+          <div class="summary-value yellow">6</div>
+          <div class="summary-sub">Dilo Bonito 2025</div>
+        </div>
+        <div class="summary-card green">
+          <div class="summary-label">Margen medio</div>
+          <div class="summary-value green" id="overview-margin-avg">—</div>
+          <div class="summary-sub">Objetivo mínimo: 60%</div>
+        </div>
+        <div class="summary-card blue">
+          <div class="summary-label">PVP mínimo</div>
+          <div class="summary-value blue">299€</div>
+          <div class="summary-sub">Pack MINI personalización</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">Última actualización</div>
+          <div class="summary-value" id="last-update" style="font-size:16px">—</div>
+          <div class="summary-sub">Edita cualquier ficha</div>
+        </div>
+      </div>
+
+      <div class="section-title">Fichas por servicio</div>
+      <div class="overview-grid" id="overview-grid">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- ═══════════ PERSONALIZACIÓN EN DIRECTO ═══════════ -->
+    <div class="service-page" id="page-personalizacion">
+      <div class="page-header">
+        <div class="page-title-group">
+          <div class="page-pretitle">Ficha de producto · Dilo Bonito</div>
+          <div class="page-title">PERSONALIZACIÓN<br>EN DIRECTO</div>
+        </div>
+        <div class="page-icon">✍️</div>
+      </div>
+
+      <div class="summary-row" id="summary-personalizacion"></div>
+      <div class="margin-bar-wrap" id="marginbar-personalizacion"></div>
+
+      <div class="section-title">Costes fijos del servicio</div>
+      <table class="cost-table" id="table-fijos-personalizacion">
+        <thead>
+          <tr>
+            <th style="width:35%">Concepto</th>
+            <th>Coste unit.</th>
+            <th>Cantidad</th>
+            <th style="text-align:right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-row>
+            <td><div class="item-name">Desplazamiento (media)</div><div class="item-desc">Estimación viaje medio 40km</div></td>
+            <td><input class="cost-input" value="0.40" data-unit="€/km" oninput="recalc('personalizacion')"><span class="unit-label">€/km</span></td>
+            <td><input class="cost-input" value="80" data-unit="km" oninput="recalc('personalizacion')"><span class="unit-label">km</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Desgaste máquina DTF</div><div class="item-desc">Amortización por evento</div></td>
+            <td><input class="cost-input" value="15" data-unit="€" oninput="recalc('personalizacion')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" data-unit="ud" oninput="recalc('personalizacion')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Material fungible (tinta, papel transfer)</div><div class="item-desc">Por evento estimado</div></td>
+            <td><input class="cost-input" value="8" data-unit="€" oninput="recalc('personalizacion')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" data-unit="ud" oninput="recalc('personalizacion')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Mano de obra (horas servicio)</div><div class="item-desc">Coste hora colaborador o propio</div></td>
+            <td><input class="cost-input" value="12" data-unit="€/h" oninput="recalc('personalizacion')"><span class="unit-label">€/h</span></td>
+            <td><input class="cost-input" value="4" data-unit="h" oninput="recalc('personalizacion')"><span class="unit-label">h</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Cartelería y señalización</div><div class="item-desc">Cartel diseño evento, display diseños</div></td>
+            <td><input class="cost-input" value="6" data-unit="€" oninput="recalc('personalizacion')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" data-unit="ud" oninput="recalc('personalizacion')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Preparación y coordinación previa</div><div class="item-desc">Horas gestión, diseño, comunicación</div></td>
+            <td><input class="cost-input" value="12" data-unit="€/h" oninput="recalc('personalizacion')"><span class="unit-label">€/h</span></td>
+            <td><input class="cost-input" value="2" data-unit="h" oninput="recalc('personalizacion')"><span class="unit-label">h</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="3"><span style="color:var(--text-dim)">Total costes fijos</span></td>
+            <td class="computed accent" id="total-fijos-personalizacion">—</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <button class="add-row-btn" onclick="addRow('table-fijos-personalizacion','personalizacion')">+ Añadir concepto</button>
+
+      <div class="section-title">Costes variables (por unidad producida)</div>
+      <table class="cost-table" id="table-vars-personalizacion">
+        <thead>
+          <tr>
+            <th style="width:35%">Artículo</th>
+            <th>Coste blanco</th>
+            <th>Coste personaliz.</th>
+            <th style="text-align:right">Coste total/ud</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-row-var>
+            <td><div class="item-name">Tote bag algodón</div></td>
+            <td><input class="cost-input" value="1.80" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Gorra</div></td>
+            <td><input class="cost-input" value="2.80" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Neceser</div></td>
+            <td><input class="cost-input" value="3.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Camiseta</div></td>
+            <td><input class="cost-input" value="4.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Vinilo personalizado exterior</div><div class="item-desc">Cartel, banner, lona branding</div></td>
+            <td><input class="cost-input" value="12.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="5.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="add-row-btn" onclick="addRowVar('table-vars-personalizacion')">+ Añadir artículo</button>
+
+      <div class="section-title">PVP por pack y margen</div>
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>Pack</th>
+            <th>Invitados</th>
+            <th>Horas</th>
+            <th>PVP actual</th>
+            <th>Coste estimado</th>
+            <th style="text-align:right">Margen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-pack>
+            <td><div class="item-name">MINI</div></td>
+            <td><span style="color:var(--text-mid)">Hasta 30</span></td>
+            <td><span style="color:var(--text-mid)">2h</span></td>
+            <td><input class="cost-input" value="299" oninput="recalcPack(this)" style="width:70px"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="95" oninput="recalcPack(this)" style="width:70px"><span class="unit-label">€</span></td>
+            <td class="computed" data-pack-margin></td>
+          </tr>
+          <tr data-pack>
+            <td><div class="item-name">ÍNTIMA</div></td>
+            <td><span style="color:var(--text-mid)">Hasta 50</span></td>
+            <td><span style="color:var(--text-mid)">3h</span></td>
+            <td><input class="cost-input" value="499" oninput="recalcPack(this)" style="width:70px"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="140" oninput="recalcPack(this)" style="width:70px"><span class="unit-label">€</span></td>
+            <td class="computed" data-pack-margin></td>
+          </tr>
+          <tr data-pack>
+            <td><div class="item-name">CLÁSICA</div></td>
+            <td><span style="color:var(--text-mid)">Hasta 100</span></td>
+            <td><span style="color:var(--text-mid)">4h</span></td>
+            <td><input class="cost-input" value="650" oninput="recalcPack(this)" style="width:70px"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="180" oninput="recalcPack(this)" style="width:70px"><span class="unit-abel">€</span></td>
+            <td class="computed" data-pack-margin></td>
+          </tr>
+          <tr data-pack>
+            <td><div class="item-name">PREMIUM</div></td>
+            <td><span style="color:var(--text-mid)">Hasta 150</span></td>
+            <td><span style="color:var(--text-mid)">5h</span></td>
+            <td><input class="cost-input" value="799" oninput="recalcPack(this)" style="width:70px"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="220" oninput="recalcPack(this)" style="width:70px"><span class="unit-label">€</span></td>
+            <td class="computed" data-pack-margin></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notes-area">
+        <div class="notes-label">Notas internas</div>
+        <textarea class="notes-input" placeholder="Observaciones, proveedores, condiciones especiales...">Pack incluye: material de reserva para incidencias, selección cerrada de diseños y tipografías, personalización simple (3 elementos por producto).</textarea>
+      </div>
+    </div>
+
+    <!-- ═══════════ SEATING PLAN ═══════════ -->
+    <div class="service-page" id="page-seating">
+      <div class="page-header">
+        <div class="page-title-group">
+          <div class="page-pretitle">Ficha de producto · Dilo Bonito</div>
+          <div class="page-title">SEATING PLAN<br>PERSONALIZADO</div>
+        </div>
+        <div class="page-icon">🗺️</div>
+      </div>
+
+      <div class="summary-row" id="summary-seating"></div>
+      <div class="margin-bar-wrap" id="marginbar-seating"></div>
+
+      <div class="section-title">Costes fijos del servicio</div>
+      <table class="cost-table" id="table-fijos-seating">
+        <thead><tr><th style="width:35%">Concepto</th><th>Coste unit.</th><th>Cantidad</th><th style="text-align:right">Total</th></tr></thead>
+        <tbody>
+          <tr data-row>
+            <td><div class="item-name">Panel de madera / soporte</div><div class="item-desc">Panel DM, estructura, pies</div></td>
+            <td><input class="cost-input" value="35" oninput="recalc('seating')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('seating')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Letrero / rótulo superior</div><div class="item-desc">Vinilo o madera cortada láser con texto</div></td>
+            <td><input class="cost-input" value="18" oninput="recalc('seating')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('seating')"><span class="unit-abel">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Iluminación / guirnalda</div><div class="item-desc">Tira LED o guirnalda decorativa</div></td>
+            <td><input class="cost-input" value="8" oninput="recalc('seating')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('seating')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Montaje y desmontaje</div><div class="item-desc">Horas preparación y transporte</div></td>
+            <td><input class="cost-input" value="12" oninput="recalc('seating')"><span class="unit-label">€/h</span></td>
+            <td><input class="cost-input" value="2" oninput="recalc('seating')"><span class="unit-label">h</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Diseño gráfico</div><div class="item-desc">Diseño cartel + etiquetas nombre</div></td>
+            <td><input class="cost-input" value="25" oninput="recalc('seating')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('seating')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Desplazamiento (media)</div></td>
+            <td><input class="cost-input" value="0.40" oninput="recalc('seating')"><span class="unit-label">€/km</span></td>
+            <td><input class="cost-input" value="80" oninput="recalc('seating')"><span class="unit-label">km</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+        </tbody>
+        <tfoot><tr class="total-row"><td colspan="3"><span style="color:var(--text-dim)">Total costes fijos</span></td><td class="computed accent" id="total-fijos-seating">—</td></tr></tfoot>
+      </table>
+      <button class="add-row-btn" onclick="addRow('table-fijos-seating','seating')">+ Añadir concepto</button>
+
+      <div class="section-title">Costes variables por producto y cantidad de invitados</div>
+      <table class="cost-table" id="table-vars-seating">
+        <thead><tr><th>Producto</th><th>Coste/ud blanco</th><th>Personalización/ud</th><th style="text-align:right">Coste total/ud</th></tr></thead>
+        <tbody>
+          <tr data-row-var>
+            <td><div class="item-name">Gafas de sol personalizadas</div></td>
+            <td><input class="cost-input" value="2.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Vasito chupito grabado</div></td>
+            <td><input class="cost-input" value="1.50" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Chapa / pin personalizado</div></td>
+            <td><input class="cost-input" value="0.80" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.30" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Pieza bambú grabada láser</div></td>
+            <td><input class="cost-input" value="0.90" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.40" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Etiqueta nombre impresa</div><div class="item-desc">Tarjeta con número de mesa</div></td>
+            <td><input class="cost-input" value="0.10" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.05" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRowVar('table-vars-seating')">+ Añadir producto</button>
+
+      <div class="section-title">PVP por modalidad y margen</div>
+      <table class="cost-table">
+        <thead><tr><th>Modalidad</th><th>Inv.</th><th>PVP actual</th><th>Coste estimado</th><th style="text-align:right">Margen</th></tr></thead>
+        <tbody>
+          <tr data-pack><td><div class="item-name">Gafas · hasta 30</div></td><td>30</td><td><input class="cost-input" value="399" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="155" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Gafas · hasta 50</div></td><td>50</td><td><input class="cost-input" value="520" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="202" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Gafas · hasta 100</div></td><td>100</td><td><input class="cost-input" value="820" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="325" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Básico · hasta 50</div></td><td>50</td><td><input class="cost-input" value="450" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="177" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Solo panel</div></td><td>—</td><td><input class="cost-input" value="200" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="80" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+        </tbody>
+      </table>
+      <div class="notes-area"><div class="notes-label">Notas internas</div><textarea class="notes-input" placeholder="Proveedores, materiales preferidos, tiempos de producción...">Panel reutilizable entre eventos. Amortizar coste del panel a partir del 3er uso.</textarea></div>
+    </div>
+
+    <!-- ═══════════ EXPENDEDORA ═══════════ -->
+    <div class="service-page" id="page-expendedora">
+      <div class="page-header">
+        <div class="page-title-group">
+          <div class="page-pretitle">Ficha de producto · Dilo Bonito</div>
+          <div class="page-title">MÁQUINA<br>EXPENDEDORA</div>
+        </div>
+        <div class="page-icon">🎰</div>
+      </div>
+
+      <div class="summary-row" id="summary-expendedora"></div>
+      <div class="margin-bar-wrap" id="marginbar-expendedora"></div>
+
+      <div class="section-title">Costes fijos del servicio (máquina propia)</div>
+      <table class="cost-table" id="table-fijos-expendedora">
+        <thead><tr><th style="width:35%">Concepto</th><th>Coste unit.</th><th>Cantidad</th><th style="text-align:right">Total</th></tr></thead>
+        <tbody>
+          <tr data-row>
+            <td><div class="item-name">Amortización máquina</div><div class="item-desc">Coste total máquina ÷ vida útil estimada</div></td>
+            <td><input class="cost-input" value="12" oninput="recalc('expendedora')"><span class="unit-label">€/uso</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('expendedora')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Vinilado exterior máquina</div><div class="item-desc">Diseño + impresión + aplicación</div></td>
+            <td><input class="cost-input" value="35" oninput="recalc('expendedora')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('expendedora')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Monedas personalizadas</div><div class="item-desc">Si se usa modalidad con moneda</div></td>
+            <td><input class="cost-input" value="0.50" oninput="recalc('expendedora')"><span class="unit-label">€/ud</span></td>
+            <td><input class="cost-input" value="50" oninput="recalc('expendedora')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Transporte y montaje</div></td>
+            <td><input class="cost-input" value="0.40" oninput="recalc('expendedora')"><span class="unit-label">€/km</span></td>
+            <td><input class="cost-input" value="80" oninput="recalc('expendedora')"><span class="unit-label">km</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Supervisión durante el evento</div></td>
+            <td><input class="cost-input" value="12" oninput="recalc('expendedora')"><span class="unit-label">€/h</span></td>
+            <td><input class="cost-input" value="2" oninput="recalc('expendedora')"><span class="unit-label">h</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+        </tbody>
+        <tfoot><tr class="total-row"><td colspan="3"><span style="color:var(--text-dim)">Total costes fijos</span></td><td class="computed accent" id="total-fijos-expendedora">—</td></tr></tfoot>
+      </table>
+      <button class="add-row-btn" onclick="addRow('table-fijos-expendedora','expendedora')">+ Añadir concepto</button>
+
+      <div class="section-title">Costes variables (productos dentro de cápsulas)</div>
+      <table class="cost-table" id="table-vars-expendedora">
+        <thead><tr><th>Producto</th><th>Coste blanco</th><th>Personalización</th><th style="text-align:right">Coste/ud</th></tr></thead>
+        <tbody>
+          <tr data-row-var>
+            <td><div class="item-name">Cápsula vacía</div></td>
+            <td><input class="cost-input" value="0.15" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Miniproducto personalizado (chapa, sticker, llavero)</div></td>
+            <td><input class="cost-input" value="0.60" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.30" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Regalo textil mini (neceser pequeño)</div></td>
+            <td><input class="cost-input" value="2.50" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRowVar('table-vars-expendedora')">+ Añadir producto</button>
+
+      <div class="section-title">PVP por modalidad y margen</div>
+      <table class="cost-table">
+        <thead><tr><th>Modalidad</th><th>PVP actual</th><th>Coste estimado</th><th style="text-align:right">Margen</th></tr></thead>
+        <tbody>
+          <tr data-pack><td><div class="item-name">Gratuita · 30 ud</div></td><td><input class="cost-input" value="499" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="105" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Con moneda · 30 ud</div></td><td><input class="cost-input" value="399" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="90" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Gratuita · 50 ud</div></td><td><input class="cost-input" value="499" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="140" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+        </tbody>
+      </table>
+      <div class="notes-area"><div class="notes-label">Notas internas</div><textarea class="notes-input" placeholder="...">Máquina propia — sin coste de alquiler. Vinilado reutilizable si el diseño es genérico.</textarea></div>
+    </div>
+
+    <!-- ═══════════ GANCHO ═══════════ -->
+    <div class="service-page" id="page-gancho">
+      <div class="page-header">
+        <div class="page-title-group">
+          <div class="page-pretitle">Ficha de producto · Dilo Bonito</div>
+          <div class="page-title">MÁQUINA<br>GANCHO</div>
+        </div>
+        <div class="page-icon">🪝</div>
+      </div>
+
+      <div class="summary-row" id="summary-gancho"></div>
+      <div class="margin-bar-wrap" id="marginbar-gancho"></div>
+
+      <div class="section-title">Costes fijos del servicio</div>
+      <table class="cost-table" id="table-fijos-gancho">
+        <thead><tr><th style="width:35%">Concepto</th><th>Coste unit.</th><th>Cantidad</th><th style="text-align:right">Total</th></tr></thead>
+        <tbody>
+          <tr data-row>
+            <td><div class="item-name">Amortización máquina gancho</div><div class="item-desc">Por evento</div></td>
+            <td><input class="cost-input" value="20" oninput="recalc('gancho')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('gancho')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Vinilado / fotomontaje exterior</div><div class="item-desc">Diseño + impresión + aplicación vinilo</div></td>
+            <td><input class="cost-input" value="40" oninput="recalc('gancho')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('gancho')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Monedas personalizadas (si aplica)</div></td>
+            <td><input class="cost-input" value="0.50" oninput="recalc('gancho')"><span class="unit-label">€/ud</span></td>
+            <td><input class="cost-input" value="50" oninput="recalc('gancho')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Transporte y montaje</div></td>
+            <td><input class="cost-input" value="0.40" oninput="recalc('gancho')"><span class="unit-label">€/km</span></td>
+            <td><input class="cost-input" value="80" oninput="recalc('gancho')"><span class="unit-label">km</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Supervisión evento</div></td>
+            <td><input class="cost-input" value="12" oninput="recalc('gancho')"><span class="unit-label">€/h</span></td>
+            <td><input class="cost-input" value="3" oninput="recalc('gancho')"><span class="unit-label">h</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+        </tbody>
+        <tfoot><tr class="total-row"><td colspan="3"><span style="color:var(--text-dim)">Total costes fijos</span></td><td class="computed accent" id="total-fijos-gancho">—</td></tr></tfoot>
+      </table>
+      <button class="add-row-btn" onclick="addRow('table-fijos-gancho','gancho')">+ Añadir concepto</button>
+
+      <div class="section-title">Costes variables (premios dentro del gancho)</div>
+      <table class="cost-table" id="table-vars-gancho">
+        <thead><tr><th>Premio</th><th>Coste blanco</th><th>Personalización</th><th style="text-align:right">Coste/ud</th></tr></thead>
+        <tbody>
+          <tr data-row-var>
+            <td><div class="item-name">Tote bag personalizada</div></td>
+            <td><input class="cost-input" value="1.80" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Gorra personalizada</div></td>
+            <td><input class="cost-input" value="2.80" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Neceser personalizado</div></td>
+            <td><input class="cost-input" value="3.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+          <tr data-row-var>
+            <td><div class="item-name">Peluche / artículo sorpresa</div></td>
+            <td><input class="cost-input" value="2.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+            <td class="computed accent" data-var-total></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRowVar('table-vars-gancho')">+ Añadir premio</button>
+
+      <div class="section-title">PVP y margen</div>
+      <table class="cost-table">
+        <thead><tr><th>Modalidad</th><th>PVP actual</th><th>Coste estimado</th><th style="text-align:right">Margen</th></tr></thead>
+        <tbody>
+          <tr data-pack><td><div class="item-name">Partidas gratuitas · 30 premios</div></td><td><input class="cost-input" value="499" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="150" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Con moneda · 30 premios</div></td><td><input class="cost-input" value="399" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="135" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+        </tbody>
+      </table>
+      <div class="notes-area"><div class="notes-label">Notas internas</div><textarea class="notes-input" placeholder="...">Garantizar que todos los jugadores ganan — ajustar dificultad mecánica. Vinilado fotomontaje con foto de los novios: diseño extra 25€.</textarea></div>
+    </div>
+
+    <!-- ═══════════ MERCH CORNER ═══════════ -->
+    <div class="service-page" id="page-merch">
+      <div class="page-header">
+        <div class="page-title-group">
+          <div class="page-pretitle">Ficha de producto · Dilo Bonito</div>
+          <div class="page-title">MERCH<br>CORNER</div>
+        </div>
+        <div class="page-icon">🛍️</div>
+      </div>
+
+      <div class="summary-row" id="summary-merch"></div>
+      <div class="margin-bar-wrap" id="marginbar-merch"></div>
+
+      <div class="section-title">Costes fijos del servicio</div>
+      <table class="cost-table" id="table-fijos-merch">
+        <thead><tr><th style="width:35%">Concepto</th><th>Coste unit.</th><th>Cantidad</th><th style="text-align:right">Total</th></tr></thead>
+        <tbody>
+          <tr data-row>
+            <td><div class="item-name">Stand / estructura expositora</div><div class="item-desc">Amortización por evento</div></td>
+            <td><input class="cost-input" value="20" oninput="recalc('merch')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('merch')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Cartel / banner branding</div><div class="item-desc">Lona o vinilo con diseño del evento</div></td>
+            <td><input class="cost-input" value="22" oninput="recalc('merch')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('merch')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Señalética y precios</div><div class="item-desc">Carteles de producto, carteles precio</div></td>
+            <td><input class="cost-input" value="5" oninput="recalc('merch')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('merch')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Azafata/o (versión premium)</div></td>
+            <td><input class="cost-input" value="12" oninput="recalc('merch')"><span class="unit-label">€/h</span></td>
+            <td><input class="cost-input" value="4" oninput="recalc('merch')"><span class="unit-label">h</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Transporte y montaje</div></td>
+            <td><input class="cost-input" value="0.40" oninput="recalc('merch')"><span class="unit-label">€/km</span></td>
+            <td><input class="cost-input" value="80" oninput="recalc('merch')"><span class="unit-label">km</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+        </tbody>
+        <tfoot><tr class="total-row"><td colspan="3"><span style="color:var(--text-dim)">Total costes fijos</span></td><td class="computed accent" id="total-fijos-merch">—</td></tr></tfoot>
+      </table>
+      <button class="add-row-btn" onclick="addRow('table-fijos-merch','merch')">+ Añadir concepto</button>
+
+      <div class="section-title">Coste por unidad de producto expuesto</div>
+      <table class="cost-table" id="table-vars-merch">
+        <thead><tr><th>Producto</th><th>Coste blanco</th><th>Personalización</th><th style="text-align:right">Coste/ud</th></tr></thead>
+        <tbody>
+          <tr data-row-var><td><div class="item-name">Tote bag</div></td><td><input class="cost-input" value="1.80" oninput="recalcVar(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td><td class="computed accent" data-var-total></td></tr>
+          <tr data-row-var><td><div class="item-name">Gorra</div></td><td><input class="cost-input" value="2.80" oninput="recalcVar(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td><td class="computed accent" data-var-total></td></tr>
+          <tr data-row-var><td><div class="item-name">Camiseta</div></td><td><input class="cost-input" value="4.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="0.45" oninput="recalcVar(this)"><span class="unit-label">€</span></td><td class="computed accent" data-var-total></td></tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRowVar('table-vars-merch')">+ Añadir producto</button>
+
+      <div class="section-title">PVP y margen</div>
+      <table class="cost-table">
+        <thead><tr><th>Modalidad</th><th>PVP actual</th><th>Coste estimado</th><th style="text-align:right">Margen</th></tr></thead>
+        <tbody>
+          <tr data-pack><td><div class="item-name">Básico · stand + 1 producto 30ud</div></td><td><input class="cost-input" value="350" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="140" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Completo · 3 productos 50ud</div></td><td><input class="cost-input" value="580" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="230" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+          <tr data-pack><td><div class="item-name">Premium · con azafata</div></td><td><input class="cost-input" value="799" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td><input class="cost-input" value="320" oninput="recalcPack(this)"><span class="unit-label">€</span></td><td class="computed" data-pack-margin></td></tr>
+        </tbody>
+      </table>
+      <div class="notes-area"><div class="notes-label">Notas internas</div><textarea class="notes-input" placeholder="..."></textarea></div>
+    </div>
+
+    <!-- ═══════════ B2B ═══════════ -->
+    <div class="service-page" id="page-b2b">
+      <div class="page-header">
+        <div class="page-title-group">
+          <div class="page-pretitle">Ficha de producto · Dilo Bonito</div>
+          <div class="page-title">B2B<br>PRODUCTOS</div>
+        </div>
+        <div class="page-icon">📦</div>
+      </div>
+
+      <div class="summary-row" id="summary-b2b"></div>
+      <div class="margin-bar-wrap" id="marginbar-b2b"></div>
+
+      <div class="section-title">Costes fijos por pedido</div>
+      <table class="cost-table" id="table-fijos-b2b">
+        <thead><tr><th style="width:35%">Concepto</th><th>Coste unit.</th><th>Cantidad</th><th style="text-align:right">Total</th></tr></thead>
+        <tbody>
+          <tr data-row>
+            <td><div class="item-name">Gestión y administración del pedido</div></td>
+            <td><input class="cost-input" value="15" oninput="recalc('b2b')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('b2b')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Diseño gráfico</div><div class="item-desc">Adaptación logo a producto</div></td>
+            <td><input class="cost-input" value="25" oninput="recalc('b2b')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('b2b')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Embalaje y preparación</div></td>
+            <td><input class="cost-input" value="0.30" oninput="recalc('b2b')"><span class="unit-label">€/ud</span></td>
+            <td><input class="cost-input" value="50" oninput="recalc('b2b')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+          <tr data-row>
+            <td><div class="item-name">Envío / entrega</div></td>
+            <td><input class="cost-input" value="8" oninput="recalc('b2b')"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1" oninput="recalc('b2b')"><span class="unit-label">ud</span></td>
+            <td class="computed" data-total></td>
+          </tr>
+        </tbody>
+        <tfoot><tr class="total-row"><td colspan="3"><span style="color:var(--text-dim)">Total costes fijos</span></td><td class="computed accent" id="total-fijos-b2b">—</td></tr></tfoot>
+      </table>
+      <button class="add-row-btn" onclick="addRow('table-fijos-b2b','b2b')">+ Añadir concepto</button>
+
+      <div class="section-title">Coste por producto y PVP mínimo (margen 60%)</div>
+      <table class="cost-table" id="table-vars-b2b">
+        <thead><tr><th>Producto</th><th>Coste blanco</th><th>Personalización</th><th>PVP mínimo</th><th style="text-align:right">Coste/ud</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="item-name">Tote bag algodón</div><div class="item-desc">Mínimo 20 ud</div></td>
+            <td><input class="cost-input" value="1.80" id="b2b-b1" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" id="b2b-p1" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td class="computed accent" id="b2b-pvp1"></td>
+            <td class="computed" id="b2b-c1"></td>
+          </tr>
+          <tr>
+            <td><div class="item-name">Gorra bordada</div><div class="item-desc">Mínimo 10 ud</div></td>
+            <td><input class="cost-input" value="2.80" id="b2b-b2" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" id="b2b-p2" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td class="computed accent" id="b2b-pvp2"></td>
+            <td class="computed" id="b2b-c2"></td>
+          </tr>
+          <tr>
+            <td><div class="item-name">Libreta / cuaderno</div><div class="item-desc">Mínimo 20 ud</div></td>
+            <td><input class="cost-input" value="2.50" id="b2b-b3" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.45" id="b2b-p3" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td class="computed accent" id="b2b-pvp3"></td>
+            <td class="computed" id="b2b-c3"></td>
+          </tr>
+          <tr>
+            <td><div class="item-name">Pieza bambú grabada</div><div class="item-desc">Mínimo 30 ud</div></td>
+            <td><input class="cost-input" value="0.90" id="b2b-b4" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="0.40" id="b2b-p4" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td class="computed accent" id="b2b-pvp4"></td>
+            <td class="computed" id="b2b-c4"></td>
+          </tr>
+          <tr>
+            <td><div class="item-name">Kit regalo (3 productos)</div><div class="item-desc">Mínimo 10 kits</div></td>
+            <td><input class="cost-input" value="7.20" id="b2b-b5" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td><input class="cost-input" value="1.35" id="b2b-p5" oninput="recalcB2B()"><span class="unit-label">€</span></td>
+            <td class="computed accent" id="b2b-pvp5"></td>
+            <td class="computed" id="b2b-c5"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notes-area"><div class="notes-label">Notas internas</div><textarea class="notes-input" placeholder="...">PVP calculado con margen mínimo 60%. Ajustar según volumen del pedido.</textarea></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─── NAVIGATION ───
+const SERVICES = ['personalizacion','seating','expendedora','gancho','merch','b2b'];
+
+function showPage(id) {
+  document.querySelectorAll('.service-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+
+  const items = document.querySelectorAll('.sidebar-item');
+  items.forEach(item => {
+    if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(id)) {
+      item.classList.add('active');
+    }
+  });
+
+  if (id === 'overview') {
+    document.querySelectorAll('.sidebar-item')[0].classList.add('active');
+    updateOverview();
+  }
+
+  // Recalc when entering a service page
+  if (SERVICES.includes(id)) recalc(id);
+}
+
+// ─── CALCULATE ROW TOTALS ───
+function recalc(service) {
+  const table = document.getElementById('table-fijos-' + service);
+  if (!table) return;
+
+  let total = 0;
+  table.querySelectorAll('tr[data-row]').forEach(row => {
+    const inputs = row.querySelectorAll('.cost-input');
+    const totalCell = row.querySelector('[data-total]');
+    if (inputs.length >= 2 && totalCell) {
+      const a = parseFloat(inputs[0].value) || 0;
+      const b = parseFloat(inputs[1].value) || 0;
+      const t = a * b;
+      total += t;
+      totalCell.textContent = t.toFixed(2) + '€';
+    }
+  });
+
+  const totalEl = document.getElementById('total-fijos-' + service);
+  if (totalEl) totalEl.textContent = total.toFixed(2) + '€';
+
+  // PVP rows
+  table.closest('.main').querySelectorAll('tr[data-pack]').forEach(row => {
+    recalcPackRow(row);
+  });
+
+  // Update summary
+  updateSummary(service, total);
+}
+
+function recalcPackRow(row) {
+  const inputs = row.querySelectorAll('.cost-input');
+  const marginCell = row.querySelector('[data-pack-margin]');
+  if (inputs.length >= 2 && marginCell) {
+    const pvp = parseFloat(inputs[0].value) || 0;
+    const coste = parseFloat(inputs[1].value) || 0;
+    if (pvp > 0) {
+      const margin = ((pvp - coste) / pvp * 100);
+      marginCell.textContent = margin.toFixed(1) + '%';
+      marginCell.className = 'computed';
+      if (margin >= 60) marginCell.classList.add('positive');
+      else if (margin >= 45) marginCell.classList.add('accent');
+      else marginCell.style.color = 'var(--red)';
+    }
+  }
+}
+
+function recalcPack(input) {
+  recalcPackRow(input.closest('tr[data-pack]'));
+}
+
+function recalcVar(input) {
+  const row = input.closest('tr[data-row-var]');
+  if (!row) return;
+  const inputs = row.querySelectorAll('.cost-input');
+  const totalCell = row.querySelector('[data-var-total]');
+  if (inputs.length >= 2 && totalCell) {
+    const t = (parseFloat(inputs[0].value) || 0) + (parseFloat(inputs[1].value) || 0);
+    totalCell.textContent = t.toFixed(2) + '€';
+  }
+}
+
+// B2B special calc
+function recalcB2B() {
+  for (let i = 1; i <= 5; i++) {
+    const b = parseFloat(document.getElementById('b2b-b' + i)?.value) || 0;
+    const p = parseFloat(document.getElementById('b2b-p' + i)?.value) || 0;
+    const cost = b + p;
+    const pvpMin = cost / 0.40;
+    const c = document.getElementById('b2b-c' + i);
+    const pv = document.getElementById('b2b-pvp' + i);
+    if (c) c.textContent = cost.toFixed(2) + '€';
+    if (pv) pv.textContent = pvpMin.toFixed(2) + '€';
+  }
+}
+
+// ─── SUMMARY CARDS ───
+const SERVICE_NAMES = {
+  personalizacion: { name: 'Personalización', icon: '✍️', pvp: 299 },
+  seating:         { name: 'Seating Plan',    icon: '🗺️', pvp: 350 },
+  expendedora:     { name: 'Expendedora',     icon: '🎰', pvp: 399 },
+  gancho:          { name: 'Gancho',          icon: '🪝', pvp: 399 },
+  merch:           { name: 'Merch Corner',    icon: '🛍️', pvp: 350 },
+  b2b:             { name: 'B2B Productos',   icon: '📦', pvp: 0   },
+};
+
+const serviceData = {};
+
+function updateSummary(service, fixedCost) {
+  const info = SERVICE_NAMES[service];
+  const pvp = info.pvp;
+  const margin = pvp > 0 ? ((pvp - fixedCost) / pvp * 100) : 0;
+  serviceData[service] = { fixedCost, pvp, margin };
+
+  const summaryEl = document.getElementById('summary-' + service);
+  if (summaryEl) {
+    const mColor = margin >= 60 ? 'green' : margin >= 45 ? 'yellow' : 'red';
+    summaryEl.innerHTML = `
+      <div class="summary-card yellow"><div class="summary-label">PVP desde</div><div class="summary-value yellow">${pvp > 0 ? pvp + '€' : 'A medida'}</div><div class="summary-sub">Precio base mínimo</div></div>
+      <div class="summary-card ${mColor}"><div class="summary-label">Margen bruto</div><div class="summary-value ${mColor}">${pvp > 0 ? margin.toFixed(1) + '%' : '—'}</div><div class="summary-sub">Objetivo mínimo: 60%</div></div>
+      <div class="summary-card red"><div class="summary-label">Coste fijo estimado</div><div class="summary-value">${fixedCost.toFixed(2)}€</div><div class="summary-sub">Sin coste de producto</div></div>
+      <div class="summary-card blue"><div class="summary-label">Beneficio bruto</div><div class="summary-value blue">${pvp > 0 ? (pvp - fixedCost).toFixed(2) + '€' : '—'}</div><div class="summary-sub">PVP − costes fijos</div></div>
+    `;
+  }
+
+  // Margin bar
+  const barEl = document.getElementById('marginbar-' + service);
+  if (barEl) {
+    const barColor = margin >= 60 ? '#4CAF7D' : margin >= 45 ? '#F2C94C' : '#E85555';
+    const warning = margin < 60 ? `<div class="margin-warning" style="display:block;color:${barColor}">⚠ Margen ${margin < 45 ? 'crítico' : 'bajo'} — revisar costes o subir PVP</div>` : '';
+    barEl.innerHTML = `
+      <div class="margin-bar-header">
+        <div class="margin-bar-label">Margen sobre PVP</div>
+        <div class="margin-bar-pct" style="color:${barColor}">${pvp > 0 ? margin.toFixed(1) + '%' : '—'}</div>
+      </div>
+      <div class="margin-bar-track"><div class="margin-bar-fill" style="width:${Math.min(margin,100)}%;background:${barColor}"></div></div>
+      ${warning}
+    `;
+  }
+
+  updateOverview();
+}
+
+function updateOverview() {
+  const grid = document.getElementById('overview-grid');
+  if (!grid) return;
+
+  grid.innerHTML = Object.entries(SERVICE_NAMES).map(([key, info]) => {
+    const data = serviceData[key] || { fixedCost: 0, pvp: info.pvp, margin: 0 };
+    const mColor = data.margin >= 60 ? '#4CAF7D' : data.margin >= 45 ? '#F2C94C' : '#E85555';
+    return `
+      <div class="overview-card" onclick="showPage('${key}')">
+        <div class="overview-icon">${info.icon}</div>
+        <div class="overview-name">${info.name}</div>
+        <div class="overview-meta">
+          <div>
+            <div class="overview-coste">Coste fijo: ${data.fixedCost.toFixed(0)}€</div>
+            <div class="overview-margin" style="color:${mColor}">${data.pvp > 0 ? data.margin.toFixed(1) + '% margen' : 'A medida'}</div>
+          </div>
+          <div class="overview-pvp">${data.pvp > 0 ? 'desde ' + data.pvp + '€' : '—'}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Avg margin
+  const margins = Object.values(serviceData).filter(d => d.pvp > 0).map(d => d.margin);
+  if (margins.length > 0) {
+    const avg = margins.reduce((a,b) => a+b, 0) / margins.length;
+    const avgEl = document.getElementById('overview-margin-avg');
+    if (avgEl) {
+      avgEl.textContent = avg.toFixed(1) + '%';
+      avgEl.className = 'summary-value ' + (avg >= 60 ? 'green' : avg >= 45 ? 'yellow' : 'red');
+    }
+  }
+
+  const dateEl = document.getElementById('last-update');
+  if (dateEl) dateEl.textContent = new Date().toLocaleDateString('es-ES');
+}
+
+// ─── ADD ROW ───
+function addRow(tableId, service) {
+  const tbody = document.querySelector('#' + tableId + ' tbody');
+  const tr = document.createElement('tr');
+  tr.setAttribute('data-row', '');
+  tr.innerHTML = `
+    <td>
+      <input style="background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:Lato;font-size:13px;width:100%;padding:4px 6px;outline:none;" placeholder="Nuevo concepto..." />
+    </td>
+    <td><input class="cost-input" value="0" oninput="recalc('${service}')"><span class="unit-label">€</span></td>
+    <td><input class="cost-input" value="1" oninput="recalc('${service}')"><span class="unit-abel">ud</span></td>
+    <td class="computed" data-total>0.00€</td>
+  `;
+  tbody.appendChild(tr);
+  recalc(service);
+}
+
+function addRowVar(tableId) {
+  const tbody = document.querySelector('#' + tableId + ' tbody');
+  const tr = document.createElement('tr');
+  tr.setAttribute('data-row-var', '');
+  tr.innerHTML = `
+    <td><input style="background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:Lato;font-size:13px;width:100%;padding:4px;outline:none;" placeholder="Nuevo artículo..." /></td>
+    <td><input class="cost-input" value="0.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+    <td><input class="cost-input" value="0.00" oninput="recalcVar(this)"><span class="unit-label">€</span></td>
+    <td class="computed accent" data-var-total>0.00€</td>
+  `;
+  tbody.appendChild(tr);
+}
+
+// ─── EXPORT PDF ───
+function exportPDF() {
+  const active = document.querySelector('.service-page.active');
+  const name = active ? active.id.replace('page-', '') : 'overview';
+
+  // Temporarily show only active page for print
+  document.title = 'Ficha — Dilo Bonito — ' + name;
+  window.print();
+  document.title = 'Fichas de Coste — Dilo Bonito INTERNO';
+}
+
+// ─── INIT ───
+document.addEventListener('DOMContentLoaded', () => {
+  // Initial calcs for all services
+  SERVICES.forEach(s => recalc(s));
+  recalcB2B();
+
+  // All var rows
+  document.querySelectorAll('[data-row-var]').forEach(row => {
+    const inp = row.querySelector('.cost-input');
+    if (inp) recalcVar(inp);
+  });
+
+  // All pack rows
+  document.querySelectorAll('[data-pack]').forEach(row => recalcPackRow(row));
+
+  updateOverview();
+});
+</script>
+</body>
+</html>
