@@ -156,74 +156,78 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 
 <!-- IMÁGENES -->
 <div class="panel" id="panel-imagenes">
-  <div class="s-hdr"><span class="s-icon">🖼️</span><div><div class="s-title">Imágenes</div><div class="s-desc">Clic en cada tarjeta para subir. Máx. 2MB por imagen.</div></div></div>
-  <div class="stag">Dilo Bonito — Dossier clientes</div>
-  <div class="img-grid">
+  <div class="s-hdr"><span class="s-icon">🖼️</span><div><div class="s-title">Imágenes</div><div class="s-desc">Clic en cada tarjeta → selecciona foto → "Guardar todo". Se suben a GitHub y aparecen en el dossier en ~30s.</div></div></div>
+
+  <div class="stag">Todas las páginas</div>
+  <div class="img-grid" style="grid-template-columns:1fr 1fr;">
+    <div class="img-card" onclick="trigImg('img-cabecera')">
+      <div class="img-lbl">🖼 CABECERA / FONDO HERO <span class="img-ok" id="ok-img-cabecera">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-cabecera" style="aspect-ratio:21/9;"><div class="img-ph">📸 Imagen de fondo del hero<br><small>Recomendado: 1920×600px</small></div></div>
+      <button class="img-btn">Cambiar imagen de cabecera</button>
+      <input type="file" id="img-cabecera" accept="image/*" style="display:none" onchange="loadImg(this,'img-cabecera')">
+    </div>
     <div class="img-card" onclick="trigImg('img-hero')">
-      <div class="img-lbl">Hero principal <span class="img-ok" id="ok-img-hero">✓</span></div>
-      <div class="img-prev" id="prev-img-hero"><div class="img-ph">🖼 Clic para subir<br><small>1400×900px</small></div></div>
+      <div class="img-lbl">🟡 SECCIÓN HERO — lateral derecho <span class="img-ok" id="ok-img-hero">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-hero"><div class="img-ph">📸 Imagen lado derecho del hero<br><small>Recomendado: 900×700px</small></div></div>
       <button class="img-btn">Cambiar imagen</button>
       <input type="file" id="img-hero" accept="image/*" style="display:none" onchange="loadImg(this,'img-hero')">
-      <input type="hidden" id="data-img-hero">
-    </div>
-    <div class="img-card" onclick="trigImg('img-personalizacion')">
-      <div class="img-lbl">Personalización <span class="img-ok" id="ok-img-personalizacion">✓</span></div>
-      <div class="img-prev" id="prev-img-personalizacion"><div class="img-ph">🖼 Clic para subir</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-personalizacion" accept="image/*" style="display:none" onchange="loadImg(this,'img-personalizacion')">
-      <input type="hidden" id="data-img-personalizacion">
-    </div>
-    <div class="img-card" onclick="trigImg('img-seating')">
-      <div class="img-lbl">Seating Plan <span class="img-ok" id="ok-img-seating">✓</span></div>
-      <div class="img-prev" id="prev-img-seating"><div class="img-ph">🖼 Clic para subir</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-seating" accept="image/*" style="display:none" onchange="loadImg(this,'img-seating')">
-      <input type="hidden" id="data-img-seating">
-    </div>
-    <div class="img-card" onclick="trigImg('img-maquinas')">
-      <div class="img-lbl">Máquinas <span class="img-ok" id="ok-img-maquinas">✓</span></div>
-      <div class="img-prev" id="prev-img-maquinas"><div class="img-ph">🖼 Clic para subir</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-maquinas" accept="image/*" style="display:none" onchange="loadImg(this,'img-maquinas')">
-      <input type="hidden" id="data-img-maquinas">
-    </div>
-    <div class="img-card" onclick="trigImg('img-merch')">
-      <div class="img-lbl">Merch Corner <span class="img-ok" id="ok-img-merch">✓</span></div>
-      <div class="img-prev" id="prev-img-merch"><div class="img-ph">🖼 Clic para subir</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-merch" accept="image/*" style="display:none" onchange="loadImg(this,'img-merch')">
-      <input type="hidden" id="data-img-merch">
-    </div>
-    <div class="img-card" onclick="trigImg('img-que-es')">
-      <div class="img-lbl">Sección "Qué es" <span class="img-ok" id="ok-img-que-es">✓</span></div>
-      <div class="img-prev" id="prev-img-que-es"><div class="img-ph">🖼 Clic para subir</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-que-es" accept="image/*" style="display:none" onchange="loadImg(this,'img-que-es')">
-      <input type="hidden" id="data-img-que-es">
     </div>
   </div>
-  <div class="stag" style="margin-top:8px">Bendito Lab B2B</div>
+
+  <div class="stag" style="margin-top:16px">Dilo Bonito — Secciones de servicio</div>
+  <p style="font-size:12px;color:var(--dim);margin-bottom:12px;">Estas imágenes aparecen junto a la descripción de cada servicio en el dossier</p>
+  <div class="img-grid">
+    <div class="img-card" onclick="trigImg('img-presentacion')">
+      <div class="img-lbl">✍️ PRESENTACIÓN (intro) <span class="img-ok" id="ok-img-presentacion">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-presentacion"><div class="img-ph">📸 Imagen sección "Qué es Dilo Bonito"</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-presentacion" accept="image/*" style="display:none" onchange="loadImg(this,'img-presentacion')">
+    </div>
+    <div class="img-card" onclick="trigImg('img-personalizacion')">
+      <div class="img-lbl">✍️ PERSONALIZACIÓN EN DIRECTO <span class="img-ok" id="ok-img-personalizacion">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-personalizacion"><div class="img-ph">📸 Foto del stand de personalización</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-personalizacion" accept="image/*" style="display:none" onchange="loadImg(this,'img-personalizacion')">
+    </div>
+    <div class="img-card" onclick="trigImg('img-seating')">
+      <div class="img-lbl">🗺️ SEATING PLAN <span class="img-ok" id="ok-img-seating">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-seating"><div class="img-ph">📸 Foto del seating plan</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-seating" accept="image/*" style="display:none" onchange="loadImg(this,'img-seating')">
+    </div>
+    <div class="img-card" onclick="trigImg('img-maquinas')">
+      <div class="img-lbl">🎰 MÁQUINAS <span class="img-ok" id="ok-img-maquinas">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-maquinas"><div class="img-ph">📸 Foto de las máquinas</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-maquinas" accept="image/*" style="display:none" onchange="loadImg(this,'img-maquinas')">
+    </div>
+    <div class="img-card" onclick="trigImg('img-merch')">
+      <div class="img-lbl">🛍️ MERCH CORNER <span class="img-ok" id="ok-img-merch">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-merch"><div class="img-ph">📸 Foto del merch corner</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-merch" accept="image/*" style="display:none" onchange="loadImg(this,'img-merch')">
+    </div>
+  </div>
+
+  <div class="stag" style="margin-top:16px">Bendito Lab B2B</div>
   <div class="img-grid">
     <div class="img-card" onclick="trigImg('img-b2b-1')">
-      <div class="img-lbl">Tote bag (hero) <span class="img-ok" id="ok-img-b2b-1">✓</span></div>
-      <div class="img-prev" id="prev-img-b2b-1"><div class="img-ph">🖼 Clic para subir</div></div>
+      <div class="img-lbl">👜 B2B — Tote bag <span class="img-ok" id="ok-img-b2b-1">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-b2b-1"><div class="img-ph">📸 Foto tote bag personalizada</div></div>
       <button class="img-btn">Cambiar imagen</button>
       <input type="file" id="img-b2b-1" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-1')">
-      <input type="hidden" id="data-img-b2b-1">
     </div>
     <div class="img-card" onclick="trigImg('img-b2b-2')">
-      <div class="img-lbl">Neceser <span class="img-ok" id="ok-img-b2b-2">✓</span></div>
-      <div class="img-prev" id="prev-img-b2b-2"><div class="img-ph">🖼 Clic para subir</div></div>
+      <div class="img-lbl">👝 B2B — Neceser <span class="img-ok" id="ok-img-b2b-2">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-b2b-2"><div class="img-ph">📸 Foto neceser personalizado</div></div>
       <button class="img-btn">Cambiar imagen</button>
       <input type="file" id="img-b2b-2" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-2')">
-      <input type="hidden" id="data-img-b2b-2">
     </div>
     <div class="img-card" onclick="trigImg('img-b2b-3')">
-      <div class="img-lbl">Gorra <span class="img-ok" id="ok-img-b2b-3">✓</span></div>
-      <div class="img-prev" id="prev-img-b2b-3"><div class="img-ph">🖼 Clic para subir</div></div>
+      <div class="img-lbl">🧢 B2B — Gorra <span class="img-ok" id="ok-img-b2b-3">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-b2b-3"><div class="img-ph">📸 Foto gorra personalizada</div></div>
       <button class="img-btn">Cambiar imagen</button>
       <input type="file" id="img-b2b-3" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-3')">
-      <input type="hidden" id="data-img-b2b-3">
     </div>
   </div>
 </div>
@@ -536,10 +540,16 @@ function saveAll(){
 
 const REPO='contactobenditolab-ship-it/dossier-dilo-bonito';
 const IMG_MAP={
-  'img-hero':'images/hero.jpg','img-personalizacion':'images/personalizacion.jpg',
-  'img-seating':'images/seating.jpg','img-maquinas':'images/maquinas.jpg',
-  'img-merch':'images/merch.jpg','img-que-es':'images/que-es.jpg',
-  'img-b2b-1':'images/b2b-1.jpg','img-b2b-2':'images/b2b-2.jpg','img-b2b-3':'images/b2b-3.jpg',
+  'img-cabecera':      'images/cabecera.jpg',
+  'img-hero':          'images/hero.jpg',
+  'img-presentacion':  'images/presentacion.jpg',
+  'img-personalizacion':'images/personalizacion.jpg',
+  'img-seating':       'images/seating.jpg',
+  'img-maquinas':      'images/maquinas.jpg',
+  'img-merch':         'images/merch.jpg',
+  'img-b2b-1':         'images/b2b-1.jpg',
+  'img-b2b-2':         'images/b2b-2.jpg',
+  'img-b2b-3':         'images/b2b-3.jpg',
 };
 
 async function uploadImages(imgs){
