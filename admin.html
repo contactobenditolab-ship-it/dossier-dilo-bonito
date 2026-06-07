@@ -135,6 +135,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 
 <main class="main">
 <div class="saved-ok" id="saved-ok">✓ Todos los cambios guardados correctamente</div>
+<div id="upload-status" style="display:none;background:rgba(168,200,232,.12);border:1px solid var(--blue);color:var(--blue);padding:12px 16px;margin-bottom:16px;font-size:13px;font-weight:700;"></div>
 
 <!-- CONTACTO -->
 <div class="panel active" id="panel-contacto">
@@ -427,6 +428,11 @@ let isDirty=false;
 function checkLogin(){
   if(document.getElementById('pwd').value===PWD){
     document.getElementById('login').style.display='none';
+    // Ask for GitHub token once if not saved
+    if (!localStorage.getItem('bl_gh_token')) {
+      const tok = prompt('Primera vez: pega el token de GitHub para subir imágenes (o cancela para omitir):');
+      if (tok && tok.trim()) localStorage.setItem('bl_gh_token', tok.trim());
+    }
     loadAll();
   } else {
     document.getElementById('login-err').style.display='block';
@@ -467,9 +473,17 @@ function loadImg(input,key){
   reader.onload=e=>{
     const src=e.target.result;
     document.getElementById('prev-'+key).innerHTML='<img src="'+src+'">';
-    document.getElementById('data-'+key).value=src;
+    // Store in pending uploads (not localStorage - too large)
+    pendingImgUploads[key] = { dataUrl: src, filename: file.name };
     const ok=document.getElementById('ok-'+key);
     if(ok)ok.classList.add('on');
+    // Show pending indicator on card
+    const card = input.closest('.img-card');
+    if(card) {
+      let pending = card.querySelector('.img-pending');
+      if(!pending) { pending = document.createElement('div'); pending.className='img-pending'; pending.style.cssText='font-size:10px;color:#F2C94C;font-weight:700;margin-top:4px;'; card.appendChild(pending); }
+      pending.textContent = '● Pendiente de guardar';
+    }
     dirty();
   };
   reader.readAsDataURL(file);
@@ -513,6 +527,144 @@ function getAllData(){
 }
 
 function saveAll(){
+  const data = getAllData();
+  
+  // Save ONLY text and prices to localStorage (no images - too large)
+  const dataNoImgs = JSON.parse(JSON.stringify(data));
+  dataNoImgs.imagenes = {}; // Don't save images in localStorage
+  
+  try {
+    localStorage.setItem('bendito-admin-v3', JSON.stringify(dataNoImgs));
+    localStorage.setItem('dilo-precios', JSON.stringify({
+      packs:{ mini:{precio:data.dilo.precios.mini,invitados:30,horas:2}, intima:{precio:data.dilo.precios.intima,invitados:50,horas:3}, clasica:{precio:data.dilo.precios.clasica,invitados:100,horas:4}, premium:{precio:data.dilo.precios.premium,invitados:150,horas:5} },
+      seating:{ gafas:{inv30:data.dilo.precios.sg30,inv50:data.dilo.precios.sg50,inv100:data.dilo.precios.sg100,inv150:data.dilo.precios.sg150}, basico:{inv30:data.dilo.precios.sb30,inv50:data.dilo.precios.sb50,inv100:data.dilo.precios.sb100,inv150:data.dilo.precios.sb150}, soloPanel:data.dilo.precios.spPanel },
+      maquinas:{ expendedoraGratis:data.dilo.precios.eg, expendedoraMoneda:data.dilo.precios.em, ganchoGratis:data.dilo.precios.gg, ganchoMoneda:data.dilo.precios.gm },
+      merch:{ basico:data.dilo.precios.mb, completo:data.dilo.precios.mc, premium:data.dilo.precios.mp },
+      extras:{ horaExtra:data.dilo.extras.hora, diseno:data.dilo.extras.dis, regaloInfantil:data.dilo.extras.nin, moneda:data.dilo.extras.mon, vinilado:data.dilo.extras.vin, km:data.dilo.extras.km },
+      comisiones:{ hasta50:data.colab.comisiones.c50, hasta100:data.colab.comisiones.c100, hasta150:data.colab.comisiones.c150 },
+      textos:data.dilo.textos, contacto:data.contacto,
+    }));
+  } catch(e) {
+    alert('Error guardando textos/precios: ' + e.message);
+    return;
+  }
+
+  // Upload pending images to GitHub
+  const pending = getPendingImages();
+  if (pending.length > 0) {
+    uploadImagesToGitHub(pending, () => {
+      isDirty = false;
+      document.getElementById('dirty-ind').style.display = 'none';
+      showSaved();
+    });
+  } else {
+    isDirty = false;
+    document.getElementById('dirty-ind').style.display = 'none';
+    showSaved();
+  }
+}
+
+function showSaved() {
+  const ok = document.getElementById('saved-ok');
+  ok.style.display = 'block';
+  setTimeout(() => ok.style.display = 'none', 3500);
+}
+
+// Track which images have been loaded and need uploading
+const pendingImgUploads = {};
+
+function getPendingImages() {
+  return Object.entries(pendingImgUploads).map(([key, val]) => ({key, ...val}));
+}
+
+const GITHUB_TOKEN = localStorage.getItem('bl_gh_token') || '';
+const GITHUB_REPO = 'contactobenditolab-ship-it/dossier-dilo-bonito';
+
+const IMG_GITHUB_MAP = {
+  'img-hero':           'images/hero.jpg',
+  'img-personalizacion':'images/personalizacion.jpg',
+  'img-seating':        'images/seating.jpg',
+  'img-maquinas':       'images/maquinas.jpg',
+  'img-merch':          'images/merch.jpg',
+  'img-que-es':         'images/que-es.jpg',
+  'img-b2b-1':          'images/b2b-1.jpg',
+  'img-b2b-2':          'images/b2b-2.jpg',
+  'img-b2b-3':          'images/b2b-3.jpg',
+};
+
+async function getSha(path) {
+  try {
+    const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'User-Agent': 'BenditoAdmin' }
+    });
+    if (!r.ok) return null;
+    const d = await r.json();
+    return d.sha || null;
+  } catch { return null; }
+}
+
+async function uploadImagesToGitHub(images, onDone) {
+  const statusEl = document.getElementById('upload-status');
+  if (statusEl) { statusEl.style.display = 'block'; statusEl.textContent = `Subiendo ${images.length} imagen(es) a GitHub...`; }
+  
+  let uploaded = 0;
+  let errors = 0;
+
+  for (const img of images) {
+    const githubPath = IMG_GITHUB_MAP[img.key];
+    if (!githubPath) continue;
+
+    try {
+      // Convert base64 data URL to pure base64
+      const base64 = img.dataUrl.split(',')[1];
+      const sha = await getSha(githubPath);
+      
+      const payload = {
+        message: `Admin: update image ${githubPath}`,
+        content: base64,
+      };
+      if (sha) payload.sha = sha;
+
+      const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${githubPath}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Content-Type': 'application/json',
+          'User-Agent': 'BenditoAdmin'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (r.ok) {
+        uploaded++;
+        delete pendingImgUploads[img.key];
+        if (statusEl) statusEl.textContent = `Subiendo imágenes... ${uploaded}/${images.length}`;
+      } else {
+        errors++;
+        const err = await r.json();
+        console.error('GitHub upload error:', err);
+      }
+    } catch(e) {
+      errors++;
+      console.error('Upload error:', e);
+    }
+  }
+
+  if (statusEl) {
+    if (errors === 0) {
+      statusEl.textContent = `✓ ${uploaded} imagen(es) subida(s). Vercel actualizará en ~30 segundos.`;
+      statusEl.style.background = 'rgba(76,175,125,.15)';
+      statusEl.style.borderColor = '#4CAF7D';
+      statusEl.style.color = '#4CAF7D';
+      setTimeout(() => { statusEl.style.display = 'none'; }, 6000);
+    } else {
+      statusEl.textContent = `⚠ ${uploaded} subida(s), ${errors} error(es). Comprueba la conexión.`;
+      statusEl.style.color = '#E85555';
+    }
+  }
+  
+  if (onDone) onDone();
+}
   const data=getAllData();
   try{
     localStorage.setItem('bendito-admin-v3',JSON.stringify(data));
