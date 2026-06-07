@@ -424,15 +424,12 @@ Reporte post-evento</textarea></div>
 <script>
 const PWD='h13701aah03';
 let isDirty=false;
+const pendingImgs={};
 
+// LOGIN
 function checkLogin(){
   if(document.getElementById('pwd').value===PWD){
     document.getElementById('login').style.display='none';
-    // Ask for GitHub token once if not saved
-    if (!localStorage.getItem('bl_gh_token')) {
-      const tok = prompt('Primera vez: pega el token de GitHub para subir imágenes (o cancela para omitir):');
-      if (tok && tok.trim()) localStorage.setItem('bl_gh_token', tok.trim());
-    }
     loadAll();
   } else {
     document.getElementById('login-err').style.display='block';
@@ -442,29 +439,25 @@ function checkLogin(){
 }
 document.getElementById('pwd').addEventListener('keydown',e=>{if(e.key==='Enter')checkLogin();});
 
+// NAV
 function show(id,el){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
-  if(el) el.classList.add('active');
+  if(el)el.classList.add('active');
 }
-
 function stab(tab,cid){
-  const bar=tab.parentElement;
-  bar.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  tab.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   tab.classList.add('active');
-  const panel=tab.closest('.panel');
-  panel.querySelectorAll('.tab-c').forEach(c=>c.classList.remove('active'));
+  tab.closest('.panel').querySelectorAll('.tab-c').forEach(c=>c.classList.remove('active'));
   document.getElementById(cid).classList.add('active');
 }
 
-function dirty(){
-  isDirty=true;
-  document.getElementById('dirty-ind').style.display='inline';
-}
+// DIRTY
+function dirty(){isDirty=true;document.getElementById('dirty-ind').style.display='inline';}
 
+// IMAGES
 function trigImg(id){document.getElementById(id).click();}
-
 function loadImg(input,key){
   const file=input.files[0];
   if(!file)return;
@@ -473,240 +466,150 @@ function loadImg(input,key){
   reader.onload=e=>{
     const src=e.target.result;
     document.getElementById('prev-'+key).innerHTML='<img src="'+src+'">';
-    // Store in pending uploads (not localStorage - too large)
-    pendingImgUploads[key] = { dataUrl: src, filename: file.name };
+    pendingImgs[key]={dataUrl:src,name:file.name};
     const ok=document.getElementById('ok-'+key);
     if(ok)ok.classList.add('on');
-    // Show pending indicator on card
-    const card = input.closest('.img-card');
-    if(card) {
-      let pending = card.querySelector('.img-pending');
-      if(!pending) { pending = document.createElement('div'); pending.className='img-pending'; pending.style.cssText='font-size:10px;color:#F2C94C;font-weight:700;margin-top:4px;'; card.appendChild(pending); }
-      pending.textContent = '● Pendiente de guardar';
-    }
     dirty();
   };
   reader.readAsDataURL(file);
 }
 
+// GET VALUES
 function v(id){const el=document.getElementById(id);return el?el.value:'';}
 
-function getAllData(){
+// COLLECT ALL DATA
+function getData(){
   return {
-    _v: Date.now(),
-    contacto:{ tel:v('c-tel'), email:v('c-email'), emailColab:v('c-email-colab'), instagram:v('c-instagram'), web:v('c-web'), zona:v('c-zona') },
-    imagenes:{
-      hero:v('data-img-hero'), personalizacion:v('data-img-personalizacion'),
-      seating:v('data-img-seating'), maquinas:v('data-img-maquinas'),
-      merch:v('data-img-merch'), queEs:v('data-img-que-es'),
-      b2b1:v('data-img-b2b-1'), b2b2:v('data-img-b2b-2'), b2b3:v('data-img-b2b-3'),
-    },
+    _v:Date.now(),
+    contacto:{tel:v('c-tel'),email:v('c-email'),emailColab:v('c-email-colab'),instagram:v('c-instagram'),web:v('c-web'),zona:v('c-zona')},
     dilo:{
-      textos:{ tag:v('dt-tag'), l1:v('dt-l1'), l2:v('dt-l2'), l3:v('dt-l3'), sub:v('dt-sub'), cta:v('dt-cta'), qs1:v('dt-qs1'), qs2:v('dt-qs2'), s1:v('dt-s1'), s2:v('dt-s2'), s3:v('dt-s3'), s4:v('dt-s4'), s5:v('dt-s5'), navSol:v('dn-sol'), navCol:v('dn-col'), dd1:v('dn-d1'), dd1d:v('dn-d1d'), dd2:v('dn-d2'), dd2d:v('dn-d2d') },
-      precios:{ mini:+v('p-mini'), intima:+v('p-intima'), clasica:+v('p-clasica'), premium:+v('p-premium'), sg30:+v('sg-30'), sg50:+v('sg-50'), sg100:+v('sg-100'), sg150:+v('sg-150'), sb30:+v('sb-30'), sb50:+v('sb-50'), sb100:+v('sb-100'), sb150:+v('sb-150'), spPanel:+v('sp-panel'), eg:+v('p-eg'), em:+v('p-em'), gg:+v('p-gg'), gm:+v('p-gm'), mb:+v('p-mb'), mc:+v('p-mc'), mp:+v('p-mp') },
-      extras:{ hora:+v('e-hora'), dis:+v('e-dis'), nin:+v('e-nin'), mon:+v('e-mon'), vin:+v('e-vin'), km:+v('e-km') },
-      packs:{ mini:v('dp-mini'), intima:v('dp-intima'), clasica:v('dp-clasica'), premium:v('dp-premium') },
+      textos:{tag:v('dt-tag'),l1:v('dt-l1'),l2:v('dt-l2'),l3:v('dt-l3'),sub:v('dt-sub'),cta:v('dt-cta'),qs1:v('dt-qs1'),qs2:v('dt-qs2'),s1:v('dt-s1'),s2:v('dt-s2'),s3:v('dt-s3'),s4:v('dt-s4'),s5:v('dt-s5'),navSol:v('dn-sol'),navCol:v('dn-col'),dd1:v('dn-d1'),dd1d:v('dn-d1d'),dd2:v('dn-d2'),dd2d:v('dn-d2d')},
+      precios:{mini:+v('p-mini'),intima:+v('p-intima'),clasica:+v('p-clasica'),premium:+v('p-premium'),sg30:+v('sg-30'),sg50:+v('sg-50'),sg100:+v('sg-100'),sg150:+v('sg-150'),sb30:+v('sb-30'),sb50:+v('sb-50'),sb100:+v('sb-100'),sb150:+v('sb-150'),spPanel:+v('sp-panel'),eg:+v('p-eg'),em:+v('p-em'),gg:+v('p-gg'),gm:+v('p-gm'),mb:+v('p-mb'),mc:+v('p-mc'),mp:+v('p-mp')},
+      extras:{hora:+v('e-hora'),dis:+v('e-dis'),nin:+v('e-nin'),mon:+v('e-mon'),vin:+v('e-vin'),km:+v('e-km')},
+      packs:{mini:v('dp-mini'),intima:v('dp-intima'),clasica:v('dp-clasica'),premium:v('dp-premium')},
     },
     colab:{
-      textos:{ tag:v('ct-tag'), l1:v('ct-l1'), l2:v('ct-l2'), l3:v('ct-l3'), sub:v('ct-sub'), p1:v('ct-p1'), p1d:v('ct-p1d'), p2:v('ct-p2'), p2d:v('ct-p2d'), p3:v('ct-p3'), p3d:v('ct-p3d'), ctat:v('ct-ctat'), ctas:v('ct-ctas') },
-      comisiones:{ c50:+v('com-50'), c100:+v('com-100'), c150:+v('com-150'), plazo:v('com-plazo') },
+      textos:{tag:v('ct-tag'),l1:v('ct-l1'),l2:v('ct-l2'),l3:v('ct-l3'),sub:v('ct-sub'),p1:v('ct-p1'),p1d:v('ct-p1d'),p2:v('ct-p2'),p2d:v('ct-p2d'),p3:v('ct-p3'),p3d:v('ct-p3d'),ctat:v('ct-ctat'),ctas:v('ct-ctas')},
+      comisiones:{c50:+v('com-50'),c100:+v('com-100'),c150:+v('com-150'),plazo:v('com-plazo')},
     },
     b2b:{
-      textos:{ tag:v('bt-tag'), l1:v('bt-l1'), l2:v('bt-l2'), l3:v('bt-l3'), sub:v('bt-sub'), qs1:v('bt-qs1'), qs2:v('bt-qs2'), ctat:v('bt-ctat'), ctas:v('bt-ctas') },
+      textos:{tag:v('bt-tag'),l1:v('bt-l1'),l2:v('bt-l2'),l3:v('bt-l3'),sub:v('bt-sub'),qs1:v('bt-qs1'),qs2:v('bt-qs2'),ctat:v('bt-ctat'),ctas:v('bt-ctas')},
       productos:{
-        t:{d:v('bp-t-d'),p:+v('bp-t-p'),m:+v('bp-t-m')},
-        g:{d:v('bp-g-d'),p:+v('bp-g-p'),m:+v('bp-g-m')},
-        n:{d:v('bp-n-d'),p:+v('bp-n-p'),m:+v('bp-n-m')},
-        c:{d:v('bp-c-d'),p:+v('bp-c-p'),m:+v('bp-c-m')},
-        l:{d:v('bp-l-d'),p:+v('bp-l-p'),m:+v('bp-l-m')},
-        b:{d:v('bp-b-d'),p:+v('bp-b-p'),m:+v('bp-b-m')},
+        t:{d:v('bp-t-d'),p:+v('bp-t-p'),m:+v('bp-t-m')},g:{d:v('bp-g-d'),p:+v('bp-g-p'),m:+v('bp-g-m')},
+        n:{d:v('bp-n-d'),p:+v('bp-n-p'),m:+v('bp-n-m')},c:{d:v('bp-c-d'),p:+v('bp-c-p'),m:+v('bp-c-m')},
+        l:{d:v('bp-l-d'),p:+v('bp-l-p'),m:+v('bp-l-m')},b:{d:v('bp-b-d'),p:+v('bp-b-p'),m:+v('bp-b-m')},
         k:{d:v('bp-k-d'),p:+v('bp-k-p'),m:+v('bp-k-m')},
       }
     }
   };
 }
 
+// SAVE - textos/precios to localStorage, images to GitHub
 function saveAll(){
-  const data = getAllData();
+  const d=getData();
   
-  // Save ONLY text and prices to localStorage (no images - too large)
-  const dataNoImgs = JSON.parse(JSON.stringify(data));
-  dataNoImgs.imagenes = {}; // Don't save images in localStorage
-  
-  try {
-    localStorage.setItem('bendito-admin-v3', JSON.stringify(dataNoImgs));
-    localStorage.setItem('dilo-precios', JSON.stringify({
-      packs:{ mini:{precio:data.dilo.precios.mini,invitados:30,horas:2}, intima:{precio:data.dilo.precios.intima,invitados:50,horas:3}, clasica:{precio:data.dilo.precios.clasica,invitados:100,horas:4}, premium:{precio:data.dilo.precios.premium,invitados:150,horas:5} },
-      seating:{ gafas:{inv30:data.dilo.precios.sg30,inv50:data.dilo.precios.sg50,inv100:data.dilo.precios.sg100,inv150:data.dilo.precios.sg150}, basico:{inv30:data.dilo.precios.sb30,inv50:data.dilo.precios.sb50,inv100:data.dilo.precios.sb100,inv150:data.dilo.precios.sb150}, soloPanel:data.dilo.precios.spPanel },
-      maquinas:{ expendedoraGratis:data.dilo.precios.eg, expendedoraMoneda:data.dilo.precios.em, ganchoGratis:data.dilo.precios.gg, ganchoMoneda:data.dilo.precios.gm },
-      merch:{ basico:data.dilo.precios.mb, completo:data.dilo.precios.mc, premium:data.dilo.precios.mp },
-      extras:{ horaExtra:data.dilo.extras.hora, diseno:data.dilo.extras.dis, regaloInfantil:data.dilo.extras.nin, moneda:data.dilo.extras.mon, vinilado:data.dilo.extras.vin, km:data.dilo.extras.km },
-      comisiones:{ hasta50:data.colab.comisiones.c50, hasta100:data.colab.comisiones.c100, hasta150:data.colab.comisiones.c150 },
-      textos:data.dilo.textos, contacto:data.contacto,
-    }));
-  } catch(e) {
-    alert('Error guardando textos/precios: ' + e.message);
-    return;
-  }
-
-  // Upload pending images to GitHub
-  const pending = getPendingImages();
-  if (pending.length > 0) {
-    uploadImagesToGitHub(pending, () => {
-      isDirty = false;
-      document.getElementById('dirty-ind').style.display = 'none';
-      showSaved();
-    });
-  } else {
-    isDirty = false;
-    document.getElementById('dirty-ind').style.display = 'none';
-    showSaved();
-  }
-}
-
-function showSaved() {
-  const ok = document.getElementById('saved-ok');
-  ok.style.display = 'block';
-  setTimeout(() => ok.style.display = 'none', 3500);
-}
-
-// Track which images have been loaded and need uploading
-const pendingImgUploads = {};
-
-function getPendingImages() {
-  return Object.entries(pendingImgUploads).map(([key, val]) => ({key, ...val}));
-}
-
-const GITHUB_TOKEN = localStorage.getItem('bl_gh_token') || '';
-const GITHUB_REPO = 'contactobenditolab-ship-it/dossier-dilo-bonito';
-
-const IMG_GITHUB_MAP = {
-  'img-hero':           'images/hero.jpg',
-  'img-personalizacion':'images/personalizacion.jpg',
-  'img-seating':        'images/seating.jpg',
-  'img-maquinas':       'images/maquinas.jpg',
-  'img-merch':          'images/merch.jpg',
-  'img-que-es':         'images/que-es.jpg',
-  'img-b2b-1':          'images/b2b-1.jpg',
-  'img-b2b-2':          'images/b2b-2.jpg',
-  'img-b2b-3':          'images/b2b-3.jpg',
-};
-
-async function getSha(path) {
-  try {
-    const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'User-Agent': 'BenditoAdmin' }
-    });
-    if (!r.ok) return null;
-    const d = await r.json();
-    return d.sha || null;
-  } catch { return null; }
-}
-
-async function uploadImagesToGitHub(images, onDone) {
-  const statusEl = document.getElementById('upload-status');
-  if (statusEl) { statusEl.style.display = 'block'; statusEl.textContent = `Subiendo ${images.length} imagen(es) a GitHub...`; }
-  
-  let uploaded = 0;
-  let errors = 0;
-
-  for (const img of images) {
-    const githubPath = IMG_GITHUB_MAP[img.key];
-    if (!githubPath) continue;
-
-    try {
-      // Convert base64 data URL to pure base64
-      const base64 = img.dataUrl.split(',')[1];
-      const sha = await getSha(githubPath);
-      
-      const payload = {
-        message: `Admin: update image ${githubPath}`,
-        content: base64,
-      };
-      if (sha) payload.sha = sha;
-
-      const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${githubPath}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`,
-          'Content-Type': 'application/json',
-          'User-Agent': 'BenditoAdmin'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (r.ok) {
-        uploaded++;
-        delete pendingImgUploads[img.key];
-        if (statusEl) statusEl.textContent = `Subiendo imágenes... ${uploaded}/${images.length}`;
-      } else {
-        errors++;
-        const err = await r.json();
-        console.error('GitHub upload error:', err);
-      }
-    } catch(e) {
-      errors++;
-      console.error('Upload error:', e);
-    }
-  }
-
-  if (statusEl) {
-    if (errors === 0) {
-      statusEl.textContent = `✓ ${uploaded} imagen(es) subida(s). Vercel actualizará en ~30 segundos.`;
-      statusEl.style.background = 'rgba(76,175,125,.15)';
-      statusEl.style.borderColor = '#4CAF7D';
-      statusEl.style.color = '#4CAF7D';
-      setTimeout(() => { statusEl.style.display = 'none'; }, 6000);
-    } else {
-      statusEl.textContent = `⚠ ${uploaded} subida(s), ${errors} error(es). Comprueba la conexión.`;
-      statusEl.style.color = '#E85555';
-    }
-  }
-  
-  if (onDone) onDone();
-}
-  const data=getAllData();
+  // 1. Save texts & prices (small data) to localStorage
   try{
-    localStorage.setItem('bendito-admin-v3',JSON.stringify(data));
-    // Legacy key for dossier compatibility
+    localStorage.setItem('bendito-v3',JSON.stringify(d));
+    // Legacy key for dossier
     localStorage.setItem('dilo-precios',JSON.stringify({
-      packs:{ mini:{precio:data.dilo.precios.mini,invitados:30,horas:2}, intima:{precio:data.dilo.precios.intima,invitados:50,horas:3}, clasica:{precio:data.dilo.precios.clasica,invitados:100,horas:4}, premium:{precio:data.dilo.precios.premium,invitados:150,horas:5} },
-      seating:{ gafas:{inv30:data.dilo.precios.sg30,inv50:data.dilo.precios.sg50,inv100:data.dilo.precios.sg100,inv150:data.dilo.precios.sg150}, basico:{inv30:data.dilo.precios.sb30,inv50:data.dilo.precios.sb50,inv100:data.dilo.precios.sb100,inv150:data.dilo.precios.sb150}, soloPanel:data.dilo.precios.spPanel },
-      maquinas:{ expendedoraGratis:data.dilo.precios.eg, expendedoraMoneda:data.dilo.precios.em, ganchoGratis:data.dilo.precios.gg, ganchoMoneda:data.dilo.precios.gm },
-      merch:{ basico:data.dilo.precios.mb, completo:data.dilo.precios.mc, premium:data.dilo.precios.mp },
-      extras:{ horaExtra:data.dilo.extras.hora, diseno:data.dilo.extras.dis, regaloInfantil:data.dilo.extras.nin, moneda:data.dilo.extras.mon, vinilado:data.dilo.extras.vin, km:data.dilo.extras.km },
-      comisiones:{ hasta50:data.colab.comisiones.c50, hasta100:data.colab.comisiones.c100, hasta150:data.colab.comisiones.c150 },
-      textos:data.dilo.textos, contacto:data.contacto, imagenes:data.imagenes,
+      packs:{mini:{precio:d.dilo.precios.mini,invitados:30,horas:2},intima:{precio:d.dilo.precios.intima,invitados:50,horas:3},clasica:{precio:d.dilo.precios.clasica,invitados:100,horas:4},premium:{precio:d.dilo.precios.premium,invitados:150,horas:5}},
+      seating:{gafas:{inv30:d.dilo.precios.sg30,inv50:d.dilo.precios.sg50,inv100:d.dilo.precios.sg100,inv150:d.dilo.precios.sg150},basico:{inv30:d.dilo.precios.sb30,inv50:d.dilo.precios.sb50,inv100:d.dilo.precios.sb100,inv150:d.dilo.precios.sb150},soloPanel:d.dilo.precios.spPanel},
+      maquinas:{expendedoraGratis:d.dilo.precios.eg,expendedoraMoneda:d.dilo.precios.em,ganchoGratis:d.dilo.precios.gg,ganchoMoneda:d.dilo.precios.gm},
+      merch:{basico:d.dilo.precios.mb,completo:d.dilo.precios.mc,premium:d.dilo.precios.mp},
+      extras:{horaExtra:d.dilo.extras.hora,diseno:d.dilo.extras.dis,regaloInfantil:d.dilo.extras.nin,moneda:d.dilo.extras.mon,vinilado:d.dilo.extras.vin,km:d.dilo.extras.km},
+      comisiones:{hasta50:d.colab.comisiones.c50,hasta100:d.colab.comisiones.c100,hasta150:d.colab.comisiones.c150},
+      textos:d.dilo.textos,contacto:d.contacto,
     }));
+  }catch(e){alert('Error al guardar datos: '+e.message);return;}
+
+  // 2. Upload images to GitHub if any pending
+  const imgs=Object.entries(pendingImgs);
+  if(imgs.length>0){
+    uploadImages(imgs);
+  } else {
     isDirty=false;
     document.getElementById('dirty-ind').style.display='none';
-    const ok=document.getElementById('saved-ok');
-    ok.style.display='block';
-    setTimeout(()=>ok.style.display='none',3000);
-  }catch(e){alert('Error al guardar: '+e.message);}
+    flashSaved('✓ Cambios guardados correctamente');
+  }
 }
 
-function s(id,val){const el=document.getElementById(id);if(el&&val!==undefined)el.value=val;}
+const REPO='contactobenditolab-ship-it/dossier-dilo-bonito';
+const IMG_MAP={
+  'img-hero':'images/hero.jpg','img-personalizacion':'images/personalizacion.jpg',
+  'img-seating':'images/seating.jpg','img-maquinas':'images/maquinas.jpg',
+  'img-merch':'images/merch.jpg','img-que-es':'images/que-es.jpg',
+  'img-b2b-1':'images/b2b-1.jpg','img-b2b-2':'images/b2b-2.jpg','img-b2b-3':'images/b2b-3.jpg',
+};
 
+async function uploadImages(imgs){
+  const tok=localStorage.getItem('bl_gh_tok');
+  if(!tok){
+    const t=prompt('Introduce el token de GitHub para subir imágenes:');
+    if(!t){flashError('Imágenes no subidas — token necesario');return;}
+    localStorage.setItem('bl_gh_tok',t.trim());
+  }
+  const token=localStorage.getItem('bl_gh_tok');
+  const status=document.getElementById('upload-status');
+  status.style.display='block';
+  status.textContent='Subiendo imágenes...';
+  status.style.color='var(--blue)';
+  status.style.borderColor='var(--border)';
+  status.style.background='rgba(168,200,232,.12)';
+
+  let ok=0,err=0;
+  for(const [key,img] of imgs){
+    const path=IMG_MAP[key];if(!path)continue;
+    try{
+      // Get SHA of existing file
+      let sha=null;
+      const check=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{headers:{'Authorization':'token '+token}});
+      if(check.ok){const j=await check.json();sha=j.sha;}
+      // Upload
+      const body={message:'Admin: actualizar imagen '+path,content:img.dataUrl.split(',')[1]};
+      if(sha)body.sha=sha;
+      const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
+        method:'PUT',headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+      if(res.ok){ok++;delete pendingImgs[key];}
+      else{err++;const j=await res.json();console.error(j);}
+    }catch(e){err++;console.error(e);}
+  }
+
+  if(err===0){
+    status.textContent='✓ '+ok+' imagen(es) subida(s). El dossier se actualizará en ~30s.';
+    status.style.color='var(--green)';status.style.borderColor='var(--green)';status.style.background='rgba(76,175,125,.12)';
+    setTimeout(()=>status.style.display='none',7000);
+    isDirty=false;document.getElementById('dirty-ind').style.display='none';
+    flashSaved('✓ Todo guardado correctamente');
+  } else {
+    status.textContent='⚠ '+ok+' subida(s), '+err+' error(es). El token puede haber caducado.';
+    status.style.color='var(--red)';
+    // Reset token so user can re-enter
+    if(err>0)localStorage.removeItem('bl_gh_tok');
+  }
+}
+
+function flashSaved(msg){
+  const el=document.getElementById('saved-ok');
+  el.textContent=msg;el.style.display='block';
+  setTimeout(()=>el.style.display='none',3500);
+}
+function flashError(msg){
+  const el=document.getElementById('saved-ok');
+  el.textContent=msg;el.style.background='rgba(232,85,85,.15)';el.style.borderColor='var(--red)';el.style.color='var(--red)';el.style.display='block';
+  setTimeout(()=>{el.style.display='none';el.style.background='';el.style.borderColor='var(--green)';el.style.color='var(--green)';},4000);
+}
+
+// LOAD
+function s(id,val){const el=document.getElementById(id);if(el&&val!==undefined&&val!==null)el.value=val;}
 function loadAll(){
   try{
-    const raw=localStorage.getItem('bendito-admin-v3');
+    const raw=localStorage.getItem('bendito-v3');
     if(!raw)return;
     const d=JSON.parse(raw);
     if(d.contacto){s('c-tel',d.contacto.tel);s('c-email',d.contacto.email);s('c-email-colab',d.contacto.emailColab);s('c-instagram',d.contacto.instagram);s('c-web',d.contacto.web);s('c-zona',d.contacto.zona);}
-    if(d.imagenes){
-      const km={hero:'img-hero',personalizacion:'img-personalizacion',seating:'img-seating',maquinas:'img-maquinas',merch:'img-merch',queEs:'img-que-es',b2b1:'img-b2b-1',b2b2:'img-b2b-2',b2b3:'img-b2b-3'};
-      Object.entries(km).forEach(([k,imgKey])=>{
-        const val=d.imagenes[k];
-        if(!val)return;
-        const pr=document.getElementById('prev-'+imgKey);
-        const dt=document.getElementById('data-'+imgKey);
-        const ok=document.getElementById('ok-'+imgKey);
-        if(pr)pr.innerHTML='<img src="'+val+'">';
-        if(dt)dt.value=val;
-        if(ok)ok.classList.add('on');
-      });
-    }
     if(d.dilo?.textos){const t=d.dilo.textos;s('dt-tag',t.tag);s('dt-l1',t.l1);s('dt-l2',t.l2);s('dt-l3',t.l3);s('dt-sub',t.sub);s('dt-cta',t.cta);s('dt-qs1',t.qs1);s('dt-qs2',t.qs2);s('dt-s1',t.s1);s('dt-s2',t.s2);s('dt-s3',t.s3);s('dt-s4',t.s4);s('dt-s5',t.s5);s('dn-sol',t.navSol);s('dn-col',t.navCol);s('dn-d1',t.dd1);s('dn-d1d',t.dd1d);s('dn-d2',t.dd2);s('dn-d2d',t.dd2d);}
     if(d.dilo?.precios){const p=d.dilo.precios;s('p-mini',p.mini);s('p-intima',p.intima);s('p-clasica',p.clasica);s('p-premium',p.premium);s('sg-30',p.sg30);s('sg-50',p.sg50);s('sg-100',p.sg100);s('sg-150',p.sg150);s('sb-30',p.sb30);s('sb-50',p.sb50);s('sb-100',p.sb100);s('sb-150',p.sb150);s('sp-panel',p.spPanel);s('p-eg',p.eg);s('p-em',p.em);s('p-gg',p.gg);s('p-gm',p.gm);s('p-mb',p.mb);s('p-mc',p.mc);s('p-mp',p.mp);}
     if(d.dilo?.extras){const e=d.dilo.extras;s('e-hora',e.hora);s('e-dis',e.dis);s('e-nin',e.nin);s('e-mon',e.mon);s('e-vin',e.vin);s('e-km',e.km);}
