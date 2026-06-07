@@ -194,6 +194,31 @@
     .hero-left { padding:60px 24px; }
     section { padding:60px 0; }
   }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr !important; min-height: auto; }
+    .hero-left { padding: 48px 24px !important; }
+    .hero-right { display: none !important; }
+    .hero-title { font-size: 52px !important; }
+    .two-col { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .cards-grid { grid-template-columns: 1fr !important; }
+    .prod-grid { grid-template-columns: 1fr 1fr !important; }
+    .proceso-grid { grid-template-columns: 1fr 1fr !important; }
+    .sectores-grid { grid-template-columns: 1fr !important; }
+    .incluye-grid { grid-template-columns: 1fr !important; }
+    section { padding: 60px 0 !important; }
+    .container { padding: 0 20px !important; }
+    .main-nav { flex-wrap: wrap; height: auto; padding: 8px 12px; gap: 6px; }
+    .header-logo-bar img { height: 64px; }
+    .nav-cta-colab, .nav-cta-solicitar { font-size: 10px; padding: 6px 10px; }
+    .cta-btns { flex-direction: column; align-items: center; }
+    .btn-dark, .btn-wa { width: 100%; max-width: 320px; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .prod-grid { grid-template-columns: 1fr !important; }
+    .proceso-grid { grid-template-columns: 1fr !important; }
+    .hero-title { font-size: 42px !important; }
+  }
 </style>
 </head>
 <body>
