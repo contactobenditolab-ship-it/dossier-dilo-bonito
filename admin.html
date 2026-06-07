@@ -179,6 +179,47 @@
     .price-grid, .price-grid.cols3, .price-grid.cols4 { grid-template-columns:1fr; }
     .main { padding:24px 16px; }
   }
+
+  /* TEXT INPUTS */
+  .text-input {
+    width:100%; background:var(--surface2); border:1px solid var(--border);
+    color:var(--text); font-family:'Lato',sans-serif; font-size:14px;
+    padding:10px 12px; outline:none; margin-top:6px; transition:border-color 0.2s;
+  }
+  .text-input:focus { border-color:var(--accent); background:rgba(242,201,76,0.04); }
+
+  .text-area {
+    width:100%; background:var(--surface2); border:1px solid var(--border);
+    color:var(--text); font-family:'Lato',sans-serif; font-size:13px;
+    padding:10px 12px; outline:none; margin-top:6px; resize:vertical;
+    min-height:70px; line-height:1.6; transition:border-color 0.2s;
+  }
+  .text-area:focus { border-color:var(--accent); background:rgba(242,201,76,0.04); }
+
+  /* IMAGE CARDS */
+  .img-card { cursor:pointer; transition:all 0.2s; }
+  .img-card:hover { border-color:var(--accent) !important; }
+
+  .img-preview {
+    width:100%; aspect-ratio:4/3; background:var(--surface2);
+    border:1px dashed var(--border); display:flex; align-items:center;
+    justify-content:center; margin:8px 0; overflow:hidden; position:relative;
+  }
+
+  .img-preview img {
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+
+  .img-placeholder {
+    font-size:13px; color:var(--text-dim); text-align:center;
+    font-family:'Lato',sans-serif;
+  }
+
+  .img-hint {
+    font-size:10px; color:var(--text-dim); margin-top:4px;
+    font-family:'Lato',sans-serif; letter-spacing:0.5px;
+  }
+
 </style>
 </head>
 <body>
@@ -480,6 +521,181 @@
     </div>
   </div>
 
+
+  <!-- TEXTOS HERO -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">✏️</div>
+      <div>
+        <div class="section-title">Textos del Hero</div>
+        <div class="section-desc">Lo primero que ve el cliente al entrar</div>
+      </div>
+    </div>
+    <div style="display:grid; gap:12px;">
+      <div class="price-card" style="grid-column:1/-1">
+        <div class="price-card-label">Etiqueta superior (clientes)</div>
+        <input class="text-input" id="txt-hero-tag-cliente" value="Personalización en vivo para tu evento">
+      </div>
+      <div class="price-card" style="grid-column:1/-1">
+        <div class="price-card-label">Título hero — línea 1</div>
+        <input class="text-input" id="txt-hero-l1" value="HAZ QUE TU">
+      </div>
+      <div class="price-card" style="grid-column:1/-1">
+        <div class="price-card-label">Título hero — línea 2</div>
+        <input class="text-input" id="txt-hero-l2" value="EVENTO SEA">
+      </div>
+      <div class="price-card" style="grid-column:1/-1">
+        <div class="price-card-label">Título hero — línea 3 (acento de color)</div>
+        <input class="text-input" id="txt-hero-l3" value="INOLVIDABLE">
+      </div>
+      <div class="price-card" style="grid-column:1/-1">
+        <div class="price-card-label">Subtítulo hero (clientes)</div>
+        <textarea class="text-area" id="txt-hero-sub">Personalizamos artículos en directo para que cada invitado se lleve un recuerdo único. Bodas, cumpleaños, comuniones, eventos de empresa.</textarea>
+      </div>
+      <div class="price-card" style="grid-column:1/-1">
+        <div class="price-card-label">Texto botón CTA</div>
+        <input class="text-input" id="txt-hero-cta" value="Calcular mi presupuesto →">
+      </div>
+    </div>
+  </div>
+
+  <!-- TEXTOS SERVICIOS -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div>
+        <div class="section-title">Descripciones de servicios</div>
+        <div class="section-desc">Texto que aparece en cada tarjeta de servicio</div>
+      </div>
+    </div>
+    <div style="display:grid; gap:12px;">
+      <div class="price-card">
+        <div class="price-card-label">✍️ Personalización en directo</div>
+        <textarea class="text-area" id="txt-serv-1">Tu taller de personalización montado en el evento. Tote bags, gorras, neceseres y más.</textarea>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">🗺️ Seating Plan</div>
+        <textarea class="text-area" id="txt-serv-2">El cartel de mesas convertido en experiencia: gafas, vasitos, chapas o piezas de bambú con el nombre de cada invitado.</textarea>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">🎰 Máquina expendedora</div>
+        <textarea class="text-area" id="txt-serv-3">Cápsulas con productos personalizados. Gratuita o con moneda personalizada.</textarea>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">🪝 Máquina gancho</div>
+        <textarea class="text-area" id="txt-serv-4">Premios personalizados dentro de una máquina de gancho decorada a medida para tu evento.</textarea>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">🛍️ Merch Corner</div>
+        <textarea class="text-area" id="txt-serv-5">Espacio de merchandising personalizado montado y gestionado por nosotros en tu evento.</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATOS DE CONTACTO -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">📞</div>
+      <div>
+        <div class="section-title">Datos de contacto</div>
+        <div class="section-desc">Aparecen en formulario, footer y WhatsApp</div>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div class="price-card">
+        <div class="price-card-label">Teléfono</div>
+        <input class="text-input" id="txt-tel" value="647 444 308">
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Email general</div>
+        <input class="text-input" id="txt-email" value="contacto@benditolab.com">
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Email colaboradores</div>
+        <input class="text-input" id="txt-email-colab" value="colaboradores@benditolab.com">
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Instagram</div>
+        <input class="text-input" id="txt-instagram" value="@dilobonito">
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Web</div>
+        <input class="text-input" id="txt-web" value="www.benditolab.com">
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Zona de servicio</div>
+        <input class="text-input" id="txt-zona" value="Ciudad Real y provincia">
+      </div>
+    </div>
+  </div>
+
+  <!-- IMÁGENES -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">🖼️</div>
+      <div>
+        <div class="section-title">Imágenes</div>
+        <div class="section-desc">Sube las imágenes generadas con IA para cada sección</div>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+      <div class="price-card img-card" onclick="document.getElementById('img-hero').click()">
+        <div class="price-card-label">Hero principal</div>
+        <div class="img-preview" id="prev-hero">
+          <div class="img-placeholder">🖼 Subir imagen</div>
+        </div>
+        <input type="file" id="img-hero" accept="image/*" style="display:none" onchange="loadImg(this,'prev-hero','img-hero-data')">
+        <input type="hidden" id="img-hero-data">
+        <div class="img-hint">Click para cambiar · Recomendado: 1400×900px</div>
+      </div>
+      <div class="price-card img-card" onclick="document.getElementById('img-personalizacion').click()">
+        <div class="price-card-label">Personalización en directo</div>
+        <div class="img-preview" id="prev-personalizacion">
+          <div class="img-placeholder">🖼 Subir imagen</div>
+        </div>
+        <input type="file" id="img-personalizacion" accept="image/*" style="display:none" onchange="loadImg(this,'prev-personalizacion','img-personalizacion-data')">
+        <input type="hidden" id="img-personalizacion-data">
+        <div class="img-hint">Click para cambiar · 800×600px</div>
+      </div>
+      <div class="price-card img-card" onclick="document.getElementById('img-seating').click()">
+        <div class="price-card-label">Seating Plan</div>
+        <div class="img-preview" id="prev-seating">
+          <div class="img-placeholder">🖼 Subir imagen</div>
+        </div>
+        <input type="file" id="img-seating" accept="image/*" style="display:none" onchange="loadImg(this,'prev-seating','img-seating-data')">
+        <input type="hidden" id="img-seating-data">
+        <div class="img-hint">Click para cambiar · 800×600px</div>
+      </div>
+      <div class="price-card img-card" onclick="document.getElementById('img-maquinas').click()">
+        <div class="price-card-label">Máquinas</div>
+        <div class="img-preview" id="prev-maquinas">
+          <div class="img-placeholder">🖼 Subir imagen</div>
+        </div>
+        <input type="file" id="img-maquinas" accept="image/*" style="display:none" onchange="loadImg(this,'prev-maquinas','img-maquinas-data')">
+        <input type="hidden" id="img-maquinas-data">
+        <div class="img-hint">Click para cambiar · 800×600px</div>
+      </div>
+      <div class="price-card img-card" onclick="document.getElementById('img-merch').click()">
+        <div class="price-card-label">Merch Corner</div>
+        <div class="img-preview" id="prev-merch">
+          <div class="img-placeholder">🖼 Subir imagen</div>
+        </div>
+        <input type="file" id="img-merch" accept="image/*" style="display:none" onchange="loadImg(this,'prev-merch','img-merch-data')">
+        <input type="hidden" id="img-merch-data">
+        <div class="img-hint">Click para cambiar · 800×600px</div>
+      </div>
+      <div class="price-card img-card" onclick="document.getElementById('img-b2b').click()">
+        <div class="price-card-label">B2B Productos</div>
+        <div class="img-preview" id="prev-b2b">
+          <div class="img-placeholder">🖼 Subir imagen</div>
+        </div>
+        <input type="file" id="img-b2b" accept="image/*" style="display:none" onchange="loadImg(this,'prev-b2b','img-b2b-data')">
+        <input type="hidden" id="img-b2b-data">
+        <div class="img-hint">Click para cambiar · 800×600px</div>
+      </div>
+    </div>
+  </div>
+
   <div class="admin-footer">
     Dilo Bonito · Bendito Lab · Panel de administración interno
   </div>
@@ -645,6 +861,115 @@ function saveAll() {
     document.getElementById('save-btn').innerHTML = '💾 Guardar y publicar cambios';
   }, 3000);
 }
+
+
+  // ── GET ALL CONTENT ──
+  function getAllContent() {
+    return {
+      ...getPrices(),
+      textos: {
+        heroTagCliente: v2('txt-hero-tag-cliente'),
+        heroL1: v2('txt-hero-l1'),
+        heroL2: v2('txt-hero-l2'),
+        heroL3: v2('txt-hero-l3'),
+        heroSub: v2('txt-hero-sub'),
+        heroCta: v2('txt-hero-cta'),
+        serv1: v2('txt-serv-1'),
+        serv2: v2('txt-serv-2'),
+        serv3: v2('txt-serv-3'),
+        serv4: v2('txt-serv-4'),
+        serv5: v2('txt-serv-5'),
+      },
+      contacto: {
+        tel:        v2('txt-tel'),
+        email:      v2('txt-email'),
+        emailColab: v2('txt-email-colab'),
+        instagram:  v2('txt-instagram'),
+        web:        v2('txt-web'),
+        zona:       v2('txt-zona'),
+      },
+      imagenes: {
+        hero:            v2('img-hero-data'),
+        personalizacion: v2('img-personalizacion-data'),
+        seating:         v2('img-seating-data'),
+        maquinas:        v2('img-maquinas-data'),
+        merch:           v2('img-merch-data'),
+        b2b:             v2('img-b2b-data'),
+      }
+    };
+  }
+
+  function v2(id) {
+    const el = document.getElementById(id);
+    if (!el) return '';
+    return el.tagName === 'TEXTAREA' ? el.value : el.value;
+  }
+
+  // ── LOAD IMAGE ──
+  function loadImg(input, previewId, dataId) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const src = e.target.result;
+      const preview = document.getElementById(previewId);
+      preview.innerHTML = '<img src="' + src + '">';
+      document.getElementById(dataId).value = src;
+      markDirty();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── APPLY LOADED CONTENT ──
+  function applyContent(data) {
+    applyPrices(data);
+
+    // Textos
+    if (data.textos) {
+      Object.entries(data.textos).forEach(([k,v]) => {
+        const el = document.getElementById('txt-' + k.replace(/([A-Z])/g, m => '-' + m.toLowerCase()));
+        if (!el) {
+          // Try direct mapping
+          const map = {
+            heroTagCliente: 'txt-hero-tag-cliente',
+            heroL1: 'txt-hero-l1', heroL2: 'txt-hero-l2', heroL3: 'txt-hero-l3',
+            heroSub: 'txt-hero-sub', heroCta: 'txt-hero-cta',
+            serv1:'txt-serv-1',serv2:'txt-serv-2',serv3:'txt-serv-3',
+            serv4:'txt-serv-4',serv5:'txt-serv-5',
+          };
+          const el2 = document.getElementById(map[k]);
+          if (el2) el2.value = v;
+        } else { el.value = v; }
+      });
+    }
+
+    // Contacto
+    if (data.contacto) {
+      const cmap = { tel:'txt-tel', email:'txt-email', emailColab:'txt-email-colab', instagram:'txt-instagram', web:'txt-web', zona:'txt-zona' };
+      Object.entries(cmap).forEach(([k,id]) => {
+        const el = document.getElementById(id);
+        if (el && data.contacto[k]) el.value = data.contacto[k];
+      });
+    }
+
+    // Imágenes
+    if (data.imagenes) {
+      const imap = {
+        hero:'prev-hero', personalizacion:'prev-personalizacion',
+        seating:'prev-seating', maquinas:'prev-maquinas',
+        merch:'prev-merch', b2b:'prev-b2b'
+      };
+      Object.entries(imap).forEach(([k, previewId]) => {
+        if (data.imagenes[k]) {
+          const preview = document.getElementById(previewId);
+          if (preview) preview.innerHTML = '<img src="' + data.imagenes[k] + '">';
+          const dataEl = document.getElementById('img-' + k + '-data');
+          if (dataEl) dataEl.value = data.imagenes[k];
+        }
+      });
+    }
+  }
+
 
 // Warn before leaving with unsaved changes
 window.addEventListener('beforeunload', e => {
