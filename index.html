@@ -3240,99 +3240,158 @@ document.addEventListener('DOMContentLoaded', loadFromStorage);
 
 
 <script>
-// ── CARGAR PRECIOS DESDE ADMIN ──
-(function loadAdminPrices() {
+// ── CARGAR CONTENIDO DESDE ADMIN ──
+(function loadAdminContent() {
   try {
     const saved = localStorage.getItem('dilo-precios');
     if (!saved) return;
     const p = JSON.parse(saved);
 
-    // Update pack buttons in cotizador
-    const packMap = {
-      299: p.packs?.mini?.precio,
-      499: p.packs?.intima?.precio,
-      650: p.packs?.clasica?.precio,
-      799: p.packs?.premium?.precio,
-    };
-
-    // Update pack cards display
-    const packCards = document.querySelectorAll('.pack-card');
-    const packKeys = ['mini','intima','clasica','premium'];
-    packCards.forEach((card, i) => {
-      const key = packKeys[i];
-      if (p.packs?.[key]) {
-        const precio = p.packs[key].precio;
-        const precioEl = card.querySelector('.pack-precio');
-        if (precioEl) precioEl.innerHTML = '<span class="pack-precio-eur">€</span>' + precio;
-      }
-    });
-
-    // Update cotizador select buttons
-    document.querySelectorAll('#step-pack .sel-btn').forEach((btn, i) => {
-      const keys = ['mini','intima','clasica','premium'];
-      const precio = p.packs?.[keys[i]]?.precio;
-      if (precio) {
-        btn.setAttribute('data-price', precio);
-        btn.setAttribute('onclick', `selectPack(this, ${precio})`);
-        const priceEl = btn.querySelector('.sel-btn-price');
-        if (priceEl) priceEl.textContent = precio + '€';
-      }
-    });
-
-    // Update extras
-    if (p.extras) {
-      // Update state defaults
-      window.PRECIO_HORA_EXTRA    = p.extras.horaExtra      || 150;
-      window.PRECIO_DISENO        = p.extras.diseno          || 80;
-      window.PRECIO_NINO          = p.extras.regaloInfantil  || 8;
-      window.PRECIO_MONEDA        = p.extras.moneda          || 2;
-      window.PRECIO_VINILADO      = p.extras.vinilado        || 100;
-      window.PRECIO_KM            = p.extras.km              || 0.40;
+    // ── TEXTOS HERO ──
+    if (p.textos) {
+      const t = p.textos;
+      // Hero tag
+      document.querySelectorAll('.hero-tag.client-only').forEach(el => {
+        if (t.heroTagCliente) el.textContent = t.heroTagCliente;
+      });
+      // Hero title
+      document.querySelectorAll('.hero-title.client-only').forEach(el => {
+        if (t.heroL1 && t.heroL2 && t.heroL3) {
+          el.innerHTML = t.heroL1 + '<br>' + t.heroL2 + '<br><span class="accent">' + t.heroL3 + '</span>';
+        }
+      });
+      // Hero subtitle
+      document.querySelectorAll('.hero-subtitle.client-only').forEach(el => {
+        if (t.heroSub) el.textContent = t.heroSub;
+      });
+      // Hero CTA
+      document.querySelectorAll('.hero-cta').forEach(el => {
+        if (t.heroCta) el.textContent = t.heroCta;
+      });
+      // Service cards descriptions
+      const servDescs = document.querySelectorAll('.servicio-desc');
+      const servTexts = [t.serv1, t.serv2, t.serv3, t.serv4, t.serv5];
+      servDescs.forEach((el, i) => { if (servTexts[i]) el.textContent = servTexts[i]; });
     }
 
-    // Update extra prices shown in UI
-    const extraRows = document.querySelectorAll('.extra-row');
-    if (extraRows.length >= 6) {
-      const extraPrices = [
-        (p.extras?.horaExtra || 150) + '€/hora',
-        (p.extras?.diseno || 80) + '€',
-        (p.extras?.regaloInfantil || 8) + '€/niño',
-        (p.extras?.moneda || 2) + '€/ud · mín. 30',
-        (p.extras?.vinilado || 100) + '€',
-      ];
-      extraRows.forEach((row, i) => {
-        if (extraPrices[i]) {
-          const el = row.querySelector('.extra-price');
-          if (el) el.textContent = extraPrices[i];
+    // ── CONTACTO ──
+    if (p.contacto) {
+      const c = p.contacto;
+      // Replace all phone/email occurrences
+      if (c.tel) {
+        document.querySelectorAll('.info-item-value').forEach(el => {
+          if (el.textContent.includes('647')) el.textContent = c.tel;
+        });
+        document.querySelectorAll('a[href^="tel:"]').forEach(el => {
+          el.href = 'tel:' + c.tel.replace(/\s/g,'');
+          el.textContent = c.tel;
+        });
+        // WhatsApp link
+        const waNum = c.tel.replace(/\s/g,'');
+        document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
+          el.href = el.href.replace(/wa\.me\/\d+/, 'wa.me/34' + waNum);
+        });
+      }
+      if (c.email) {
+        document.querySelectorAll('a[href^="mailto:contacto"]').forEach(el => {
+          el.href = 'mailto:' + c.email;
+          el.textContent = c.email;
+        });
+        document.querySelectorAll('.info-item-value').forEach(el => {
+          if (el.textContent.includes('contacto@')) el.textContent = c.email;
+        });
+      }
+      if (c.instagram) {
+        document.querySelectorAll('.info-item-value').forEach(el => {
+          if (el.textContent.includes('@dilo')) el.textContent = c.instagram;
+        });
+      }
+      if (c.zona) {
+        document.querySelectorAll('.info-item-value').forEach(el => {
+          if (el.textContent.includes('Ciudad Real')) el.textContent = c.zona;
+        });
+      }
+    }
+
+    // ── IMÁGENES ──
+    if (p.imagenes) {
+      const imgMap = {
+        hero:            '.hero-img-placeholder',
+        personalizacion: '#page-personalizacion .detalle-img',
+        seating:         '#page-seating .detalle-img',
+        maquinas:        '#page-maquinas .detalle-img',
+        merch:           '#page-merch .detalle-img',
+      };
+      // Hero image
+      if (p.imagenes.hero) {
+        const heroRight = document.querySelector('.hero-right');
+        if (heroRight) {
+          heroRight.innerHTML = '<img src="' + p.imagenes.hero + '" style="width:100%;height:100%;object-fit:cover;">';
+        }
+      }
+      // Service images — find detalle-img placeholders in order
+      const detalleImgs = document.querySelectorAll('.detalle-img');
+      const imgKeys = ['personalizacion','seating','maquinas','merch'];
+      detalleImgs.forEach((el, i) => {
+        const key = imgKeys[i];
+        if (key && p.imagenes[key]) {
+          el.innerHTML = '<img src="' + p.imagenes[key] + '" style="width:100%;height:100%;object-fit:cover;">';
         }
       });
     }
 
-    // Update "desde X€" in service cards
-    const servicioCards = document.querySelectorAll('.servicio-card');
-    if (servicioCards.length >= 1 && p.packs?.mini?.precio) {
-      const desdeEl = servicioCards[0]?.querySelector('.servicio-price');
-      if (desdeEl) desdeEl.textContent = 'Desde ' + p.packs.mini.precio + '€';
+    // ── PRECIOS PACKS ──
+    if (p.packs) {
+      const packCards = document.querySelectorAll('.pack-card');
+      const packKeys = ['mini','intima','clasica','premium'];
+      packCards.forEach((card, i) => {
+        const key = packKeys[i];
+        if (p.packs?.[key]) {
+          const precio = p.packs[key].precio;
+          const precioEl = card.querySelector('.pack-precio');
+          if (precioEl) precioEl.innerHTML = '<span class="pack-precio-eur">€</span>' + precio;
+        }
+      });
+      // Update cotizador buttons
+      document.querySelectorAll('#step-pack .sel-btn').forEach((btn, i) => {
+        const precio = p.packs?.[packKeys[i]]?.precio;
+        if (precio) {
+          btn.setAttribute('data-price', precio);
+          btn.setAttribute('onclick', 'selectPack(this, ' + precio + ')');
+          const priceEl = btn.querySelector('.sel-btn-price');
+          if (priceEl) priceEl.textContent = precio + '€';
+        }
+      });
     }
 
-    // Update seating desde prices
+    // ── EXTRAS ──
+    if (p.extras) {
+      window.PRECIO_HORA_EXTRA   = p.extras.horaExtra     || 150;
+      window.PRECIO_DISENO       = p.extras.diseno         || 80;
+      window.PRECIO_NINO         = p.extras.regaloInfantil || 8;
+      window.PRECIO_MONEDA       = p.extras.moneda         || 2;
+      window.PRECIO_VINILADO     = p.extras.vinilado       || 100;
+      window.PRECIO_KM           = p.extras.km             || 0.40;
+    }
+
+    // ── SEATING ──
     if (p.seating) {
       window.SEATING_PRICES = {
-        gafas:  { 30: p.seating.gafas?.inv30, 50: p.seating.gafas?.inv50, 100: p.seating.gafas?.inv100, 150: p.seating.gafas?.inv150 },
+        gafas:  { 30: p.seating.gafas?.inv30,  50: p.seating.gafas?.inv50,  100: p.seating.gafas?.inv100,  150: p.seating.gafas?.inv150 },
         basico: { 30: p.seating.basico?.inv30, 50: p.seating.basico?.inv50, 100: p.seating.basico?.inv100, 150: p.seating.basico?.inv150 },
       };
     }
 
-    // Update comisiones
+    // ── COMISIONES ──
     if (p.comisiones) {
       window.COMISION_HASTA50  = p.comisiones.hasta50  / 100;
       window.COMISION_HASTA100 = p.comisiones.hasta100 / 100;
       window.COMISION_HASTA150 = p.comisiones.hasta150 / 100;
     }
 
-    console.log('✅ Precios cargados desde panel admin');
+    console.log('✅ Contenido cargado desde panel admin');
   } catch(e) {
-    console.log('Usando precios por defecto');
+    console.log('Usando contenido por defecto');
   }
 })();
 </script>
