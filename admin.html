@@ -3,981 +3,570 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Dilo Bonito</title>
+<title>Admin — Bendito Lab</title>
 <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800;900&family=Lato:wght@300;400;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0F1117; --surface: #1A1D27; --surface2: #22263A;
-    --border: #2A2F45; --accent: #F2C94C; --green: #4CAF7D;
-    --red: #E85555; --blue: #A8C8E8; --text: #E8EAF0;
-    --text-mid: #8892AA; --text-dim: #4A5068;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
-
-  /* LOGIN */
-  #login-screen {
-    position:fixed; inset:0; background:var(--bg);
-    display:flex; align-items:center; justify-content:center;
-    z-index:999; flex-direction:column; gap:24px;
-  }
-  .login-box {
-    background:var(--surface); border:1px solid var(--border);
-    padding:48px; width:360px; text-align:center;
-  }
-  .login-title {
-    font-family:'League Spartan',sans-serif; font-weight:900;
-    font-size:28px; color:var(--accent); margin-bottom:8px;
-  }
-  .login-sub { font-size:13px; color:var(--text-mid); margin-bottom:32px; }
-  .login-input {
-    width:100%; background:var(--surface2); border:1px solid var(--border);
-    color:var(--text); padding:14px 16px; font-family:'DM Mono',monospace;
-    font-size:16px; letter-spacing:4px; text-align:center;
-    outline:none; margin-bottom:16px; transition:border-color 0.2s;
-  }
-  .login-input:focus { border-color:var(--accent); }
-  .login-btn {
-    width:100%; background:var(--accent); color:#1A1D27;
-    font-family:'League Spartan',sans-serif; font-weight:800;
-    font-size:16px; letter-spacing:1px; padding:14px;
-    border:none; cursor:pointer; transition:opacity 0.2s;
-  }
-  .login-btn:hover { opacity:0.85; }
-  .login-error { color:var(--red); font-size:13px; margin-top:8px; display:none; }
-
-  /* TOPBAR */
-  .topbar {
-    background:var(--surface); border-bottom:1px solid var(--border);
-    padding:0 32px; height:56px;
-    display:flex; align-items:center; justify-content:space-between;
-    position:sticky; top:0; z-index:10;
-  }
-  .topbar-left { display:flex; align-items:center; gap:12px; }
-  .topbar-logo { font-family:'League Spartan',sans-serif; font-weight:900; font-size:18px; color:var(--accent); }
-  .topbar-badge { background:var(--red); color:white; font-size:9px; font-weight:700; letter-spacing:2px; padding:3px 8px; text-transform:uppercase; }
-  .save-btn {
-    background:var(--green); color:white;
-    font-family:'League Spartan',sans-serif; font-weight:800;
-    font-size:14px; letter-spacing:1px; padding:10px 24px;
-    border:none; cursor:pointer; transition:opacity 0.2s; display:flex; align-items:center; gap:8px;
-  }
-  .save-btn:hover { opacity:0.85; }
-  .save-btn:disabled { opacity:0.4; cursor:not-allowed; }
-
-  /* MAIN */
-  .main { max-width:960px; margin:0 auto; padding:48px 32px; }
-
-  .saved-banner {
-    background:rgba(76,175,125,0.15); border:1px solid var(--green);
-    color:var(--green); padding:14px 20px; margin-bottom:32px;
-    font-size:13px; font-weight:700; letter-spacing:1px;
-    display:none; align-items:center; gap:10px;
-  }
-
-  /* SECTIONS */
-  .admin-section { margin-bottom:48px; }
-  .section-header {
-    display:flex; align-items:center; gap:12px;
-    margin-bottom:20px; padding-bottom:16px;
-    border-bottom:1px solid var(--border);
-  }
-  .section-icon { font-size:24px; }
-  .section-title {
-    font-family:'League Spartan',sans-serif; font-weight:800;
-    font-size:20px; color:var(--text);
-  }
-  .section-desc { font-size:12px; color:var(--text-dim); margin-top:2px; }
-
-  /* GRID */
-  .price-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-  .price-grid.cols3 { grid-template-columns:repeat(3,1fr); }
-  .price-grid.cols4 { grid-template-columns:repeat(4,1fr); }
-
-  .price-card {
-    background:var(--surface); border:1px solid var(--border);
-    padding:20px 20px 16px; transition:border-color 0.2s;
-  }
-  .price-card:hover { border-color:var(--accent); }
-
-  .price-card-label {
-    font-family:'Lato',sans-serif; font-weight:700;
-    font-size:11px; letter-spacing:2px; text-transform:uppercase;
-    color:var(--text-dim); margin-bottom:8px;
-  }
-  .price-card-name {
-    font-family:'League Spartan',sans-serif; font-weight:800;
-    font-size:16px; color:var(--text); margin-bottom:12px;
-  }
-  .price-card-sub { font-size:11px; color:var(--text-dim); margin-bottom:12px; }
-
-  .price-input-wrap {
-    display:flex; align-items:center; gap:8px;
-  }
-  .price-input {
-    flex:1; background:var(--surface2); border:1px solid var(--border);
-    color:var(--accent); font-family:'DM Mono',monospace;
-    font-size:22px; font-weight:500; padding:10px 12px;
-    outline:none; transition:border-color 0.2s; text-align:right;
-    width:100%;
-  }
-  .price-input:focus { border-color:var(--accent); background:rgba(242,201,76,0.05); }
-  .price-unit { font-size:14px; color:var(--text-mid); flex-shrink:0; }
-
-  /* EXTRAS table */
-  .extras-table { width:100%; border-collapse:collapse; }
-  .extras-table th {
-    font-family:'Lato',sans-serif; font-weight:700; font-size:10px;
-    letter-spacing:2px; text-transform:uppercase; color:var(--text-dim);
-    text-align:left; padding:10px 16px; border-bottom:1px solid var(--border);
-    background:var(--surface);
-  }
-  .extras-table td {
-    padding:12px 16px; border-bottom:1px solid rgba(42,47,69,0.5);
-  }
-  .extras-table tr:hover td { background:rgba(255,255,255,0.02); }
-  .extra-name { font-size:13px; color:var(--text); font-weight:700; }
-  .extra-desc { font-size:11px; color:var(--text-dim); margin-top:2px; }
-  .extra-input {
-    background:transparent; border:none; border-bottom:1px solid var(--border);
-    color:var(--accent); font-family:'DM Mono',monospace;
-    font-size:16px; width:90px; padding:4px 8px; text-align:right;
-    outline:none; transition:border-color 0.2s;
-  }
-  .extra-input:focus { border-bottom-color:var(--accent); }
-
-  /* SEATING TABLE */
-  .seating-table { width:100%; border-collapse:collapse; }
-  .seating-table th {
-    font-size:10px; font-family:'Lato'; font-weight:700;
-    letter-spacing:2px; text-transform:uppercase; color:var(--text-dim);
-    padding:10px 16px; border-bottom:1px solid var(--border);
-    background:var(--surface); text-align:right;
-  }
-  .seating-table th:first-child { text-align:left; }
-  .seating-table td {
-    padding:12px 16px; border-bottom:1px solid rgba(42,47,69,0.5);
-    text-align:right;
-  }
-  .seating-table td:first-child { text-align:left; font-weight:700; font-size:13px; }
-  .seating-table tr:hover td { background:rgba(255,255,255,0.02); }
-  .seating-input {
-    background:transparent; border:none; border-bottom:1px solid var(--border);
-    color:var(--accent); font-family:'DM Mono',monospace;
-    font-size:15px; width:80px; padding:4px 6px; text-align:right; outline:none;
-    transition:border-color 0.2s;
-  }
-  .seating-input:focus { border-bottom-color:var(--accent); }
-
-  /* FOOTER */
-  .admin-footer {
-    text-align:center; padding:32px; color:var(--text-dim);
-    font-size:12px; border-top:1px solid var(--border); margin-top:48px;
-  }
-
-  @media(max-width:700px) {
-    .price-grid, .price-grid.cols3, .price-grid.cols4 { grid-template-columns:1fr; }
-    .main { padding:24px 16px; }
-  }
-
-  /* TEXT INPUTS */
-  .text-input {
-    width:100%; background:var(--surface2); border:1px solid var(--border);
-    color:var(--text); font-family:'Lato',sans-serif; font-size:14px;
-    padding:10px 12px; outline:none; margin-top:6px; transition:border-color 0.2s;
-  }
-  .text-input:focus { border-color:var(--accent); background:rgba(242,201,76,0.04); }
-
-  .text-area {
-    width:100%; background:var(--surface2); border:1px solid var(--border);
-    color:var(--text); font-family:'Lato',sans-serif; font-size:13px;
-    padding:10px 12px; outline:none; margin-top:6px; resize:vertical;
-    min-height:70px; line-height:1.6; transition:border-color 0.2s;
-  }
-  .text-area:focus { border-color:var(--accent); background:rgba(242,201,76,0.04); }
-
-  /* IMAGE CARDS */
-  .img-card { cursor:pointer; transition:all 0.2s; }
-  .img-card:hover { border-color:var(--accent) !important; }
-
-  .img-preview {
-    width:100%; aspect-ratio:4/3; background:var(--surface2);
-    border:1px dashed var(--border); display:flex; align-items:center;
-    justify-content:center; margin:8px 0; overflow:hidden; position:relative;
-  }
-
-  .img-preview img {
-    width:100%; height:100%; object-fit:cover; display:block;
-  }
-
-  .img-placeholder {
-    font-size:13px; color:var(--text-dim); text-align:center;
-    font-family:'Lato',sans-serif;
-  }
-
-  .img-hint {
-    font-size:10px; color:var(--text-dim); margin-top:4px;
-    font-family:'Lato',sans-serif; letter-spacing:0.5px;
-  }
-
+:root{--bg:#0F1117;--surface:#1A1D27;--surface2:#22263A;--border:#2A2F45;--accent:#F2C94C;--green:#4CAF7D;--red:#E85555;--blue:#A8C8E8;--text:#E8EAF0;--mid:#8892AA;--dim:#4A5068;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+#login{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;}
+.login-box{background:var(--surface);border:1px solid var(--border);padding:48px;width:360px;text-align:center;}
+.login-title{font-family:'League Spartan',sans-serif;font-weight:900;font-size:26px;color:var(--accent);margin-bottom:6px;}
+.login-sub{font-size:12px;color:var(--mid);margin-bottom:32px;}
+.login-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:14px;font-family:'DM Mono',monospace;font-size:18px;letter-spacing:6px;text-align:center;outline:none;margin-bottom:12px;}
+.login-input:focus{border-color:var(--accent);}
+.login-btn{width:100%;background:var(--accent);color:#1a1d27;font-family:'League Spartan',sans-serif;font-weight:800;font-size:15px;letter-spacing:1px;padding:14px;border:none;cursor:pointer;}
+.login-btn:hover{opacity:.85;}
+.login-err{color:var(--red);font-size:12px;margin-top:8px;display:none;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-family:'League Spartan',sans-serif;font-weight:900;font-size:17px;color:var(--accent);}
+.topbar-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 8px;text-transform:uppercase;margin-left:10px;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.save-btn{background:var(--green);color:#fff;font-family:'League Spartan',sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;padding:9px 20px;border:none;cursor:pointer;}
+.save-btn:hover{opacity:.85;}
+.prev-btn{background:transparent;border:1px solid var(--border);color:var(--mid);font-size:11px;font-weight:700;letter-spacing:1px;padding:9px 14px;cursor:pointer;text-decoration:none;font-family:'Lato';}
+.prev-btn:hover{border-color:var(--accent);color:var(--accent);}
+.dirty{color:var(--accent);font-size:11px;font-weight:700;display:none;margin-right:8px;}
+.app{display:flex;flex:1;}
+.sidebar{width:210px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;overflow-y:auto;flex-shrink:0;}
+.sb-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);padding:8px 16px 4px;font-weight:700;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;border-left:3px solid transparent;transition:all .15s;color:var(--mid);font-size:13px;}
+.sb-item:hover{background:var(--surface2);color:var(--text);}
+.sb-item.active{background:rgba(242,201,76,.08);border-left-color:var(--accent);color:var(--accent);font-weight:700;}
+.sb-div{border:none;border-top:1px solid var(--border);margin:8px 0;}
+.main{flex:1;overflow-y:auto;padding:32px;}
+.panel{display:none;}.panel.active{display:block;}
+.saved-ok{background:rgba(76,175,125,.15);border:1px solid var(--green);color:var(--green);padding:12px 16px;margin-bottom:24px;font-size:13px;font-weight:700;display:none;}
+.s-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.s-icon{font-size:22px;}.s-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:18px;}.s-desc{font-size:12px;color:var(--dim);margin-top:2px;}
+.field{margin-bottom:14px;}
+.lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:5px;display:block;font-weight:700;}
+.inp{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Lato',sans-serif;font-size:14px;padding:10px 12px;outline:none;}
+.inp:focus{border-color:var(--accent);}
+.ta{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Lato',sans-serif;font-size:13px;padding:10px 12px;outline:none;resize:vertical;min-height:65px;line-height:1.6;}
+.ta:focus{border-color:var(--accent);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.row4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.section-gap{margin-top:32px;}
+.pc{background:var(--surface);border:1px solid var(--border);padding:18px 16px;}
+.pc:hover{border-color:var(--accent);}
+.pc-name{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:4px;font-weight:700;}
+.pc-sub{font-size:11px;color:var(--dim);margin-bottom:10px;}
+.pc-wrap{display:flex;align-items:center;gap:8px;}
+.pc-inp{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--accent);font-family:'DM Mono',monospace;font-size:20px;padding:8px 10px;text-align:right;outline:none;}
+.pc-inp:focus{border-color:var(--accent);}
+.pc-unit{font-size:13px;color:var(--mid);}
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.img-card{background:var(--surface);border:1px solid var(--border);padding:14px;cursor:pointer;}
+.img-card:hover{border-color:var(--accent);}
+.img-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:flex;justify-content:space-between;font-weight:700;}
+.img-ok{background:var(--green);color:#fff;font-size:9px;padding:2px 6px;display:none;}
+.img-ok.on{display:inline;}
+.img-prev{width:100%;aspect-ratio:16/9;background:var(--surface2);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;}
+.img-prev img{width:100%;height:100%;object-fit:cover;}
+.img-ph{font-size:11px;color:var(--dim);text-align:center;}
+.img-btn{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--mid);font-size:11px;font-weight:700;letter-spacing:1px;padding:8px;cursor:pointer;text-transform:uppercase;font-family:'Lato';}
+.img-btn:hover{border-color:var(--accent);color:var(--accent);}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:16px;}
+.tbl th{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface);font-weight:700;}
+.tbl td{padding:11px 12px;border-bottom:1px solid rgba(42,47,69,.4);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(255,255,255,.02);}
+.td-n{font-size:13px;color:var(--text);font-weight:700;}
+.td-d{font-size:11px;color:var(--dim);}
+.ti{background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--accent);font-family:'DM Mono',monospace;font-size:15px;width:85px;padding:4px 6px;text-align:right;outline:none;}
+.ti:focus{border-bottom-color:var(--accent);}
+.ti-wide{width:180px;text-align:left;}
+.stag{display:inline-block;background:rgba(168,200,232,.12);color:var(--blue);font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 8px;text-transform:uppercase;margin-bottom:14px;}
+.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.tab{padding:10px 18px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mid);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-c{display:none;}.tab-c.active{display:block;}
+.admin-foot{text-align:center;padding:20px;color:var(--dim);font-size:11px;border-top:1px solid var(--border);}
+@media(max-width:768px){.sidebar{display:none;}.row2,.row3,.row4,.img-grid{grid-template-columns:1fr;}.main{padding:16px;}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen">
+<div id="login">
   <div class="login-box">
-    <div class="login-title">DILO BONITO</div>
-    <div class="login-sub">Panel de administración · Solo uso interno</div>
-    <input type="password" class="login-input" id="pwd-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkLogin()">
+    <div class="login-title">BENDITO LAB</div>
+    <div class="login-sub">Panel de administración · Acceso restringido</div>
+    <input type="password" class="login-input" id="pwd" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkLogin()">
     <button class="login-btn" onclick="checkLogin()">ENTRAR →</button>
-    <div class="login-error" id="login-error">Contraseña incorrecta</div>
+    <div class="login-err" id="login-err">Contraseña incorrecta</div>
   </div>
 </div>
 
-<!-- TOPBAR -->
 <div class="topbar">
-  <div class="topbar-left">
+  <div style="display:flex;align-items:center">
     <div class="topbar-logo">ADMIN</div>
-    <div class="topbar-badge">⚠ Interno</div>
+    <div class="topbar-badge">INTERNO</div>
+    <span class="dirty" id="dirty-ind">● Sin guardar</span>
   </div>
-  <button class="save-btn" id="save-btn" onclick="saveAll()">
-    💾 Guardar y publicar cambios
-  </button>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-  <!-- Banner guardado -->
-  <div class="saved-banner" id="saved-banner">
-    ✓ Precios guardados — el dossier ya muestra los nuevos precios
-  </div>
-
-  <!-- PACKS PERSONALIZACIÓN EN DIRECTO -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">✍️</div>
-      <div>
-        <div class="section-title">Personalización en directo</div>
-        <div class="section-desc">Precios base de los 4 packs</div>
-      </div>
-    </div>
-    <div class="price-grid cols4">
-      <div class="price-card">
-        <div class="price-card-label">Pack</div>
-        <div class="price-card-name">MINI</div>
-        <div class="price-card-sub">Hasta 30 inv · 2h</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="pack-mini" value="299" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Pack</div>
-        <div class="price-card-name">ÍNTIMA</div>
-        <div class="price-card-sub">Hasta 50 inv · 3h</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="pack-intima" value="499" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Pack</div>
-        <div class="price-card-name">CLÁSICA</div>
-        <div class="price-card-sub">Hasta 100 inv · 4h</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="pack-clasica" value="650" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Pack</div>
-        <div class="price-card-name">PREMIUM</div>
-        <div class="price-card-sub">Hasta 150 inv · 5h</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="pack-premium" value="799" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SEATING PLAN -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">🗺️</div>
-      <div>
-        <div class="section-title">Seating Plan personalizado</div>
-        <div class="section-desc">Precios según producto y número de invitados</div>
-      </div>
-    </div>
-    <table class="seating-table">
-      <thead>
-        <tr>
-          <th>Modalidad</th>
-          <th>Hasta 30</th>
-          <th>Hasta 50</th>
-          <th>Hasta 100</th>
-          <th>Hasta 150</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>🕶️ Gafas de sol</td>
-          <td><input class="seating-input" id="sg-30" value="399" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
-          <td><input class="seating-input" id="sg-50" value="520" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
-          <td><input class="seating-input" id="sg-100" value="820" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
-          <td><input class="seating-input" id="sg-150" value="1120" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
-        </tr>
-        <tr>
-          <td>🥃 Vasitos / Chapas / Bambú</td>
-          <td><input class="seating-input" id="sb-30" value="350" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
-          <td><input class="seating-input" id="sb-50" value="450" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
-          <td><input class="seating-input" id="sb-100" value="699" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
-          <td><input class="seating-input" id="sb-150" value="930" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
-        </tr>
-        <tr>
-          <td>🪵 Solo panel + diseño</td>
-          <td colspan="4" style="text-align:left">
-            <input class="seating-input" id="sp-panel" value="200" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€ precio fijo</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- MÁQUINAS -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">🎰🪝</div>
-      <div>
-        <div class="section-title">Máquinas</div>
-        <div class="section-desc">Expendedora y gancho</div>
-      </div>
-    </div>
-    <div class="price-grid cols4">
-      <div class="price-card">
-        <div class="price-card-label">Expendedora</div>
-        <div class="price-card-name">Gratuita</div>
-        <div class="price-card-sub">Sin moneda</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="exp-gratis" value="499" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Expendedora</div>
-        <div class="price-card-name">Con moneda</div>
-        <div class="price-card-sub">Moneda personalizada</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="exp-moneda" value="399" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Gancho</div>
-        <div class="price-card-name">Gratuita</div>
-        <div class="price-card-sub">Partidas libres</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="gancho-gratis" value="499" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Gancho</div>
-        <div class="price-card-name">Con moneda</div>
-        <div class="price-card-sub">Moneda personalizada</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="gancho-moneda" value="399" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MERCH CORNER -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">🛍️</div>
-      <div>
-        <div class="section-title">Merch Corner</div>
-        <div class="section-desc">Tres modalidades</div>
-      </div>
-    </div>
-    <div class="price-grid cols3">
-      <div class="price-card">
-        <div class="price-card-label">Modalidad</div>
-        <div class="price-card-name">Básico</div>
-        <div class="price-card-sub">Stand + 1 producto 30ud</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="merch-basico" value="350" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Modalidad</div>
-        <div class="price-card-name">Completo</div>
-        <div class="price-card-sub">Stand + 3 productos 50ud</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="merch-completo" value="580" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Modalidad</div>
-        <div class="price-card-name">Premium</div>
-        <div class="price-card-sub">Con azafata incluida</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="merch-premium" value="799" oninput="markDirty()">
-          <span class="price-unit">€</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- EXTRAS -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">➕</div>
-      <div>
-        <div class="section-title">Extras y complementos</div>
-        <div class="section-desc">Aplican a cualquier servicio</div>
-      </div>
-    </div>
-    <table class="extras-table">
-      <thead>
-        <tr><th>Concepto</th><th>Descripción</th><th style="text-align:right">Precio</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><div class="extra-name">Hora extra de servicio</div></td>
-          <td><div class="extra-desc">Hora adicional de personalización</div></td>
-          <td style="text-align:right"><input class="extra-input" id="extra-hora" value="150" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €/h</span></td>
-        </tr>
-        <tr>
-          <td><div class="extra-name">Diseño gráfico</div></td>
-          <td><div class="extra-desc">Diseño exclusivo personalizado para el evento</div></td>
-          <td style="text-align:right"><input class="extra-input" id="extra-diseno" value="80" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €</span></td>
-        </tr>
-        <tr>
-          <td><div class="extra-name">Regalo infantil</div></td>
-          <td><div class="extra-desc">Por niño</div></td>
-          <td style="text-align:right"><input class="extra-input" id="extra-nino" value="8" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €/ud</span></td>
-        </tr>
-        <tr>
-          <td><div class="extra-name">Monedas personalizadas</div></td>
-          <td><div class="extra-desc">Para máquinas expendedora o gancho</div></td>
-          <td style="text-align:right"><input class="extra-input" id="extra-moneda" value="2" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €/ud</span></td>
-        </tr>
-        <tr>
-          <td><div class="extra-name">Vinilado máquina</div></td>
-          <td><div class="extra-desc">Personalización exterior máquina</div></td>
-          <td style="text-align:right"><input class="extra-input" id="extra-vinilado" value="100" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €</span></td>
-        </tr>
-        <tr>
-          <td><div class="extra-name">Desplazamiento</div></td>
-          <td><div class="extra-desc">Fuera de provincia Ciudad Real · ida y vuelta</div></td>
-          <td style="text-align:right"><input class="extra-input" id="extra-km" value="0.40" step="0.01" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €/km</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- COMISIONES COLABORADORES -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">🤝</div>
-      <div>
-        <div class="section-title">Comisiones colaboradores</div>
-        <div class="section-desc">Porcentaje sobre precio base según número de invitados</div>
-      </div>
-    </div>
-    <div class="price-grid cols3">
-      <div class="price-card">
-        <div class="price-card-label">Tramo</div>
-        <div class="price-card-name">Hasta 50 inv.</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="com-50" value="10" min="0" max="50" oninput="markDirty()">
-          <span class="price-unit">%</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Tramo</div>
-        <div class="price-card-name">Hasta 100 inv.</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="com-100" value="12" min="0" max="50" oninput="markDirty()">
-          <span class="price-unit">%</span>
-        </div>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Tramo</div>
-        <div class="price-card-name">Hasta 150 inv.</div>
-        <div class="price-input-wrap">
-          <input class="price-input" type="number" id="com-150" value="15" min="0" max="50" oninput="markDirty()">
-          <span class="price-unit">%</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- TEXTOS HERO -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">✏️</div>
-      <div>
-        <div class="section-title">Textos del Hero</div>
-        <div class="section-desc">Lo primero que ve el cliente al entrar</div>
-      </div>
-    </div>
-    <div style="display:grid; gap:12px;">
-      <div class="price-card" style="grid-column:1/-1">
-        <div class="price-card-label">Etiqueta superior (clientes)</div>
-        <input class="text-input" id="txt-hero-tag-cliente" value="Personalización en vivo para tu evento">
-      </div>
-      <div class="price-card" style="grid-column:1/-1">
-        <div class="price-card-label">Título hero — línea 1</div>
-        <input class="text-input" id="txt-hero-l1" value="HAZ QUE TU">
-      </div>
-      <div class="price-card" style="grid-column:1/-1">
-        <div class="price-card-label">Título hero — línea 2</div>
-        <input class="text-input" id="txt-hero-l2" value="EVENTO SEA">
-      </div>
-      <div class="price-card" style="grid-column:1/-1">
-        <div class="price-card-label">Título hero — línea 3 (acento de color)</div>
-        <input class="text-input" id="txt-hero-l3" value="INOLVIDABLE">
-      </div>
-      <div class="price-card" style="grid-column:1/-1">
-        <div class="price-card-label">Subtítulo hero (clientes)</div>
-        <textarea class="text-area" id="txt-hero-sub">Personalizamos artículos en directo para que cada invitado se lleve un recuerdo único. Bodas, cumpleaños, comuniones, eventos de empresa.</textarea>
-      </div>
-      <div class="price-card" style="grid-column:1/-1">
-        <div class="price-card-label">Texto botón CTA</div>
-        <input class="text-input" id="txt-hero-cta" value="Calcular mi presupuesto →">
-      </div>
-    </div>
-  </div>
-
-  <!-- TEXTOS SERVICIOS -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">📋</div>
-      <div>
-        <div class="section-title">Descripciones de servicios</div>
-        <div class="section-desc">Texto que aparece en cada tarjeta de servicio</div>
-      </div>
-    </div>
-    <div style="display:grid; gap:12px;">
-      <div class="price-card">
-        <div class="price-card-label">✍️ Personalización en directo</div>
-        <textarea class="text-area" id="txt-serv-1">Tu taller de personalización montado en el evento. Tote bags, gorras, neceseres y más.</textarea>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">🗺️ Seating Plan</div>
-        <textarea class="text-area" id="txt-serv-2">El cartel de mesas convertido en experiencia: gafas, vasitos, chapas o piezas de bambú con el nombre de cada invitado.</textarea>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">🎰 Máquina expendedora</div>
-        <textarea class="text-area" id="txt-serv-3">Cápsulas con productos personalizados. Gratuita o con moneda personalizada.</textarea>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">🪝 Máquina gancho</div>
-        <textarea class="text-area" id="txt-serv-4">Premios personalizados dentro de una máquina de gancho decorada a medida para tu evento.</textarea>
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">🛍️ Merch Corner</div>
-        <textarea class="text-area" id="txt-serv-5">Espacio de merchandising personalizado montado y gestionado por nosotros en tu evento.</textarea>
-      </div>
-    </div>
-  </div>
-
-  <!-- DATOS DE CONTACTO -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">📞</div>
-      <div>
-        <div class="section-title">Datos de contacto</div>
-        <div class="section-desc">Aparecen en formulario, footer y WhatsApp</div>
-      </div>
-    </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-      <div class="price-card">
-        <div class="price-card-label">Teléfono</div>
-        <input class="text-input" id="txt-tel" value="647 444 308">
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Email general</div>
-        <input class="text-input" id="txt-email" value="contacto@benditolab.com">
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Email colaboradores</div>
-        <input class="text-input" id="txt-email-colab" value="colaboradores@benditolab.com">
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Instagram</div>
-        <input class="text-input" id="txt-instagram" value="@dilobonito">
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Web</div>
-        <input class="text-input" id="txt-web" value="www.benditolab.com">
-      </div>
-      <div class="price-card">
-        <div class="price-card-label">Zona de servicio</div>
-        <input class="text-input" id="txt-zona" value="Ciudad Real y provincia">
-      </div>
-    </div>
-  </div>
-
-  <!-- IMÁGENES -->
-  <div class="admin-section">
-    <div class="section-header">
-      <div class="section-icon">🖼️</div>
-      <div>
-        <div class="section-title">Imágenes</div>
-        <div class="section-desc">Sube las imágenes generadas con IA para cada sección</div>
-      </div>
-    </div>
-    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
-      <div class="price-card img-card" onclick="document.getElementById('img-hero').click()">
-        <div class="price-card-label">Hero principal</div>
-        <div class="img-preview" id="prev-hero">
-          <div class="img-placeholder">🖼 Subir imagen</div>
-        </div>
-        <input type="file" id="img-hero" accept="image/*" style="display:none" onchange="loadImg(this,'prev-hero','img-hero-data')">
-        <input type="hidden" id="img-hero-data">
-        <div class="img-hint">Click para cambiar · Recomendado: 1400×900px</div>
-      </div>
-      <div class="price-card img-card" onclick="document.getElementById('img-personalizacion').click()">
-        <div class="price-card-label">Personalización en directo</div>
-        <div class="img-preview" id="prev-personalizacion">
-          <div class="img-placeholder">🖼 Subir imagen</div>
-        </div>
-        <input type="file" id="img-personalizacion" accept="image/*" style="display:none" onchange="loadImg(this,'prev-personalizacion','img-personalizacion-data')">
-        <input type="hidden" id="img-personalizacion-data">
-        <div class="img-hint">Click para cambiar · 800×600px</div>
-      </div>
-      <div class="price-card img-card" onclick="document.getElementById('img-seating').click()">
-        <div class="price-card-label">Seating Plan</div>
-        <div class="img-preview" id="prev-seating">
-          <div class="img-placeholder">🖼 Subir imagen</div>
-        </div>
-        <input type="file" id="img-seating" accept="image/*" style="display:none" onchange="loadImg(this,'prev-seating','img-seating-data')">
-        <input type="hidden" id="img-seating-data">
-        <div class="img-hint">Click para cambiar · 800×600px</div>
-      </div>
-      <div class="price-card img-card" onclick="document.getElementById('img-maquinas').click()">
-        <div class="price-card-label">Máquinas</div>
-        <div class="img-preview" id="prev-maquinas">
-          <div class="img-placeholder">🖼 Subir imagen</div>
-        </div>
-        <input type="file" id="img-maquinas" accept="image/*" style="display:none" onchange="loadImg(this,'prev-maquinas','img-maquinas-data')">
-        <input type="hidden" id="img-maquinas-data">
-        <div class="img-hint">Click para cambiar · 800×600px</div>
-      </div>
-      <div class="price-card img-card" onclick="document.getElementById('img-merch').click()">
-        <div class="price-card-label">Merch Corner</div>
-        <div class="img-preview" id="prev-merch">
-          <div class="img-placeholder">🖼 Subir imagen</div>
-        </div>
-        <input type="file" id="img-merch" accept="image/*" style="display:none" onchange="loadImg(this,'prev-merch','img-merch-data')">
-        <input type="hidden" id="img-merch-data">
-        <div class="img-hint">Click para cambiar · 800×600px</div>
-      </div>
-      <div class="price-card img-card" onclick="document.getElementById('img-b2b').click()">
-        <div class="price-card-label">B2B Productos</div>
-        <div class="img-preview" id="prev-b2b">
-          <div class="img-placeholder">🖼 Subir imagen</div>
-        </div>
-        <input type="file" id="img-b2b" accept="image/*" style="display:none" onchange="loadImg(this,'prev-b2b','img-b2b-data')">
-        <input type="hidden" id="img-b2b-data">
-        <div class="img-hint">Click para cambiar · 800×600px</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="admin-footer">
-    Dilo Bonito · Bendito Lab · Panel de administración interno
+  <div class="topbar-right">
+    <a href="index.html" target="_blank" class="prev-btn">👁 Dilo Bonito</a>
+    <a href="colaboradores.html" target="_blank" class="prev-btn">👁 Colaboradores</a>
+    <a href="bendito-lab.html" target="_blank" class="prev-btn">👁 Bendito Lab</a>
+    <button class="save-btn" onclick="saveAll()">💾 Guardar todo</button>
   </div>
 </div>
+
+<div class="app">
+<nav class="sidebar">
+  <div class="sb-lbl">General</div>
+  <div class="sb-item active" onclick="show('contacto',this)"><span>📞</span>Contacto</div>
+  <div class="sb-item" onclick="show('imagenes',this)"><span>🖼️</span>Imágenes</div>
+  <hr class="sb-div">
+  <div class="sb-lbl">Dilo Bonito</div>
+  <div class="sb-item" onclick="show('dilo-textos',this)"><span>✏️</span>Textos</div>
+  <div class="sb-item" onclick="show('dilo-precios',this)"><span>💰</span>Precios</div>
+  <div class="sb-item" onclick="show('dilo-extras',this)"><span>➕</span>Extras</div>
+  <div class="sb-item" onclick="show('dilo-packs',this)"><span>📦</span>Packs detalle</div>
+  <hr class="sb-div">
+  <div class="sb-lbl">Colaboradores</div>
+  <div class="sb-item" onclick="show('colab-textos',this)"><span>✏️</span>Textos</div>
+  <div class="sb-item" onclick="show('colab-comisiones',this)"><span>💸</span>Comisiones</div>
+  <hr class="sb-div">
+  <div class="sb-lbl">Bendito Lab B2B</div>
+  <div class="sb-item" onclick="show('b2b-textos',this)"><span>✏️</span>Textos</div>
+  <div class="sb-item" onclick="show('b2b-productos',this)"><span>🏷️</span>Productos</div>
+</nav>
+
+<main class="main">
+<div class="saved-ok" id="saved-ok">✓ Todos los cambios guardados correctamente</div>
+
+<!-- CONTACTO -->
+<div class="panel active" id="panel-contacto">
+  <div class="s-hdr"><span class="s-icon">📞</span><div><div class="s-title">Datos de contacto</div><div class="s-desc">Aparecen en todas las páginas</div></div></div>
+  <div class="row2">
+    <div class="field"><label class="lbl">Teléfono</label><input class="inp" id="c-tel" value="647 444 308" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Email general</label><input class="inp" id="c-email" value="contacto@benditolab.com" oninput="dirty()"></div>
+  </div>
+  <div class="row2">
+    <div class="field"><label class="lbl">Email colaboradores</label><input class="inp" id="c-email-colab" value="colaboradores@benditolab.com" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Instagram</label><input class="inp" id="c-instagram" value="@dilobonito" oninput="dirty()"></div>
+  </div>
+  <div class="row2">
+    <div class="field"><label class="lbl">Web</label><input class="inp" id="c-web" value="www.benditolab.com" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Zona de servicio</label><input class="inp" id="c-zona" value="Ciudad Real y provincia" oninput="dirty()"></div>
+  </div>
+</div>
+
+<!-- IMÁGENES -->
+<div class="panel" id="panel-imagenes">
+  <div class="s-hdr"><span class="s-icon">🖼️</span><div><div class="s-title">Imágenes</div><div class="s-desc">Clic en cada tarjeta para subir. Máx. 2MB por imagen.</div></div></div>
+  <div class="stag">Dilo Bonito — Dossier clientes</div>
+  <div class="img-grid">
+    <div class="img-card" onclick="trigImg('img-hero')">
+      <div class="img-lbl">Hero principal <span class="img-ok" id="ok-img-hero">✓</span></div>
+      <div class="img-prev" id="prev-img-hero"><div class="img-ph">🖼 Clic para subir<br><small>1400×900px</small></div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-hero" accept="image/*" style="display:none" onchange="loadImg(this,'img-hero')">
+      <input type="hidden" id="data-img-hero">
+    </div>
+    <div class="img-card" onclick="trigImg('img-personalizacion')">
+      <div class="img-lbl">Personalización <span class="img-ok" id="ok-img-personalizacion">✓</span></div>
+      <div class="img-prev" id="prev-img-personalizacion"><div class="img-ph">🖼 Clic para subir</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-personalizacion" accept="image/*" style="display:none" onchange="loadImg(this,'img-personalizacion')">
+      <input type="hidden" id="data-img-personalizacion">
+    </div>
+    <div class="img-card" onclick="trigImg('img-seating')">
+      <div class="img-lbl">Seating Plan <span class="img-ok" id="ok-img-seating">✓</span></div>
+      <div class="img-prev" id="prev-img-seating"><div class="img-ph">🖼 Clic para subir</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-seating" accept="image/*" style="display:none" onchange="loadImg(this,'img-seating')">
+      <input type="hidden" id="data-img-seating">
+    </div>
+    <div class="img-card" onclick="trigImg('img-maquinas')">
+      <div class="img-lbl">Máquinas <span class="img-ok" id="ok-img-maquinas">✓</span></div>
+      <div class="img-prev" id="prev-img-maquinas"><div class="img-ph">🖼 Clic para subir</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-maquinas" accept="image/*" style="display:none" onchange="loadImg(this,'img-maquinas')">
+      <input type="hidden" id="data-img-maquinas">
+    </div>
+    <div class="img-card" onclick="trigImg('img-merch')">
+      <div class="img-lbl">Merch Corner <span class="img-ok" id="ok-img-merch">✓</span></div>
+      <div class="img-prev" id="prev-img-merch"><div class="img-ph">🖼 Clic para subir</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-merch" accept="image/*" style="display:none" onchange="loadImg(this,'img-merch')">
+      <input type="hidden" id="data-img-merch">
+    </div>
+    <div class="img-card" onclick="trigImg('img-que-es')">
+      <div class="img-lbl">Sección "Qué es" <span class="img-ok" id="ok-img-que-es">✓</span></div>
+      <div class="img-prev" id="prev-img-que-es"><div class="img-ph">🖼 Clic para subir</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-que-es" accept="image/*" style="display:none" onchange="loadImg(this,'img-que-es')">
+      <input type="hidden" id="data-img-que-es">
+    </div>
+  </div>
+  <div class="stag" style="margin-top:8px">Bendito Lab B2B</div>
+  <div class="img-grid">
+    <div class="img-card" onclick="trigImg('img-b2b-1')">
+      <div class="img-lbl">Tote bag (hero) <span class="img-ok" id="ok-img-b2b-1">✓</span></div>
+      <div class="img-prev" id="prev-img-b2b-1"><div class="img-ph">🖼 Clic para subir</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-b2b-1" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-1')">
+      <input type="hidden" id="data-img-b2b-1">
+    </div>
+    <div class="img-card" onclick="trigImg('img-b2b-2')">
+      <div class="img-lbl">Neceser <span class="img-ok" id="ok-img-b2b-2">✓</span></div>
+      <div class="img-prev" id="prev-img-b2b-2"><div class="img-ph">🖼 Clic para subir</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-b2b-2" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-2')">
+      <input type="hidden" id="data-img-b2b-2">
+    </div>
+    <div class="img-card" onclick="trigImg('img-b2b-3')">
+      <div class="img-lbl">Gorra <span class="img-ok" id="ok-img-b2b-3">✓</span></div>
+      <div class="img-prev" id="prev-img-b2b-3"><div class="img-ph">🖼 Clic para subir</div></div>
+      <button class="img-btn">Cambiar imagen</button>
+      <input type="file" id="img-b2b-3" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-3')">
+      <input type="hidden" id="data-img-b2b-3">
+    </div>
+  </div>
+</div>
+
+<!-- DILO TEXTOS -->
+<div class="panel" id="panel-dilo-textos">
+  <div class="s-hdr"><span class="s-icon">✨</span><div><div class="s-title">Dilo Bonito — Textos</div><div class="s-desc">Todos los textos del dossier de clientes</div></div></div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="stab(this,'th')">Hero</div>
+    <div class="tab" onclick="stab(this,'ts')">Servicios</div>
+    <div class="tab" onclick="stab(this,'tn')">Navegación</div>
+  </div>
+  <div class="tab-c active" id="th">
+    <div class="field"><label class="lbl">Tag superior</label><input class="inp" id="dt-tag" value="Personalización en vivo para tu evento" oninput="dirty()"></div>
+    <div class="row3">
+      <div class="field"><label class="lbl">Título línea 1</label><input class="inp" id="dt-l1" value="HAZ QUE TU" oninput="dirty()"></div>
+      <div class="field"><label class="lbl">Título línea 2</label><input class="inp" id="dt-l2" value="EVENTO SEA" oninput="dirty()"></div>
+      <div class="field"><label class="lbl">Título línea 3 (color)</label><input class="inp" id="dt-l3" value="INOLVIDABLE" oninput="dirty()"></div>
+    </div>
+    <div class="field"><label class="lbl">Subtítulo</label><textarea class="ta" id="dt-sub" oninput="dirty()">Personalizamos artículos en directo para que cada invitado se lleve un recuerdo único. Bodas, cumpleaños, comuniones, eventos de empresa.</textarea></div>
+    <div class="field"><label class="lbl">Texto botón CTA</label><input class="inp" id="dt-cta" value="Calcular mi presupuesto →" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Qué es — párrafo 1</label><textarea class="ta" id="dt-qs1" oninput="dirty()">Somos el servicio de personalización en vivo de Bendito Lab. Llevamos nuestro taller directamente a tu evento.</textarea></div>
+    <div class="field"><label class="lbl">Qué es — párrafo 2</label><textarea class="ta" id="dt-qs2" oninput="dirty()">Cada invitado elige, personaliza y se lleva su artículo en el momento. Sin esperas, sin complicaciones.</textarea></div>
+  </div>
+  <div class="tab-c" id="ts">
+    <div class="field"><label class="lbl">✍️ Personalización en directo</label><textarea class="ta" id="dt-s1" oninput="dirty()">Tu taller de personalización montado en el evento. Tote bags, gorras, neceseres y más.</textarea></div>
+    <div class="field"><label class="lbl">🗺️ Seating Plan</label><textarea class="ta" id="dt-s2" oninput="dirty()">El cartel de mesas convertido en experiencia: gafas, vasitos, chapas o piezas de bambú con el nombre de cada invitado.</textarea></div>
+    <div class="field"><label class="lbl">🎰 Máquina expendedora</label><textarea class="ta" id="dt-s3" oninput="dirty()">Cápsulas con productos personalizados. Gratuita o con moneda personalizada.</textarea></div>
+    <div class="field"><label class="lbl">🪝 Máquina gancho</label><textarea class="ta" id="dt-s4" oninput="dirty()">Premios personalizados dentro de una máquina de gancho decorada a medida para tu evento.</textarea></div>
+    <div class="field"><label class="lbl">🛍️ Merch Corner</label><textarea class="ta" id="dt-s5" oninput="dirty()">Espacio de merchandising personalizado montado y gestionado por nosotros en tu evento.</textarea></div>
+  </div>
+  <div class="tab-c" id="tn">
+    <div class="field"><label class="lbl">Botón "Solicitar info"</label><input class="inp" id="dn-sol" value="Solicitar info" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Botón colaboradores (nav)</label><input class="inp" id="dn-col" value="¿Quieres Dilo Bonito en tu negocio?" oninput="dirty()"></div>
+    <div class="row2">
+      <div class="field"><label class="lbl">Dropdown — nombre Dilo Bonito</label><input class="inp" id="dn-d1" value="Dilo Bonito" oninput="dirty()"></div>
+      <div class="field"><label class="lbl">Dropdown — descripción</label><input class="inp" id="dn-d1d" value="Experiencias de personalización en directo para eventos" oninput="dirty()"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label class="lbl">Dropdown — nombre Bendito Lab</label><input class="inp" id="dn-d2" value="Bendito Lab" oninput="dirty()"></div>
+      <div class="field"><label class="lbl">Dropdown — descripción</label><input class="inp" id="dn-d2d" value="Personalización B2B · Artículos para empresas" oninput="dirty()"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DILO PRECIOS -->
+<div class="panel" id="panel-dilo-precios">
+  <div class="s-hdr"><span class="s-icon">💰</span><div><div class="s-title">Dilo Bonito — Precios</div></div></div>
+  <div class="s-lbl" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:10px;">PACKS</div>
+  <div class="row4">
+    <div class="pc"><div class="pc-name">MINI</div><div class="pc-sub">Hasta 30 inv · 2h</div><div class="pc-wrap"><input class="pc-inp" id="p-mini" value="299" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+    <div class="pc"><div class="pc-name">ÍNTIMA</div><div class="pc-sub">Hasta 50 inv · 3h</div><div class="pc-wrap"><input class="pc-inp" id="p-intima" value="499" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+    <div class="pc"><div class="pc-name">CLÁSICA</div><div class="pc-sub">Hasta 100 inv · 4h</div><div class="pc-wrap"><input class="pc-inp" id="p-clasica" value="650" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+    <div class="pc"><div class="pc-name">PREMIUM</div><div class="pc-sub">Hasta 150 inv · 5h</div><div class="pc-wrap"><input class="pc-inp" id="p-premium" value="799" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+  </div>
+  <div style="margin-top:28px;margin-bottom:10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;">SEATING PLAN</div>
+  <table class="tbl">
+    <thead><tr><th>Modalidad</th><th style="text-align:right">Hasta 30</th><th style="text-align:right">Hasta 50</th><th style="text-align:right">Hasta 100</th><th style="text-align:right">Hasta 150</th></tr></thead>
+    <tbody>
+      <tr><td class="td-n">🕶️ Gafas de sol</td><td style="text-align:right"><input class="ti" id="sg-30" value="399" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sg-50" value="520" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sg-100" value="820" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sg-150" value="1120" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td></tr>
+      <tr><td class="td-n">🥃 Vasitos / Chapas / Bambú</td><td style="text-align:right"><input class="ti" id="sb-30" value="350" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sb-50" value="450" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sb-100" value="699" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sb-150" value="930" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td></tr>
+      <tr><td class="td-n">🪵 Solo panel</td><td colspan="4"><input class="ti" id="sp-panel" value="200" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> € fijo</span></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:20px;margin-bottom:10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;">MÁQUINAS</div>
+  <div class="row4">
+    <div class="pc"><div class="pc-name">Expendedora</div><div class="pc-sub">Sin moneda</div><div class="pc-wrap"><input class="pc-inp" id="p-eg" value="499" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+    <div class="pc"><div class="pc-name">Expendedora</div><div class="pc-sub">Con moneda</div><div class="pc-wrap"><input class="pc-inp" id="p-em" value="399" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+    <div class="pc"><div class="pc-name">Gancho</div><div class="pc-sub">Partidas libres</div><div class="pc-wrap"><input class="pc-inp" id="p-gg" value="499" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+    <div class="pc"><div class="pc-name">Gancho</div><div class="pc-sub">Con moneda</div><div class="pc-wrap"><input class="pc-inp" id="p-gm" value="399" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+  </div>
+  <div style="margin-top:20px;margin-bottom:10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;">MERCH CORNER</div>
+  <div class="row3">
+    <div class="pc"><div class="pc-name">Básico</div><div class="pc-sub">Stand + 1 producto 30ud</div><div class="pc-wrap"><input class="pc-inp" id="p-mb" value="350" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+    <div class="pc"><div class="pc-name">Completo</div><div class="pc-sub">3 productos 50ud</div><div class="pc-wrap"><input class="pc-inp" id="p-mc" value="580" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+    <div class="pc"><div class="pc-name">Premium</div><div class="pc-sub">Con azafata</div><div class="pc-wrap"><input class="pc-inp" id="p-mp" value="799" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
+  </div>
+</div>
+
+<!-- DILO EXTRAS -->
+<div class="panel" id="panel-dilo-extras">
+  <div class="s-hdr"><span class="s-icon">➕</span><div><div class="s-title">Extras y complementos</div><div class="s-desc">Aparecen en el cotizador del dossier</div></div></div>
+  <table class="tbl">
+    <thead><tr><th>Concepto</th><th>Descripción</th><th style="text-align:right">Precio</th></tr></thead>
+    <tbody>
+      <tr><td><div class="td-n">Hora extra</div></td><td><div class="td-d">Por hora adicional de servicio</div></td><td style="text-align:right"><input class="ti" id="e-hora" value="150" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €/h</span></td></tr>
+      <tr><td><div class="td-n">Diseño gráfico</div></td><td><div class="td-d">Diseño exclusivo para el evento</div></td><td style="text-align:right"><input class="ti" id="e-dis" value="80" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td></tr>
+      <tr><td><div class="td-n">Regalo infantil</div></td><td><div class="td-d">Por niño</div></td><td style="text-align:right"><input class="ti" id="e-nin" value="8" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €/ud</span></td></tr>
+      <tr><td><div class="td-n">Monedas personalizadas</div></td><td><div class="td-d">Para máquinas</div></td><td style="text-align:right"><input class="ti" id="e-mon" value="2" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €/ud</span></td></tr>
+      <tr><td><div class="td-n">Vinilado máquina</div></td><td><div class="td-d">Personalización exterior</div></td><td style="text-align:right"><input class="ti" id="e-vin" value="100" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td></tr>
+      <tr><td><div class="td-n">Desplazamiento</div></td><td><div class="td-d">Fuera de Ciudad Real · ida y vuelta</div></td><td style="text-align:right"><input class="ti" id="e-km" value="0.40" step="0.01" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €/km</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- DILO PACKS -->
+<div class="panel" id="panel-dilo-packs">
+  <div class="s-hdr"><span class="s-icon">📦</span><div><div class="s-title">Packs — textos de características</div></div></div>
+  <div class="field"><label class="lbl">MINI — características (una por línea)</label><textarea class="ta" id="dp-mini" oninput="dirty()">Montaje y desmontaje
+Equipo profesional
+Hasta 3 productos
+Diseños predefinidos</textarea></div>
+  <div class="field"><label class="lbl">ÍNTIMA — características</label><textarea class="ta" id="dp-intima" oninput="dirty()">Montaje y desmontaje
+Equipo profesional
+Hasta 4 productos
+Diseño personalizado</textarea></div>
+  <div class="field"><label class="lbl">CLÁSICA — características</label><textarea class="ta" id="dp-clasica" oninput="dirty()">Montaje y desmontaje
+Equipo profesional
+Productos a elegir
+Diseño personalizado
+Coordinación previa</textarea></div>
+  <div class="field"><label class="lbl">PREMIUM — características</label><textarea class="ta" id="dp-premium" oninput="dirty()">Montaje y desmontaje
+Equipo profesional
+Sin límite de productos
+Diseño premium
+Coordinación total
+Reporte post-evento</textarea></div>
+</div>
+
+<!-- COLAB TEXTOS -->
+<div class="panel" id="panel-colab-textos">
+  <div class="s-hdr"><span class="s-icon">🤝</span><div><div class="s-title">Colaboradores — Textos</div><div class="s-desc">Página "¿Quieres Dilo Bonito en tu negocio?"</div></div></div>
+  <div class="field"><label class="lbl">Tag superior</label><input class="inp" id="ct-tag" value="Para fincas · Wedding planners · Organizadores" oninput="dirty()"></div>
+  <div class="row3">
+    <div class="field"><label class="lbl">Título línea 1</label><input class="inp" id="ct-l1" value="¿QUIERES" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Título línea 2 (acento)</label><input class="inp" id="ct-l2" value="DILO BONITO" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Título línea 3</label><input class="inp" id="ct-l3" value="EN TU NEGOCIO?" oninput="dirty()"></div>
+  </div>
+  <div class="field"><label class="lbl">Subtítulo hero</label><textarea class="ta" id="ct-sub" oninput="dirty()">Añade personalización en vivo a tu cartera de servicios sin trabajo extra. Tú consigues el cliente — nosotros lo hacemos todo.</textarea></div>
+  <div class="row2">
+    <div class="field"><label class="lbl">Paso 1 — título</label><input class="inp" id="ct-p1" value="Tú consigues el cliente" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Paso 1 — descripción</label><textarea class="ta" id="ct-p1d" oninput="dirty()">Nos presentas el evento. Con eso es suficiente.</textarea></div>
+  </div>
+  <div class="row2">
+    <div class="field"><label class="lbl">Paso 2 — título</label><input class="inp" id="ct-p2" value="Nosotros gestionamos todo" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Paso 2 — descripción</label><textarea class="ta" id="ct-p2d" oninput="dirty()">Hablamos con el cliente, presupuestamos, coordinamos y ejecutamos.</textarea></div>
+  </div>
+  <div class="row2">
+    <div class="field"><label class="lbl">Paso 3 — título</label><input class="inp" id="ct-p3" value="Cobras tu comisión" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Paso 3 — descripción</label><textarea class="ta" id="ct-p3d" oninput="dirty()">En 1–3 días tras el evento recibes tu comisión sin esperas.</textarea></div>
+  </div>
+  <div class="row2">
+    <div class="field"><label class="lbl">CTA final — título</label><input class="inp" id="ct-ctat" value="¿HABLAMOS?" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">CTA final — subtexto</label><textarea class="ta" id="ct-ctas" oninput="dirty()">Si crees que Dilo Bonito puede encajar en tu cartera, escríbenos sin compromiso.</textarea></div>
+  </div>
+</div>
+
+<!-- COLAB COMISIONES -->
+<div class="panel" id="panel-colab-comisiones">
+  <div class="s-hdr"><span class="s-icon">💸</span><div><div class="s-title">Comisiones colaboradores</div></div></div>
+  <div class="row3">
+    <div class="pc"><div class="pc-name">Tramo 1</div><div class="pc-sub">Hasta 50 invitados</div><div class="pc-wrap"><input class="pc-inp" id="com-50" value="10" type="number" oninput="dirty()"><span class="pc-unit">%</span></div></div>
+    <div class="pc"><div class="pc-name">Tramo 2</div><div class="pc-sub">Hasta 100 invitados</div><div class="pc-wrap"><input class="pc-inp" id="com-100" value="12" type="number" oninput="dirty()"><span class="pc-unit">%</span></div></div>
+    <div class="pc"><div class="pc-name">Tramo 3</div><div class="pc-sub">Hasta 150 invitados</div><div class="pc-wrap"><input class="pc-inp" id="com-150" value="15" type="number" oninput="dirty()"><span class="pc-unit">%</span></div></div>
+  </div>
+  <div class="field" style="margin-top:20px"><label class="lbl">Plazo de pago</label><input class="inp" id="com-plazo" value="1–3 días tras el evento" oninput="dirty()"></div>
+</div>
+
+<!-- B2B TEXTOS -->
+<div class="panel" id="panel-b2b-textos">
+  <div class="s-hdr"><span class="s-icon">📦</span><div><div class="s-title">Bendito Lab B2B — Textos</div></div></div>
+  <div class="field"><label class="lbl">Tag superior hero</label><input class="inp" id="bt-tag" value="Bendito Lab · Personalización B2B" oninput="dirty()"></div>
+  <div class="row3">
+    <div class="field"><label class="lbl">Título línea 1</label><input class="inp" id="bt-l1" value="TU MARCA" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Título línea 2</label><input class="inp" id="bt-l2" value="EN CADA" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">Título línea 3 (acento)</label><input class="inp" id="bt-l3" value="PRODUCTO" oninput="dirty()"></div>
+  </div>
+  <div class="field"><label class="lbl">Subtítulo hero</label><textarea class="ta" id="bt-sub" oninput="dirty()">Fabricamos y personalizamos artículos para empresas, equipos y campañas. Sin mínimos imposibles, con calidad garantizada y entrega en toda España.</textarea></div>
+  <div class="field"><label class="lbl">Quiénes somos — párrafo 1</label><textarea class="ta" id="bt-qs1" oninput="dirty()">Bendito Lab es tu distribuidor de confianza para artículos promocionales y merchandising corporativo.</textarea></div>
+  <div class="field"><label class="lbl">Quiénes somos — párrafo 2</label><textarea class="ta" id="bt-qs2" oninput="dirty()">Desde 10 unidades hasta pedidos de gran volumen — con los mismos estándares de calidad y atención personalizada.</textarea></div>
+  <div class="row2">
+    <div class="field"><label class="lbl">CTA final — título</label><input class="inp" id="bt-ctat" value="¿EMPEZAMOS TU PROYECTO?" oninput="dirty()"></div>
+    <div class="field"><label class="lbl">CTA final — subtexto</label><textarea class="ta" id="bt-ctas" oninput="dirty()">Cuéntanos qué necesitas y te enviamos presupuesto en menos de 24 horas.</textarea></div>
+  </div>
+</div>
+
+<!-- B2B PRODUCTOS -->
+<div class="panel" id="panel-b2b-productos">
+  <div class="s-hdr"><span class="s-icon">🏷️</span><div><div class="s-title">Bendito Lab — Productos y precios</div></div></div>
+  <table class="tbl">
+    <thead><tr><th>Producto</th><th>Descripción</th><th style="text-align:right">Precio desde</th><th style="text-align:right">Mínimo</th></tr></thead>
+    <tbody>
+      <tr><td class="td-n">👜 Tote Bags</td><td><input class="ti ti-wide" id="bp-t-d" value="Bolsas de algodón 100% personalizadas" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-t-p" value="4.50" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-t-m" value="20" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
+      <tr><td class="td-n">🧢 Gorras</td><td><input class="ti ti-wide" id="bp-g-d" value="Gorras bordadas o con transfer" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-g-p" value="8" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-g-m" value="10" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
+      <tr><td class="td-n">👝 Neceseres</td><td><input class="ti ti-wide" id="bp-n-d" value="Neceseres de tela personalizados" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-n-p" value="6" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-n-m" value="15" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
+      <tr><td class="td-n">👕 Camisetas</td><td><input class="ti ti-wide" id="bp-c-d" value="Camisetas con tu diseño" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-c-p" value="10" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-c-m" value="10" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
+      <tr><td class="td-n">📓 Libretas</td><td><input class="ti ti-wide" id="bp-l-d" value="Cuadernos corporativos con tu logo" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-l-p" value="6" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-l-m" value="20" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
+      <tr><td class="td-n">🪵 Bambú grabado</td><td><input class="ti ti-wide" id="bp-b-d" value="Posavasos y piezas grabadas a láser" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-b-p" value="3" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-b-m" value="30" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
+      <tr><td class="td-n">🎁 Kit regalo</td><td><input class="ti ti-wide" id="bp-k-d" value="Pack 3 productos personalizados" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-k-p" value="18" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-k-m" value="10" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> kits</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+</main>
+</div>
+<div class="admin-foot">Bendito Lab · Panel de administración interno · Acceso restringido</div>
 
 <script>
-const PASSWORD = 'h13701aah03';
-const GITHUB_TOKEN = '';  // Se rellena via prompt si se quiere publicar en GitHub
-let dirty = false;
+const PWD='h13701aah03';
+let isDirty=false;
 
-// ── LOGIN ──
-function checkLogin() {
-  const pwd = document.getElementById('pwd-input').value;
-  if (pwd === PASSWORD) {
-    document.getElementById('login-screen').style.display = 'none';
-    loadPrices();
+function checkLogin(){
+  if(document.getElementById('pwd').value===PWD){
+    document.getElementById('login').style.display='none';
+    loadAll();
   } else {
-    document.getElementById('login-error').style.display = 'block';
-    document.getElementById('pwd-input').value = '';
-    document.getElementById('pwd-input').focus();
+    document.getElementById('login-err').style.display='block';
+    document.getElementById('pwd').value='';
+    document.getElementById('pwd').focus();
   }
 }
+document.getElementById('pwd').addEventListener('keydown',e=>{if(e.key==='Enter')checkLogin();});
 
-document.getElementById('pwd-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') checkLogin();
-});
-
-// ── MARK DIRTY ──
-function markDirty() {
-  dirty = true;
-  document.getElementById('save-btn').textContent = '💾 Guardar cambios';
+function show(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(el) el.classList.add('active');
 }
 
-// ── BUILD PRICES OBJECT ──
-function getPrices() {
+function stab(tab,cid){
+  const bar=tab.parentElement;
+  bar.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  const panel=tab.closest('.panel');
+  panel.querySelectorAll('.tab-c').forEach(c=>c.classList.remove('active'));
+  document.getElementById(cid).classList.add('active');
+}
+
+function dirty(){
+  isDirty=true;
+  document.getElementById('dirty-ind').style.display='inline';
+}
+
+function trigImg(id){document.getElementById(id).click();}
+
+function loadImg(input,key){
+  const file=input.files[0];
+  if(!file)return;
+  if(file.size>3*1024*1024){alert('Máximo 3MB por imagen');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const src=e.target.result;
+    document.getElementById('prev-'+key).innerHTML='<img src="'+src+'">';
+    document.getElementById('data-'+key).value=src;
+    const ok=document.getElementById('ok-'+key);
+    if(ok)ok.classList.add('on');
+    dirty();
+  };
+  reader.readAsDataURL(file);
+}
+
+function v(id){const el=document.getElementById(id);return el?el.value:'';}
+
+function getAllData(){
   return {
-    version: '1.0',
-    actualizado: new Date().toISOString().split('T')[0],
-    packs: {
-      mini:    { precio: +v('pack-mini'),    invitados: 30,  horas: 2 },
-      intima:  { precio: +v('pack-intima'),  invitados: 50,  horas: 3 },
-      clasica: { precio: +v('pack-clasica'), invitados: 100, horas: 4 },
-      premium: { precio: +v('pack-premium'), invitados: 150, horas: 5 },
+    _v: Date.now(),
+    contacto:{ tel:v('c-tel'), email:v('c-email'), emailColab:v('c-email-colab'), instagram:v('c-instagram'), web:v('c-web'), zona:v('c-zona') },
+    imagenes:{
+      hero:v('data-img-hero'), personalizacion:v('data-img-personalizacion'),
+      seating:v('data-img-seating'), maquinas:v('data-img-maquinas'),
+      merch:v('data-img-merch'), queEs:v('data-img-que-es'),
+      b2b1:v('data-img-b2b-1'), b2b2:v('data-img-b2b-2'), b2b3:v('data-img-b2b-3'),
     },
-    seating: {
-      gafas:  { inv30: +v('sg-30'), inv50: +v('sg-50'), inv100: +v('sg-100'), inv150: +v('sg-150') },
-      basico: { inv30: +v('sb-30'), inv50: +v('sb-50'), inv100: +v('sb-100'), inv150: +v('sb-150') },
-      soloPanel: +v('sp-panel'),
+    dilo:{
+      textos:{ tag:v('dt-tag'), l1:v('dt-l1'), l2:v('dt-l2'), l3:v('dt-l3'), sub:v('dt-sub'), cta:v('dt-cta'), qs1:v('dt-qs1'), qs2:v('dt-qs2'), s1:v('dt-s1'), s2:v('dt-s2'), s3:v('dt-s3'), s4:v('dt-s4'), s5:v('dt-s5'), navSol:v('dn-sol'), navCol:v('dn-col'), dd1:v('dn-d1'), dd1d:v('dn-d1d'), dd2:v('dn-d2'), dd2d:v('dn-d2d') },
+      precios:{ mini:+v('p-mini'), intima:+v('p-intima'), clasica:+v('p-clasica'), premium:+v('p-premium'), sg30:+v('sg-30'), sg50:+v('sg-50'), sg100:+v('sg-100'), sg150:+v('sg-150'), sb30:+v('sb-30'), sb50:+v('sb-50'), sb100:+v('sb-100'), sb150:+v('sb-150'), spPanel:+v('sp-panel'), eg:+v('p-eg'), em:+v('p-em'), gg:+v('p-gg'), gm:+v('p-gm'), mb:+v('p-mb'), mc:+v('p-mc'), mp:+v('p-mp') },
+      extras:{ hora:+v('e-hora'), dis:+v('e-dis'), nin:+v('e-nin'), mon:+v('e-mon'), vin:+v('e-vin'), km:+v('e-km') },
+      packs:{ mini:v('dp-mini'), intima:v('dp-intima'), clasica:v('dp-clasica'), premium:v('dp-premium') },
     },
-    maquinas: {
-      expendedoraGratis: +v('exp-gratis'),
-      expendedoraMoneda: +v('exp-moneda'),
-      ganchoGratis:      +v('gancho-gratis'),
-      ganchoMoneda:      +v('gancho-moneda'),
+    colab:{
+      textos:{ tag:v('ct-tag'), l1:v('ct-l1'), l2:v('ct-l2'), l3:v('ct-l3'), sub:v('ct-sub'), p1:v('ct-p1'), p1d:v('ct-p1d'), p2:v('ct-p2'), p2d:v('ct-p2d'), p3:v('ct-p3'), p3d:v('ct-p3d'), ctat:v('ct-ctat'), ctas:v('ct-ctas') },
+      comisiones:{ c50:+v('com-50'), c100:+v('com-100'), c150:+v('com-150'), plazo:v('com-plazo') },
     },
-    merch: {
-      basico:   +v('merch-basico'),
-      completo: +v('merch-completo'),
-      premium:  +v('merch-premium'),
-    },
-    extras: {
-      horaExtra:      +v('extra-hora'),
-      diseno:         +v('extra-diseno'),
-      regaloInfantil: +v('extra-nino'),
-      moneda:         +v('extra-moneda'),
-      vinilado:       +v('extra-vinilado'),
-      km:             +v('extra-km'),
-    },
-    comisiones: {
-      hasta50:  +v('com-50'),
-      hasta100: +v('com-100'),
-      hasta150: +v('com-150'),
+    b2b:{
+      textos:{ tag:v('bt-tag'), l1:v('bt-l1'), l2:v('bt-l2'), l3:v('bt-l3'), sub:v('bt-sub'), qs1:v('bt-qs1'), qs2:v('bt-qs2'), ctat:v('bt-ctat'), ctas:v('bt-ctas') },
+      productos:{
+        t:{d:v('bp-t-d'),p:+v('bp-t-p'),m:+v('bp-t-m')},
+        g:{d:v('bp-g-d'),p:+v('bp-g-p'),m:+v('bp-g-m')},
+        n:{d:v('bp-n-d'),p:+v('bp-n-p'),m:+v('bp-n-m')},
+        c:{d:v('bp-c-d'),p:+v('bp-c-p'),m:+v('bp-c-m')},
+        l:{d:v('bp-l-d'),p:+v('bp-l-p'),m:+v('bp-l-m')},
+        b:{d:v('bp-b-d'),p:+v('bp-b-p'),m:+v('bp-b-m')},
+        k:{d:v('bp-k-d'),p:+v('bp-k-p'),m:+v('bp-k-m')},
+      }
     }
   };
 }
 
-function v(id) {
-  return document.getElementById(id)?.value || 0;
+function saveAll(){
+  const data=getAllData();
+  try{
+    localStorage.setItem('bendito-admin-v3',JSON.stringify(data));
+    // Legacy key for dossier compatibility
+    localStorage.setItem('dilo-precios',JSON.stringify({
+      packs:{ mini:{precio:data.dilo.precios.mini,invitados:30,horas:2}, intima:{precio:data.dilo.precios.intima,invitados:50,horas:3}, clasica:{precio:data.dilo.precios.clasica,invitados:100,horas:4}, premium:{precio:data.dilo.precios.premium,invitados:150,horas:5} },
+      seating:{ gafas:{inv30:data.dilo.precios.sg30,inv50:data.dilo.precios.sg50,inv100:data.dilo.precios.sg100,inv150:data.dilo.precios.sg150}, basico:{inv30:data.dilo.precios.sb30,inv50:data.dilo.precios.sb50,inv100:data.dilo.precios.sb100,inv150:data.dilo.precios.sb150}, soloPanel:data.dilo.precios.spPanel },
+      maquinas:{ expendedoraGratis:data.dilo.precios.eg, expendedoraMoneda:data.dilo.precios.em, ganchoGratis:data.dilo.precios.gg, ganchoMoneda:data.dilo.precios.gm },
+      merch:{ basico:data.dilo.precios.mb, completo:data.dilo.precios.mc, premium:data.dilo.precios.mp },
+      extras:{ horaExtra:data.dilo.extras.hora, diseno:data.dilo.extras.dis, regaloInfantil:data.dilo.extras.nin, moneda:data.dilo.extras.mon, vinilado:data.dilo.extras.vin, km:data.dilo.extras.km },
+      comisiones:{ hasta50:data.colab.comisiones.c50, hasta100:data.colab.comisiones.c100, hasta150:data.colab.comisiones.c150 },
+      textos:data.dilo.textos, contacto:data.contacto, imagenes:data.imagenes,
+    }));
+    isDirty=false;
+    document.getElementById('dirty-ind').style.display='none';
+    const ok=document.getElementById('saved-ok');
+    ok.style.display='block';
+    setTimeout(()=>ok.style.display='none',3000);
+  }catch(e){alert('Error al guardar: '+e.message);}
 }
 
-// ── LOAD PRICES ──
-function loadPrices() {
-  try {
-    const saved = localStorage.getItem('dilo-precios');
-    if (saved) {
-      const p = JSON.parse(saved);
-      applyPrices(p);
-    }
-  } catch(e) {}
-}
+function s(id,val){const el=document.getElementById(id);if(el&&val!==undefined)el.value=val;}
 
-function applyPrices(p) {
-  if (!p) return;
-  // Packs
-  if (p.packs) {
-    set('pack-mini',    p.packs.mini?.precio);
-    set('pack-intima',  p.packs.intima?.precio);
-    set('pack-clasica', p.packs.clasica?.precio);
-    set('pack-premium', p.packs.premium?.precio);
-  }
-  // Seating
-  if (p.seating) {
-    set('sg-30',  p.seating.gafas?.inv30);
-    set('sg-50',  p.seating.gafas?.inv50);
-    set('sg-100', p.seating.gafas?.inv100);
-    set('sg-150', p.seating.gafas?.inv150);
-    set('sb-30',  p.seating.basico?.inv30);
-    set('sb-50',  p.seating.basico?.inv50);
-    set('sb-100', p.seating.basico?.inv100);
-    set('sb-150', p.seating.basico?.inv150);
-    set('sp-panel', p.seating.soloPanel);
-  }
-  // Maquinas
-  if (p.maquinas) {
-    set('exp-gratis',    p.maquinas.expendedoraGratis);
-    set('exp-moneda',    p.maquinas.expendedoraMoneda);
-    set('gancho-gratis', p.maquinas.ganchoGratis);
-    set('gancho-moneda', p.maquinas.ganchoMoneda);
-  }
-  // Merch
-  if (p.merch) {
-    set('merch-basico',   p.merch.basico);
-    set('merch-completo', p.merch.completo);
-    set('merch-premium',  p.merch.premium);
-  }
-  // Extras
-  if (p.extras) {
-    set('extra-hora',     p.extras.horaExtra);
-    set('extra-diseno',   p.extras.diseno);
-    set('extra-nino',     p.extras.regaloInfantil);
-    set('extra-moneda',   p.extras.moneda);
-    set('extra-vinilado', p.extras.vinilado);
-    set('extra-km',       p.extras.km);
-  }
-  // Comisiones
-  if (p.comisiones) {
-    set('com-50',  p.comisiones.hasta50);
-    set('com-100', p.comisiones.hasta100);
-    set('com-150', p.comisiones.hasta150);
-  }
-}
-
-function set(id, val) {
-  const el = document.getElementById(id);
-  if (el && val !== undefined) el.value = val;
-}
-
-// ── SAVE ──
-function saveAll() {
-  const prices = getPrices();
-
-  // Save to localStorage (shared with dossier on same domain)
-  localStorage.setItem('dilo-precios', JSON.stringify(prices));
-
-  // Show success
-  const banner = document.getElementById('saved-banner');
-  banner.style.display = 'flex';
-  setTimeout(() => banner.style.display = 'none', 4000);
-
-  dirty = false;
-  document.getElementById('save-btn').innerHTML = '✓ Guardado';
-  setTimeout(() => {
-    document.getElementById('save-btn').innerHTML = '💾 Guardar y publicar cambios';
-  }, 3000);
-}
-
-
-  // ── GET ALL CONTENT ──
-  function getAllContent() {
-    return {
-      ...getPrices(),
-      textos: {
-        heroTagCliente: v2('txt-hero-tag-cliente'),
-        heroL1: v2('txt-hero-l1'),
-        heroL2: v2('txt-hero-l2'),
-        heroL3: v2('txt-hero-l3'),
-        heroSub: v2('txt-hero-sub'),
-        heroCta: v2('txt-hero-cta'),
-        serv1: v2('txt-serv-1'),
-        serv2: v2('txt-serv-2'),
-        serv3: v2('txt-serv-3'),
-        serv4: v2('txt-serv-4'),
-        serv5: v2('txt-serv-5'),
-      },
-      contacto: {
-        tel:        v2('txt-tel'),
-        email:      v2('txt-email'),
-        emailColab: v2('txt-email-colab'),
-        instagram:  v2('txt-instagram'),
-        web:        v2('txt-web'),
-        zona:       v2('txt-zona'),
-      },
-      imagenes: {
-        hero:            v2('img-hero-data'),
-        personalizacion: v2('img-personalizacion-data'),
-        seating:         v2('img-seating-data'),
-        maquinas:        v2('img-maquinas-data'),
-        merch:           v2('img-merch-data'),
-        b2b:             v2('img-b2b-data'),
-      }
-    };
-  }
-
-  function v2(id) {
-    const el = document.getElementById(id);
-    if (!el) return '';
-    return el.tagName === 'TEXTAREA' ? el.value : el.value;
-  }
-
-  // ── LOAD IMAGE ──
-  function loadImg(input, previewId, dataId) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const src = e.target.result;
-      const preview = document.getElementById(previewId);
-      preview.innerHTML = '<img src="' + src + '">';
-      document.getElementById(dataId).value = src;
-      markDirty();
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // ── APPLY LOADED CONTENT ──
-  function applyContent(data) {
-    applyPrices(data);
-
-    // Textos
-    if (data.textos) {
-      Object.entries(data.textos).forEach(([k,v]) => {
-        const el = document.getElementById('txt-' + k.replace(/([A-Z])/g, m => '-' + m.toLowerCase()));
-        if (!el) {
-          // Try direct mapping
-          const map = {
-            heroTagCliente: 'txt-hero-tag-cliente',
-            heroL1: 'txt-hero-l1', heroL2: 'txt-hero-l2', heroL3: 'txt-hero-l3',
-            heroSub: 'txt-hero-sub', heroCta: 'txt-hero-cta',
-            serv1:'txt-serv-1',serv2:'txt-serv-2',serv3:'txt-serv-3',
-            serv4:'txt-serv-4',serv5:'txt-serv-5',
-          };
-          const el2 = document.getElementById(map[k]);
-          if (el2) el2.value = v;
-        } else { el.value = v; }
+function loadAll(){
+  try{
+    const raw=localStorage.getItem('bendito-admin-v3');
+    if(!raw)return;
+    const d=JSON.parse(raw);
+    if(d.contacto){s('c-tel',d.contacto.tel);s('c-email',d.contacto.email);s('c-email-colab',d.contacto.emailColab);s('c-instagram',d.contacto.instagram);s('c-web',d.contacto.web);s('c-zona',d.contacto.zona);}
+    if(d.imagenes){
+      const km={hero:'img-hero',personalizacion:'img-personalizacion',seating:'img-seating',maquinas:'img-maquinas',merch:'img-merch',queEs:'img-que-es',b2b1:'img-b2b-1',b2b2:'img-b2b-2',b2b3:'img-b2b-3'};
+      Object.entries(km).forEach(([k,imgKey])=>{
+        const val=d.imagenes[k];
+        if(!val)return;
+        const pr=document.getElementById('prev-'+imgKey);
+        const dt=document.getElementById('data-'+imgKey);
+        const ok=document.getElementById('ok-'+imgKey);
+        if(pr)pr.innerHTML='<img src="'+val+'">';
+        if(dt)dt.value=val;
+        if(ok)ok.classList.add('on');
       });
     }
+    if(d.dilo?.textos){const t=d.dilo.textos;s('dt-tag',t.tag);s('dt-l1',t.l1);s('dt-l2',t.l2);s('dt-l3',t.l3);s('dt-sub',t.sub);s('dt-cta',t.cta);s('dt-qs1',t.qs1);s('dt-qs2',t.qs2);s('dt-s1',t.s1);s('dt-s2',t.s2);s('dt-s3',t.s3);s('dt-s4',t.s4);s('dt-s5',t.s5);s('dn-sol',t.navSol);s('dn-col',t.navCol);s('dn-d1',t.dd1);s('dn-d1d',t.dd1d);s('dn-d2',t.dd2);s('dn-d2d',t.dd2d);}
+    if(d.dilo?.precios){const p=d.dilo.precios;s('p-mini',p.mini);s('p-intima',p.intima);s('p-clasica',p.clasica);s('p-premium',p.premium);s('sg-30',p.sg30);s('sg-50',p.sg50);s('sg-100',p.sg100);s('sg-150',p.sg150);s('sb-30',p.sb30);s('sb-50',p.sb50);s('sb-100',p.sb100);s('sb-150',p.sb150);s('sp-panel',p.spPanel);s('p-eg',p.eg);s('p-em',p.em);s('p-gg',p.gg);s('p-gm',p.gm);s('p-mb',p.mb);s('p-mc',p.mc);s('p-mp',p.mp);}
+    if(d.dilo?.extras){const e=d.dilo.extras;s('e-hora',e.hora);s('e-dis',e.dis);s('e-nin',e.nin);s('e-mon',e.mon);s('e-vin',e.vin);s('e-km',e.km);}
+    if(d.dilo?.packs){s('dp-mini',d.dilo.packs.mini);s('dp-intima',d.dilo.packs.intima);s('dp-clasica',d.dilo.packs.clasica);s('dp-premium',d.dilo.packs.premium);}
+    if(d.colab?.textos){const t=d.colab.textos;s('ct-tag',t.tag);s('ct-l1',t.l1);s('ct-l2',t.l2);s('ct-l3',t.l3);s('ct-sub',t.sub);s('ct-p1',t.p1);s('ct-p1d',t.p1d);s('ct-p2',t.p2);s('ct-p2d',t.p2d);s('ct-p3',t.p3);s('ct-p3d',t.p3d);s('ct-ctat',t.ctat);s('ct-ctas',t.ctas);}
+    if(d.colab?.comisiones){s('com-50',d.colab.comisiones.c50);s('com-100',d.colab.comisiones.c100);s('com-150',d.colab.comisiones.c150);s('com-plazo',d.colab.comisiones.plazo);}
+    if(d.b2b?.textos){const t=d.b2b.textos;s('bt-tag',t.tag);s('bt-l1',t.l1);s('bt-l2',t.l2);s('bt-l3',t.l3);s('bt-sub',t.sub);s('bt-qs1',t.qs1);s('bt-qs2',t.qs2);s('bt-ctat',t.ctat);s('bt-ctas',t.ctas);}
+    if(d.b2b?.productos){const p=d.b2b.productos;['t','g','n','c','l','b','k'].forEach(k=>{if(p[k]){s('bp-'+k+'-d',p[k].d);s('bp-'+k+'-p',p[k].p);s('bp-'+k+'-m',p[k].m);}});}
+  }catch(e){console.log('Load error:',e);}
+}
 
-    // Contacto
-    if (data.contacto) {
-      const cmap = { tel:'txt-tel', email:'txt-email', emailColab:'txt-email-colab', instagram:'txt-instagram', web:'txt-web', zona:'txt-zona' };
-      Object.entries(cmap).forEach(([k,id]) => {
-        const el = document.getElementById(id);
-        if (el && data.contacto[k]) el.value = data.contacto[k];
-      });
-    }
-
-    // Imágenes
-    if (data.imagenes) {
-      const imap = {
-        hero:'prev-hero', personalizacion:'prev-personalizacion',
-        seating:'prev-seating', maquinas:'prev-maquinas',
-        merch:'prev-merch', b2b:'prev-b2b'
-      };
-      Object.entries(imap).forEach(([k, previewId]) => {
-        if (data.imagenes[k]) {
-          const preview = document.getElementById(previewId);
-          if (preview) preview.innerHTML = '<img src="' + data.imagenes[k] + '">';
-          const dataEl = document.getElementById('img-' + k + '-data');
-          if (dataEl) dataEl.value = data.imagenes[k];
-        }
-      });
-    }
-  }
-
-
-// Warn before leaving with unsaved changes
-window.addEventListener('beforeunload', e => {
-  if (dirty) {
-    e.preventDefault();
-    e.returnValue = '';
-  }
-});
+window.addEventListener('beforeunload',e=>{if(isDirty){e.preventDefault();e.returnValue='';}});
 </script>
 </body>
 </html>
