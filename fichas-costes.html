@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fichas de Coste — Dilo Bonito INTERNO</title>
+
+<script>
+(function() {
+  const pwd = prompt('Acceso restringido — Introduce la contraseña:');
+  if (pwd !== 'h13701aah03') {
+    document.body.innerHTML = '<div style="background:#0F1117;color:#E8EAF0;height:100vh;display:flex;align-items:center;justify-content:center;font-family:Lato,sans-serif;font-size:16px;">Acceso denegado.</div>';
+    history.pushState('', document.title, '/');
+  }
+})();
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
