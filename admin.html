@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Dilo Bonito</title>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800;900&family=Lato:wght@300;400;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F1117; --surface: #1A1D27; --surface2: #22263A;
+    --border: #2A2F45; --accent: #F2C94C; --green: #4CAF7D;
+    --red: #E85555; --blue: #A8C8E8; --text: #E8EAF0;
+    --text-mid: #8892AA; --text-dim: #4A5068;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* LOGIN */
+  #login-screen {
+    position:fixed; inset:0; background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    z-index:999; flex-direction:column; gap:24px;
+  }
+  .login-box {
+    background:var(--surface); border:1px solid var(--border);
+    padding:48px; width:360px; text-align:center;
+  }
+  .login-title {
+    font-family:'League Spartan',sans-serif; font-weight:900;
+    font-size:28px; color:var(--accent); margin-bottom:8px;
+  }
+  .login-sub { font-size:13px; color:var(--text-mid); margin-bottom:32px; }
+  .login-input {
+    width:100%; background:var(--surface2); border:1px solid var(--border);
+    color:var(--text); padding:14px 16px; font-family:'DM Mono',monospace;
+    font-size:16px; letter-spacing:4px; text-align:center;
+    outline:none; margin-bottom:16px; transition:border-color 0.2s;
+  }
+  .login-input:focus { border-color:var(--accent); }
+  .login-btn {
+    width:100%; background:var(--accent); color:#1A1D27;
+    font-family:'League Spartan',sans-serif; font-weight:800;
+    font-size:16px; letter-spacing:1px; padding:14px;
+    border:none; cursor:pointer; transition:opacity 0.2s;
+  }
+  .login-btn:hover { opacity:0.85; }
+  .login-error { color:var(--red); font-size:13px; margin-top:8px; display:none; }
+
+  /* TOPBAR */
+  .topbar {
+    background:var(--surface); border-bottom:1px solid var(--border);
+    padding:0 32px; height:56px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:10;
+  }
+  .topbar-left { display:flex; align-items:center; gap:12px; }
+  .topbar-logo { font-family:'League Spartan',sans-serif; font-weight:900; font-size:18px; color:var(--accent); }
+  .topbar-badge { background:var(--red); color:white; font-size:9px; font-weight:700; letter-spacing:2px; padding:3px 8px; text-transform:uppercase; }
+  .save-btn {
+    background:var(--green); color:white;
+    font-family:'League Spartan',sans-serif; font-weight:800;
+    font-size:14px; letter-spacing:1px; padding:10px 24px;
+    border:none; cursor:pointer; transition:opacity 0.2s; display:flex; align-items:center; gap:8px;
+  }
+  .save-btn:hover { opacity:0.85; }
+  .save-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+  /* MAIN */
+  .main { max-width:960px; margin:0 auto; padding:48px 32px; }
+
+  .saved-banner {
+    background:rgba(76,175,125,0.15); border:1px solid var(--green);
+    color:var(--green); padding:14px 20px; margin-bottom:32px;
+    font-size:13px; font-weight:700; letter-spacing:1px;
+    display:none; align-items:center; gap:10px;
+  }
+
+  /* SECTIONS */
+  .admin-section { margin-bottom:48px; }
+  .section-header {
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:20px; padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .section-icon { font-size:24px; }
+  .section-title {
+    font-family:'League Spartan',sans-serif; font-weight:800;
+    font-size:20px; color:var(--text);
+  }
+  .section-desc { font-size:12px; color:var(--text-dim); margin-top:2px; }
+
+  /* GRID */
+  .price-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .price-grid.cols3 { grid-template-columns:repeat(3,1fr); }
+  .price-grid.cols4 { grid-template-columns:repeat(4,1fr); }
+
+  .price-card {
+    background:var(--surface); border:1px solid var(--border);
+    padding:20px 20px 16px; transition:border-color 0.2s;
+  }
+  .price-card:hover { border-color:var(--accent); }
+
+  .price-card-label {
+    font-family:'Lato',sans-serif; font-weight:700;
+    font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--text-dim); margin-bottom:8px;
+  }
+  .price-card-name {
+    font-family:'League Spartan',sans-serif; font-weight:800;
+    font-size:16px; color:var(--text); margin-bottom:12px;
+  }
+  .price-card-sub { font-size:11px; color:var(--text-dim); margin-bottom:12px; }
+
+  .price-input-wrap {
+    display:flex; align-items:center; gap:8px;
+  }
+  .price-input {
+    flex:1; background:var(--surface2); border:1px solid var(--border);
+    color:var(--accent); font-family:'DM Mono',monospace;
+    font-size:22px; font-weight:500; padding:10px 12px;
+    outline:none; transition:border-color 0.2s; text-align:right;
+    width:100%;
+  }
+  .price-input:focus { border-color:var(--accent); background:rgba(242,201,76,0.05); }
+  .price-unit { font-size:14px; color:var(--text-mid); flex-shrink:0; }
+
+  /* EXTRAS table */
+  .extras-table { width:100%; border-collapse:collapse; }
+  .extras-table th {
+    font-family:'Lato',sans-serif; font-weight:700; font-size:10px;
+    letter-spacing:2px; text-transform:uppercase; color:var(--text-dim);
+    text-align:left; padding:10px 16px; border-bottom:1px solid var(--border);
+    background:var(--surface);
+  }
+  .extras-table td {
+    padding:12px 16px; border-bottom:1px solid rgba(42,47,69,0.5);
+  }
+  .extras-table tr:hover td { background:rgba(255,255,255,0.02); }
+  .extra-name { font-size:13px; color:var(--text); font-weight:700; }
+  .extra-desc { font-size:11px; color:var(--text-dim); margin-top:2px; }
+  .extra-input {
+    background:transparent; border:none; border-bottom:1px solid var(--border);
+    color:var(--accent); font-family:'DM Mono',monospace;
+    font-size:16px; width:90px; padding:4px 8px; text-align:right;
+    outline:none; transition:border-color 0.2s;
+  }
+  .extra-input:focus { border-bottom-color:var(--accent); }
+
+  /* SEATING TABLE */
+  .seating-table { width:100%; border-collapse:collapse; }
+  .seating-table th {
+    font-size:10px; font-family:'Lato'; font-weight:700;
+    letter-spacing:2px; text-transform:uppercase; color:var(--text-dim);
+    padding:10px 16px; border-bottom:1px solid var(--border);
+    background:var(--surface); text-align:right;
+  }
+  .seating-table th:first-child { text-align:left; }
+  .seating-table td {
+    padding:12px 16px; border-bottom:1px solid rgba(42,47,69,0.5);
+    text-align:right;
+  }
+  .seating-table td:first-child { text-align:left; font-weight:700; font-size:13px; }
+  .seating-table tr:hover td { background:rgba(255,255,255,0.02); }
+  .seating-input {
+    background:transparent; border:none; border-bottom:1px solid var(--border);
+    color:var(--accent); font-family:'DM Mono',monospace;
+    font-size:15px; width:80px; padding:4px 6px; text-align:right; outline:none;
+    transition:border-color 0.2s;
+  }
+  .seating-input:focus { border-bottom-color:var(--accent); }
+
+  /* FOOTER */
+  .admin-footer {
+    text-align:center; padding:32px; color:var(--text-dim);
+    font-size:12px; border-top:1px solid var(--border); margin-top:48px;
+  }
+
+  @media(max-width:700px) {
+    .price-grid, .price-grid.cols3, .price-grid.cols4 { grid-template-columns:1fr; }
+    .main { padding:24px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-title">DILO BONITO</div>
+    <div class="login-sub">Panel de administración · Solo uso interno</div>
+    <input type="password" class="login-input" id="pwd-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkLogin()">
+    <button class="login-btn" onclick="checkLogin()">ENTRAR →</button>
+    <div class="login-error" id="login-error">Contraseña incorrecta</div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">ADMIN</div>
+    <div class="topbar-badge">⚠ Interno</div>
+  </div>
+  <button class="save-btn" id="save-btn" onclick="saveAll()">
+    💾 Guardar y publicar cambios
+  </button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- Banner guardado -->
+  <div class="saved-banner" id="saved-banner">
+    ✓ Precios guardados — el dossier ya muestra los nuevos precios
+  </div>
+
+  <!-- PACKS PERSONALIZACIÓN EN DIRECTO -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">✍️</div>
+      <div>
+        <div class="section-title">Personalización en directo</div>
+        <div class="section-desc">Precios base de los 4 packs</div>
+      </div>
+    </div>
+    <div class="price-grid cols4">
+      <div class="price-card">
+        <div class="price-card-label">Pack</div>
+        <div class="price-card-name">MINI</div>
+        <div class="price-card-sub">Hasta 30 inv · 2h</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="pack-mini" value="299" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Pack</div>
+        <div class="price-card-name">ÍNTIMA</div>
+        <div class="price-card-sub">Hasta 50 inv · 3h</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="pack-intima" value="499" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Pack</div>
+        <div class="price-card-name">CLÁSICA</div>
+        <div class="price-card-sub">Hasta 100 inv · 4h</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="pack-clasica" value="650" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Pack</div>
+        <div class="price-card-name">PREMIUM</div>
+        <div class="price-card-sub">Hasta 150 inv · 5h</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="pack-premium" value="799" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEATING PLAN -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">🗺️</div>
+      <div>
+        <div class="section-title">Seating Plan personalizado</div>
+        <div class="section-desc">Precios según producto y número de invitados</div>
+      </div>
+    </div>
+    <table class="seating-table">
+      <thead>
+        <tr>
+          <th>Modalidad</th>
+          <th>Hasta 30</th>
+          <th>Hasta 50</th>
+          <th>Hasta 100</th>
+          <th>Hasta 150</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🕶️ Gafas de sol</td>
+          <td><input class="seating-input" id="sg-30" value="399" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
+          <td><input class="seating-input" id="sg-50" value="520" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
+          <td><input class="seating-input" id="sg-100" value="820" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
+          <td><input class="seating-input" id="sg-150" value="1120" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
+        </tr>
+        <tr>
+          <td>🥃 Vasitos / Chapas / Bambú</td>
+          <td><input class="seating-input" id="sb-30" value="350" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
+          <td><input class="seating-input" id="sb-50" value="450" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
+          <td><input class="seating-input" id="sb-100" value="699" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
+          <td><input class="seating-input" id="sb-150" value="930" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€</span></td>
+        </tr>
+        <tr>
+          <td>🪵 Solo panel + diseño</td>
+          <td colspan="4" style="text-align:left">
+            <input class="seating-input" id="sp-panel" value="200" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px">€ precio fijo</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MÁQUINAS -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">🎰🪝</div>
+      <div>
+        <div class="section-title">Máquinas</div>
+        <div class="section-desc">Expendedora y gancho</div>
+      </div>
+    </div>
+    <div class="price-grid cols4">
+      <div class="price-card">
+        <div class="price-card-label">Expendedora</div>
+        <div class="price-card-name">Gratuita</div>
+        <div class="price-card-sub">Sin moneda</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="exp-gratis" value="499" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Expendedora</div>
+        <div class="price-card-name">Con moneda</div>
+        <div class="price-card-sub">Moneda personalizada</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="exp-moneda" value="399" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Gancho</div>
+        <div class="price-card-name">Gratuita</div>
+        <div class="price-card-sub">Partidas libres</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="gancho-gratis" value="499" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Gancho</div>
+        <div class="price-card-name">Con moneda</div>
+        <div class="price-card-sub">Moneda personalizada</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="gancho-moneda" value="399" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MERCH CORNER -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">🛍️</div>
+      <div>
+        <div class="section-title">Merch Corner</div>
+        <div class="section-desc">Tres modalidades</div>
+      </div>
+    </div>
+    <div class="price-grid cols3">
+      <div class="price-card">
+        <div class="price-card-label">Modalidad</div>
+        <div class="price-card-name">Básico</div>
+        <div class="price-card-sub">Stand + 1 producto 30ud</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="merch-basico" value="350" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Modalidad</div>
+        <div class="price-card-name">Completo</div>
+        <div class="price-card-sub">Stand + 3 productos 50ud</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="merch-completo" value="580" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Modalidad</div>
+        <div class="price-card-name">Premium</div>
+        <div class="price-card-sub">Con azafata incluida</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="merch-premium" value="799" oninput="markDirty()">
+          <span class="price-unit">€</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTRAS -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">➕</div>
+      <div>
+        <div class="section-title">Extras y complementos</div>
+        <div class="section-desc">Aplican a cualquier servicio</div>
+      </div>
+    </div>
+    <table class="extras-table">
+      <thead>
+        <tr><th>Concepto</th><th>Descripción</th><th style="text-align:right">Precio</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="extra-name">Hora extra de servicio</div></td>
+          <td><div class="extra-desc">Hora adicional de personalización</div></td>
+          <td style="text-align:right"><input class="extra-input" id="extra-hora" value="150" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €/h</span></td>
+        </tr>
+        <tr>
+          <td><div class="extra-name">Diseño gráfico</div></td>
+          <td><div class="extra-desc">Diseño exclusivo personalizado para el evento</div></td>
+          <td style="text-align:right"><input class="extra-input" id="extra-diseno" value="80" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €</span></td>
+        </tr>
+        <tr>
+          <td><div class="extra-name">Regalo infantil</div></td>
+          <td><div class="extra-desc">Por niño</div></td>
+          <td style="text-align:right"><input class="extra-input" id="extra-nino" value="8" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €/ud</span></td>
+        </tr>
+        <tr>
+          <td><div class="extra-name">Monedas personalizadas</div></td>
+          <td><div class="extra-desc">Para máquinas expendedora o gancho</div></td>
+          <td style="text-align:right"><input class="extra-input" id="extra-moneda" value="2" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €/ud</span></td>
+        </tr>
+        <tr>
+          <td><div class="extra-name">Vinilado máquina</div></td>
+          <td><div class="extra-desc">Personalización exterior máquina</div></td>
+          <td style="text-align:right"><input class="extra-input" id="extra-vinilado" value="100" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €</span></td>
+        </tr>
+        <tr>
+          <td><div class="extra-name">Desplazamiento</div></td>
+          <td><div class="extra-desc">Fuera de provincia Ciudad Real · ida y vuelta</div></td>
+          <td style="text-align:right"><input class="extra-input" id="extra-km" value="0.40" step="0.01" oninput="markDirty()"><span style="color:var(--text-dim);font-size:11px"> €/km</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- COMISIONES COLABORADORES -->
+  <div class="admin-section">
+    <div class="section-header">
+      <div class="section-icon">🤝</div>
+      <div>
+        <div class="section-title">Comisiones colaboradores</div>
+        <div class="section-desc">Porcentaje sobre precio base según número de invitados</div>
+      </div>
+    </div>
+    <div class="price-grid cols3">
+      <div class="price-card">
+        <div class="price-card-label">Tramo</div>
+        <div class="price-card-name">Hasta 50 inv.</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="com-50" value="10" min="0" max="50" oninput="markDirty()">
+          <span class="price-unit">%</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Tramo</div>
+        <div class="price-card-name">Hasta 100 inv.</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="com-100" value="12" min="0" max="50" oninput="markDirty()">
+          <span class="price-unit">%</span>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">Tramo</div>
+        <div class="price-card-name">Hasta 150 inv.</div>
+        <div class="price-input-wrap">
+          <input class="price-input" type="number" id="com-150" value="15" min="0" max="50" oninput="markDirty()">
+          <span class="price-unit">%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-footer">
+    Dilo Bonito · Bendito Lab · Panel de administración interno
+  </div>
+</div>
+
+<script>
+const PASSWORD = 'h13701aah03';
+const GITHUB_TOKEN = '';  // Se rellena via prompt si se quiere publicar en GitHub
+let dirty = false;
+
+// ── LOGIN ──
+function checkLogin() {
+  const pwd = document.getElementById('pwd-input').value;
+  if (pwd === PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    loadPrices();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+  }
+}
+
+document.getElementById('pwd-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkLogin();
+});
+
+// ── MARK DIRTY ──
+function markDirty() {
+  dirty = true;
+  document.getElementById('save-btn').textContent = '💾 Guardar cambios';
+}
+
+// ── BUILD PRICES OBJECT ──
+function getPrices() {
+  return {
+    version: '1.0',
+    actualizado: new Date().toISOString().split('T')[0],
+    packs: {
+      mini:    { precio: +v('pack-mini'),    invitados: 30,  horas: 2 },
+      intima:  { precio: +v('pack-intima'),  invitados: 50,  horas: 3 },
+      clasica: { precio: +v('pack-clasica'), invitados: 100, horas: 4 },
+      premium: { precio: +v('pack-premium'), invitados: 150, horas: 5 },
+    },
+    seating: {
+      gafas:  { inv30: +v('sg-30'), inv50: +v('sg-50'), inv100: +v('sg-100'), inv150: +v('sg-150') },
+      basico: { inv30: +v('sb-30'), inv50: +v('sb-50'), inv100: +v('sb-100'), inv150: +v('sb-150') },
+      soloPanel: +v('sp-panel'),
+    },
+    maquinas: {
+      expendedoraGratis: +v('exp-gratis'),
+      expendedoraMoneda: +v('exp-moneda'),
+      ganchoGratis:      +v('gancho-gratis'),
+      ganchoMoneda:      +v('gancho-moneda'),
+    },
+    merch: {
+      basico:   +v('merch-basico'),
+      completo: +v('merch-completo'),
+      premium:  +v('merch-premium'),
+    },
+    extras: {
+      horaExtra:      +v('extra-hora'),
+      diseno:         +v('extra-diseno'),
+      regaloInfantil: +v('extra-nino'),
+      moneda:         +v('extra-moneda'),
+      vinilado:       +v('extra-vinilado'),
+      km:             +v('extra-km'),
+    },
+    comisiones: {
+      hasta50:  +v('com-50'),
+      hasta100: +v('com-100'),
+      hasta150: +v('com-150'),
+    }
+  };
+}
+
+function v(id) {
+  return document.getElementById(id)?.value || 0;
+}
+
+// ── LOAD PRICES ──
+function loadPrices() {
+  try {
+    const saved = localStorage.getItem('dilo-precios');
+    if (saved) {
+      const p = JSON.parse(saved);
+      applyPrices(p);
+    }
+  } catch(e) {}
+}
+
+function applyPrices(p) {
+  if (!p) return;
+  // Packs
+  if (p.packs) {
+    set('pack-mini',    p.packs.mini?.precio);
+    set('pack-intima',  p.packs.intima?.precio);
+    set('pack-clasica', p.packs.clasica?.precio);
+    set('pack-premium', p.packs.premium?.precio);
+  }
+  // Seating
+  if (p.seating) {
+    set('sg-30',  p.seating.gafas?.inv30);
+    set('sg-50',  p.seating.gafas?.inv50);
+    set('sg-100', p.seating.gafas?.inv100);
+    set('sg-150', p.seating.gafas?.inv150);
+    set('sb-30',  p.seating.basico?.inv30);
+    set('sb-50',  p.seating.basico?.inv50);
+    set('sb-100', p.seating.basico?.inv100);
+    set('sb-150', p.seating.basico?.inv150);
+    set('sp-panel', p.seating.soloPanel);
+  }
+  // Maquinas
+  if (p.maquinas) {
+    set('exp-gratis',    p.maquinas.expendedoraGratis);
+    set('exp-moneda',    p.maquinas.expendedoraMoneda);
+    set('gancho-gratis', p.maquinas.ganchoGratis);
+    set('gancho-moneda', p.maquinas.ganchoMoneda);
+  }
+  // Merch
+  if (p.merch) {
+    set('merch-basico',   p.merch.basico);
+    set('merch-completo', p.merch.completo);
+    set('merch-premium',  p.merch.premium);
+  }
+  // Extras
+  if (p.extras) {
+    set('extra-hora',     p.extras.horaExtra);
+    set('extra-diseno',   p.extras.diseno);
+    set('extra-nino',     p.extras.regaloInfantil);
+    set('extra-moneda',   p.extras.moneda);
+    set('extra-vinilado', p.extras.vinilado);
+    set('extra-km',       p.extras.km);
+  }
+  // Comisiones
+  if (p.comisiones) {
+    set('com-50',  p.comisiones.hasta50);
+    set('com-100', p.comisiones.hasta100);
+    set('com-150', p.comisiones.hasta150);
+  }
+}
+
+function set(id, val) {
+  const el = document.getElementById(id);
+  if (el && val !== undefined) el.value = val;
+}
+
+// ── SAVE ──
+function saveAll() {
+  const prices = getPrices();
+
+  // Save to localStorage (shared with dossier on same domain)
+  localStorage.setItem('dilo-precios', JSON.stringify(prices));
+
+  // Show success
+  const banner = document.getElementById('saved-banner');
+  banner.style.display = 'flex';
+  setTimeout(() => banner.style.display = 'none', 4000);
+
+  dirty = false;
+  document.getElementById('save-btn').innerHTML = '✓ Guardado';
+  setTimeout(() => {
+    document.getElementById('save-btn').innerHTML = '💾 Guardar y publicar cambios';
+  }, 3000);
+}
+
+// Warn before leaving with unsaved changes
+window.addEventListener('beforeunload', e => {
+  if (dirty) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+</script>
+</body>
+</html>
