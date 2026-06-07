@@ -1,0 +1,3236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dilo Bonito — Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Marble Blue palette */
+    --cream:      #F5F0E0;
+    --baby:       #A8C8E8;
+    --captain:    #3B6BA5;
+    --deep:       #1E3A5F;
+    --sunshine:   #F2C94C;
+    --rose:       #F0A8A8;
+    --poppy:      #E8704A;
+    --white:      #FDFCF8;
+    --text-dark:  #1E3A5F;
+    --text-mid:   #3B5A7A;
+    --text-light: #7A96B0;
+    --sand:       #E8E0CC;
+    --gray:       #EDE8D8;
+
+    /* Aliases used throughout */
+    --accent:       #3B6BA5;
+    --accent-mid:   #2E5480;
+    --accent-light: #D8E8F5;
+    --black:        #1E3A5F;
+    --beige:        #EDE8D4;
+    --sand-light:   #EAE4D0;
+    --red:          #3B6BA5;
+    --red-dark:     #2E5480;
+    --green:        #1E3A5F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', cursive;
+    background: var(--cream);
+    color: var(--deep);
+    overflow-x: hidden;
+  }
+
+  /* ─── VERSION SWITCHER ─── */
+  .version-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    height: 52px;
+  }
+
+  .version-label {
+    color: rgba(168,200,232,0.7);
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-right: 20px;
+  }
+
+  .version-btn {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0 28px;
+    height: 52px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.4);
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+  }
+
+  .version-btn.active {
+    color: var(--white);
+    border-bottom: 3px solid var(--red);
+  }
+
+  .version-btn:hover { color: rgba(255,255,255,0.9); }
+
+  /* ─── NAV ─── */
+  .nav {
+    position: fixed;
+    top: 52px; left: 0; right: 0;
+    z-index: 999;
+    background: rgba(253,252,248,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--sand);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--black);
+  }
+
+  .nav-logo span { color: var(--captain); }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--deep);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--captain); }
+
+  .nav-cta {
+    background: var(--sunshine);
+    color: var(--deep) !important;
+    padding: 8px 20px;
+    font-size: 12px !important;
+    letter-spacing: 2px !important;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    margin-top: 112px;
+    min-height: calc(100vh - 112px);
+    display: grid;
+    grid-template-columns: 55% 45%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--rose);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+    position: relative;
+    border-right: 2px solid var(--sunshine);
+  }
+
+  .hero-left::after {
+    display: none;
+  }
+
+  .hero-tag {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--deep);
+    margin-bottom: 28px;
+  }
+
+  .hero-title {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: clamp(68px, 8vw, 120px);
+    line-height: 0.88;
+    color: var(--deep);
+    margin-bottom: 32px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-title .accent {
+    color: var(--sunshine);
+    -webkit-text-stroke: 2px var(--deep);
+  }
+
+  .hero-title .accent { color: var(--captain); }
+
+  .hero-subtitle {
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--text-light);
+    max-width: 400px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--deep);
+    color: var(--sunshine);
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding: 16px 40px;
+    text-decoration: none;
+    transition: background 0.2s;
+    width: fit-content;
+  }
+
+  .hero-cta:hover { background: var(--poppy); color: var(--white); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--sunshine);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: var(--sand);
+  }
+
+  .placeholder-icon {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+
+  .placeholder-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    background: var(--captain);
+    color: var(--white);
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    z-index: 3;
+  }
+
+  /* ─── SECTION BASE ─── */
+  section { padding: 100px 0; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .section-label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--captain);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 6vw, 84px);
+    line-height: 0.9;
+    color: var(--deep);
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-body {
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--text-mid);
+    font-family: 'Lato', cursive;
+    max-width: 580px;
+  }
+
+  /* ─── QUÉ ES ─── */
+  .que-es {
+    background: var(--rose);
+  }
+
+  .que-es-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .stat {
+    border-top: 3px solid var(--deep);
+    padding-top: 20px;
+  }
+
+  .stat-number {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    color: var(--deep);
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  .stat-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  /* ─── SERVICIOS ─── */
+  .servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .servicio-card {
+    background: var(--white);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+    border: 1px solid var(--baby);
+  }
+
+  .servicio-card:nth-child(1) { background: var(--sunshine); }
+  .servicio-card:nth-child(2) { background: var(--rose); }
+  .servicio-card:nth-child(3) { background: var(--baby); }
+  .servicio-card:nth-child(4) { background: var(--rose); }
+  .servicio-card:nth-child(5) { background: var(--sunshine); }
+  .servicio-card:nth-child(6) { background: var(--baby); }
+
+  .servicio-card:hover { transform: translateY(-4px); }
+
+  .servicio-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--sunshine);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .servicio-card:hover::before { transform: scaleX(1); }
+
+  .servicio-num {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    color: rgba(30,58,95,0.2);
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .servicio-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .servicio-name {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: 0.5px;
+    color: var(--deep);
+    margin-bottom: 12px;
+    line-height: 1.05;
+  }
+
+  .servicio-desc {
+    font-size: 13px;
+    line-height: 1.75;
+    font-family: 'Lato', cursive;
+    color: var(--text-mid);
+    margin-bottom: 24px;
+  }
+
+  .servicio-price {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 20px;
+    color: var(--captain);
+    letter-spacing: 1px;
+  }
+
+  /* ─── SERVICIO DETALLE ─── */
+  .servicio-detalle {
+    padding: 100px 0;
+    border-top: 1px solid var(--gray);
+  }
+
+  .servicio-detalle:nth-child(even) { background: var(--beige); }
+
+  .detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .detalle-grid.reverse { direction: rtl; }
+  .detalle-grid.reverse > * { direction: ltr; }
+
+  .detalle-img {
+    aspect-ratio: 4/3;
+    background: var(--sunshine);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--deep);
+  }
+
+  .detalle-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .detalle-content {}
+
+  .opciones-list {
+    list-style: none;
+    margin: 24px 0;
+  }
+
+  .opciones-list li {
+    font-family: 'Lato', cursive;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-mid);
+  }
+
+  .opciones-list li::before {
+    content: '→';
+    color: var(--captain);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .precio-box {
+    background: var(--deep);
+    color: var(--white);
+    padding: 28px 32px;
+    margin-top: 32px;
+  }
+
+  .precio-desde {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .precio-valor {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    color: var(--sunshine);
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  .precio-nota {
+    font-family: 'Lato', cursive;
+    font-size: 13px;
+    color: rgba(245,240,232,0.55);
+    margin-top: 6px;
+  }
+
+  /* ─── PACKS ─── */
+  .packs-section {
+    background: var(--deep);
+    padding: 100px 0;
+  }
+
+  .packs-section .section-title { color: var(--cream); }
+  .packs-section .section-label { color: var(--sand); }
+  .packs-section .section-body { color: rgba(245,240,232,0.6); }
+
+  .packs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .pack-card {
+    background: rgba(255,255,255,0.07);
+    padding: 48px 32px;
+    border-top: 4px solid rgba(255,255,255,0.12);
+    transition: border-color 0.3s;
+  }
+
+  .pack-card.featured {
+    background: var(--sunshine);
+    border-top-color: var(--deep);
+  }
+
+  .pack-card:hover { border-top-color: var(--captain); }
+  .pack-card.featured:hover { border-top-color: var(--deep); }
+  .pack-card.featured .pack-name,
+  .pack-card.featured .pack-precio,
+  .pack-card.featured .pack-invitados,
+  .pack-card.featured .pack-horas { color: var(--deep); }
+  .pack-card.featured .pack-features li { color: var(--deep); opacity: 0.8; }
+  .pack-card.featured .pack-features li::before { color: var(--deep); }
+
+  .pack-name {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-weight: 800;
+    font-size: 32px;
+    letter-spacing: 1px;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  .pack-invitados {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.45);
+    margin-bottom: 32px;
+  }
+
+  .pack-precio {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 60px;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+  }
+
+  .pack-precio-eur {
+    font-size: 28px;
+    vertical-align: top;
+    margin-top: 8px;
+    display: inline-block;
+  }
+
+  .pack-horas {
+    font-family: 'Lato', cursive;
+    font-size: 13px;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+  }
+
+  .pack-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pack-features li {
+    font-family: 'Lato', cursive;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pack-features li::before {
+    content: '✓';
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  /* ─── COTIZADOR ─── */
+  .cotizador-section {
+    background: var(--cream);
+    padding: 100px 0;
+  }
+
+  .cotizador-wrapper {
+    background: var(--white);
+    border: 1px solid var(--baby);
+    max-width: 900px;
+    margin: 60px auto 0;
+  }
+
+  .cotizador-header {
+    background: var(--deep);
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cotizador-header h3 {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: 1px;
+    color: var(--cream);
+  }
+
+  .cotizador-total-display {
+    text-align: right;
+  }
+
+  .cotizador-total-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+  }
+
+  .cotizador-total-value {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 40px;
+    color: var(--captain);
+    line-height: 1;
+  }
+
+  .cotizador-body {
+    padding: 40px;
+  }
+
+  .cotizador-step {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--gray);
+  }
+
+  .cotizador-step:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .step-label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--captain);
+    margin-bottom: 16px;
+  }
+
+  .step-title {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--deep);
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Selector buttons */
+  .selector-grid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .selector-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .selector-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .selector-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+  .sel-btn {
+    border: 1.5px solid var(--baby);
+    background: var(--white);
+    padding: 16px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sel-btn:hover { border-color: var(--captain); }
+
+  .sel-btn.active {
+    border-color: var(--captain);
+    background: rgba(215,40,40,0.04);
+  }
+
+  .sel-btn-name {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    color: var(--black);
+  }
+
+  .sel-btn-detail {
+    font-family: 'Lato', cursive;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .sel-btn-price {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 18px;
+    color: var(--captain);
+    margin-top: 4px;
+  }
+
+  /* Extras */
+  .extras-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .extra-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border: 1.5px solid var(--sand);
+    background: var(--white);
+    gap: 12px;
+  }
+
+  .extra-info {
+    flex: 1;
+  }
+
+  .extra-name {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--black);
+  }
+
+  .extra-price {
+    font-size: 13px;
+    color: var(--captain);
+    font-family: 'League Spartan';
+    letter-spacing: 1px;
+  }
+
+  .extra-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .extra-toggle {
+    width: 44px;
+    height: 24px;
+    background: #ddd;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .extra-toggle.on { background: var(--captain); }
+
+  .extra-toggle::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.2s;
+  }
+
+  .extra-toggle.on::after { transform: translateX(20px); }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--gray);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: all 0.15s;
+  }
+
+  .qty-btn:hover { border-color: var(--captain); color: var(--captain); }
+
+  .qty-value {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 20px;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  /* Distancia */
+  .distancia-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .distancia-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--gray);
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    color: var(--black);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .distancia-input:focus { border-color: var(--captain); }
+
+  .distancia-calc {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 20px;
+    color: var(--captain);
+    min-width: 80px;
+  }
+
+  /* Resumen */
+  .resumen-box {
+    background: var(--deep);
+    padding: 32px;
+    margin-top: 32px;
+  }
+
+  .resumen-title {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--cream);
+    margin-bottom: 20px;
+  }
+
+  .resumen-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
+    color: rgba(168,200,232,0.7);
+    font-weight: 300;
+  }
+
+  .resumen-line span:last-child { color: var(--sunshine); font-family: 'League Spartan', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0; }
+
+  .resumen-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 20px;
+    margin-top: 8px;
+  }
+
+  .resumen-total-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.45);
+  }
+
+  .resumen-total-value {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 56px;
+    color: var(--sunshine);
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  /* ─── FORMULARIO ─── */
+  .form-section {
+    background: var(--deep);
+    padding: 100px 0;
+  }
+
+  .form-section .section-title { color: var(--cream); }
+  .form-section .section-body { color: rgba(245,240,232,0.55); }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 60px;
+    align-items: start;
+  }
+
+  .form-wrapper {
+    background: rgba(255,255,255,0.06);
+    padding: 48px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Lato', sans-serif;
+    color: rgba(245,240,232,0.45);
+    margin-bottom: 8px;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--cream);
+    padding: 14px 16px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: rgba(255,255,255,0.4);
+  }
+
+  .form-select option { background: #222; }
+
+  .form-textarea { height: 100px; resize: vertical; }
+
+  .form-submit {
+    width: 100%;
+    background: var(--deep);
+    color: var(--sunshine);
+    border: none;
+    padding: 18px;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 8px;
+  }
+
+  .form-submit:hover { background: var(--poppy); color: var(--white); }
+
+  .form-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .info-item {
+    border-left: 3px solid var(--baby);
+    padding-left: 24px;
+  }
+
+  .info-item-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 6px;
+  }
+
+  .info-item-value {
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: 0.3px;
+  }
+
+  .info-item-sub {
+    font-family: 'Lato', cursive;
+    font-size: 13px;
+    color: rgba(245,240,232,0.5);
+    margin-top: 4px;
+  }
+
+  .whatsapp-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #25D366;
+    color: white;
+    padding: 16px 28px;
+    text-decoration: none;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    transition: opacity 0.2s;
+    width: fit-content;
+    margin-top: 16px;
+  }
+
+  .whatsapp-btn:hover { opacity: 0.9; }
+
+  /* ─── CÓMO FUNCIONA ─── */
+  .como-section { background: var(--cream); }
+
+  .pasos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 60px;
+    border: 1px solid var(--sand);
+  }
+
+  .paso {
+    padding: 40px 32px;
+    border-right: 1px solid var(--sand);
+    position: relative;
+  }
+
+  .paso:last-child { border-right: none; }
+
+  .paso-num {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 72px;
+    color: var(--sunshine);
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .paso-title {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.3px;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+
+  .paso-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    font-family: 'Lato', cursive;
+    color: var(--text-mid);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--green);
+    padding: 60px 0 40px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 32px;
+  }
+
+  .footer-brand {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 36px;
+    letter-spacing: 2px;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+
+  .footer-brand span { color: var(--captain); }
+
+  .footer-tagline {
+    font-family: 'Lato', cursive;
+    font-size: 14px;
+    color: #888;
+    line-height: 1.8;
+    max-width: 300px;
+  }
+
+  .footer-col-title {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #444;
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-family: 'Lato', cursive;
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: #444;
+    font-family: 'Lato';
+    letter-spacing: 1px;
+  }
+
+  .footer-by {
+    font-size: 12px;
+    color: #333;
+    font-family: 'Lato';
+    letter-spacing: 1px;
+  }
+
+  .footer-by span { color: var(--captain); }
+
+  /* ─── COLLAB ONLY SECTIONS ─── */
+  .collab-only { display: none; }
+  .client-only { display: block; }
+
+  body.collab .collab-only { display: block; }
+  body.collab .client-only { display: none; }
+
+  /* ─── COLLAB BANNER ─── */
+  .collab-banner {
+    background: var(--rose);
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  .collab-banner h2 {
+    font-family: 'League Spartan', sans-serif;
+    font-size: clamp(40px, 5vw, 72px);
+    color: var(--deep);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .collab-banner p {
+    font-family: 'Lato', cursive;
+    font-size: 16px;
+    color: var(--deep);
+    max-width: 560px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+
+  .collab-banner a {
+    display: inline-block;
+    background: var(--sunshine);
+    color: var(--deep);
+    font-family: 'League Spartan', sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding: 16px 40px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .collab-banner a:hover { opacity: 0.9; }
+
+  /* B2B section */
+  .b2b-section { background: var(--white); }
+
+  .b2b-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .b2b-card {
+    background: var(--white);
+    padding: 40px 32px;
+    border-top: 4px solid transparent;
+    transition: border-color 0.3s;
+  }
+
+  .b2b-card:nth-child(odd):hover { border-top-color: var(--sunshine); }
+  .b2b-card:nth-child(even):hover { border-top-color: var(--rose); }
+  .b2b-card:hover { border-top-color: var(--captain); }
+
+  .b2b-icon { font-size: 32px; margin-bottom: 20px; display: block; }
+
+  .b2b-name {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.5px;
+    color: var(--deep);
+    margin-bottom: 8px;
+  }
+
+  .b2b-card:nth-child(odd) .b2b-name,
+  .b2b-card:nth-child(even) .b2b-name { color: var(--deep); }
+  .b2b-card:nth-child(odd) .b2b-desde { color: var(--deep); }
+  .b2b-card:nth-child(even) .b2b-desde { color: var(--deep); }
+
+  .b2b-desc {
+    font-family: 'Lato', cursive;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-mid);
+    margin-bottom: 16px;
+  }
+
+  .b2b-desde {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 16px;
+    color: var(--captain);
+    letter-spacing: 1px;
+  }
+
+  /* ─── SCROLL ANIMATION ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESUMEN COTIZADOR FLOAT ─── */
+  .float-total {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--deep);
+    color: var(--white);
+    padding: 16px 24px;
+    z-index: 500;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-left: 3px solid var(--sunshine);
+  }
+
+  .float-total:hover { background: var(--captain); }
+
+  .float-total-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .float-total-value {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  .success-msg {
+    background: #1a4a1a;
+    border: 1px solid #2a7a2a;
+    color: #7aff7a;
+    padding: 16px 20px;
+    font-family: 'Lato';
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-top: 16px;
+    display: none;
+  }
+
+  /* ─── COMISIÓN COLABORADOR ─── */
+  .comision-section {
+    background: var(--green);
+    padding: 100px 0;
+  }
+
+  .comision-section .section-title { color: var(--white); }
+  .comision-section .section-label { color: var(--captain); }
+
+  .comision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .comision-card {
+    background: #1a1a1a;
+    padding: 48px 36px;
+    border-top: 4px solid #333;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+
+  .comision-card:hover { border-top-color: var(--captain); }
+  .comision-card.highlight { border-top-color: var(--sunshine); background: rgba(242,201,76,0.15); }
+
+  .comision-inv {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 16px;
+  }
+
+  .comision-pct {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 88px;
+    color: var(--sunshine);
+    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+  }
+
+  .comision-pct-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #666;
+    margin-bottom: 32px;
+  }
+
+  .comision-ejemplo {
+    background: #111;
+    padding: 20px;
+    text-align: left;
+  }
+
+  .comision-ejemplo-title {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 12px;
+  }
+
+  .comision-ejemplo-line {
+    font-family: 'Lato', cursive;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #888;
+    padding: 4px 0;
+  }
+
+  .comision-ejemplo-line.total {
+    border-top: 1px solid #222;
+    margin-top: 8px;
+    padding-top: 10px;
+    color: var(--white);
+    font-family: 'League Spartan';
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+  .comision-condiciones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 2px;
+  }
+
+  .condicion-item {
+    background: rgba(0,0,0,0.2);
+    padding: 32px 28px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .condicion-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .condicion-title {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--cream);
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+  }
+
+  .condicion-desc {
+    font-family: 'Lato', cursive;
+    font-size: 13px;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.7;
+  }
+
+  /* Cotizador colaborador — panel comisión */
+  .comision-panel {
+    background: #0d2a0d;
+    border: 1px solid #1a4a1a;
+    padding: 28px 32px;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .comision-panel.visible { display: block; }
+
+  .comision-panel-title {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: #7aff7a;
+    margin-bottom: 16px;
+  }
+
+  .comision-panel-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #5a9a5a;
+    padding: 6px 0;
+    border-bottom: 1px solid #1a3a1a;
+  }
+
+  .comision-panel-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 16px;
+    margin-top: 8px;
+  }
+
+  .comision-panel-total-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: #5a9a5a;
+  }
+
+  .comision-panel-total-value {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 900;
+    font-size: 44px;
+    color: #7aff7a;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  .comision-panel-nota {
+    font-size: 11px;
+    color: #3a6a3a;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left::after { display: none; }
+    .que-es-grid, .detalle-grid, .form-grid { grid-template-columns: 1fr; }
+    .servicios-grid, .b2b-grid { grid-template-columns: 1fr; }
+    .packs-grid { grid-template-columns: repeat(2, 1fr); }
+    .pasos-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .selector-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ─── CUSTOMIZER PANEL ─── */
+  #customizer-btn {
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    z-index: 600;
+    background: var(--deep);
+    color: var(--sunshine);
+    border: none;
+    padding: 12px 18px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+  }
+  #customizer-btn:hover { background: var(--captain); }
+
+  #customizer-panel {
+    position: fixed;
+    top: 0; right: -380px;
+    width: 360px;
+    height: 100vh;
+    background: #fff;
+    z-index: 900;
+    box-shadow: -4px 0 40px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+    overflow: hidden;
+  }
+  #customizer-panel.open { right: 0; }
+
+  .cust-header {
+    background: var(--deep);
+    color: var(--sunshine);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .cust-header h3 {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+  .cust-close {
+    background: none;
+    border: none;
+    color: var(--sunshine);
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+  }
+
+  .cust-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .cust-section {
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .cust-section-title {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    padding: 16px 24px 8px;
+    background: #fafafa;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+  .cust-section-title:hover { background: #f5f5f5; }
+  .cust-section-title .arrow { transition: transform 0.2s; }
+  .cust-section-title.collapsed .arrow { transform: rotate(-90deg); }
+
+  .cust-rows {
+    padding: 8px 24px 16px;
+  }
+  .cust-rows.hidden { display: none; }
+
+  .cust-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+    gap: 12px;
+  }
+  .cust-row:last-child { border-bottom: none; }
+
+  .cust-row-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #444;
+    flex: 1;
+    line-height: 1.3;
+  }
+  .cust-row-label small {
+    display: block;
+    font-size: 11px;
+    color: #aaa;
+    font-style: italic;
+  }
+
+  .cust-color {
+    width: 36px;
+    height: 36px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .cust-text {
+    width: 90px;
+    border: 1px solid #e0e0e0;
+    padding: 6px 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+  }
+
+  .cust-select {
+    border: 1px solid #e0e0e0;
+    padding: 6px 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    color: #333;
+    background: white;
+    max-width: 140px;
+  }
+
+  .cust-footer {
+    padding: 16px 24px;
+    background: #fafafa;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .cust-btn {
+    width: 100%;
+    padding: 12px;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .cust-btn:hover { opacity: 0.85; }
+  .cust-btn-primary { background: #1E3A5F; color: #F2C94C; }
+  .cust-btn-secondary { background: #f0f0f0; color: #444; }
+  .cust-btn-success { background: #2d7a2d; color: white; font-size: 12px; }
+
+  .cust-code-area {
+    display: none;
+    background: #1a1a1a;
+    color: #7aff7a;
+    font-family: monospace;
+    font-size: 11px;
+    padding: 12px;
+    line-height: 1.6;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre;
+    border-top: 1px solid #eee;
+  }
+  .cust-code-area.visible { display: block; }
+
+  #cust-saved-msg {
+    background: #d4edda;
+    color: #155724;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-family: 'Lato';
+    text-align: center;
+    display: none;
+    border-radius: 2px;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- VERSION BAR -->
+<div class="version-bar">
+  <span class="version-label">Ver dossier para:</span>
+  <button class="version-btn active" id="btn-clientes" onclick="setVersion('clientes')">Clientes</button>
+  <button class="version-btn" id="btn-colaboradores" onclick="setVersion('colaboradores')">Colaboradores</button>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">DILO <span>BONITO</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#packs">Packs</a></li>
+    <li><a href="#cotizador">Cotizador</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#contacto" class="nav-cta">Solicitar info</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-tag client-only">Personalización en vivo para tu evento</span>
+    <span class="hero-tag collab-only" style="display:none">El servicio que enamora a tus clientes</span>
+
+    <h1 class="hero-title client-only">HAZ QUE TU<br>EVENTO SEA<br><span class="accent">INOLVIDABLE</span></h1>
+    <h1 class="hero-title collab-only" style="display:none">UN SERVICIO<br>QUE MARCA<br><span class="accent">LA DIFERENCIA</span></h1>
+
+    <p class="hero-subtitle client-only">Personalizamos artículos en directo para que cada invitado se lleve un recuerdo único. Bodas, cumpleaños, comuniones, eventos de empresa.</p>
+    <p class="hero-subtitle collab-only" style="display:none">Ofrecemos personalización en vivo para tus eventos. Un complemento diferencial que añade valor a tu finca, tu agencia o tu servicio. Sin complicaciones para ti.</p>
+
+    <a href="#cotizador" class="hero-cta">Calcular mi presupuesto →</a>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-placeholder">
+      <div class="placeholder-icon">🖼</div>
+      <span class="placeholder-text">Imagen hero — pendiente</span>
+    </div>
+    <div class="hero-badge">Ciudad Real · España</div>
+  </div>
+</section>
+
+<!-- QUÉ ES -->
+<section class="que-es">
+  <div class="container">
+    <div class="que-es-grid reveal">
+      <div>
+        <span class="section-label">Quiénes somos</span>
+        <h2 class="section-title">DILO<br>BONITO</h2>
+        <p class="section-body client-only">Somos el servicio de personalización en vivo de Bendito Lab. Llevamos nuestro taller directamente a tu evento: máquinas, productos, equipo y creatividad.<br><br>Cada invitado elige, personaliza y se lleva su artículo en el momento. Sin esperas, sin complicaciones. Solo experiencias que se recuerdan.</p>
+        <p class="section-body collab-only" style="display:none">Somos el servicio de personalización en vivo de Bendito Lab. Nos integramos en tu evento como un proveedor más — pero con un impacto que tus clientes no esperan.<br><br>Tú ofreces el servicio. Nosotros ejecutamos. Todos ganan.</p>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-number">7</div>
+            <div class="stat-label">Servicios disponibles</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">150+</div>
+            <div class="stat-label">Invitados max.</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">24h</div>
+            <div class="stat-label">Respuesta presupuesto</div>
+          </div>
+        </div>
+      </div>
+      <div class="detalle-img" style="background:var(--rose);">
+        <div class="placeholder-icon">🖼</div>
+        <span class="placeholder-text">Imagen presentación</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS OVERVIEW -->
+<section id="servicios" style="padding:100px 0; background:var(--white)">
+  <div class="container">
+    <span class="section-label">Lo que hacemos</span>
+    <h2 class="section-title">NUESTROS<br>SERVICIOS</h2>
+  </div>
+  <div class="container">
+    <div class="servicios-grid reveal">
+      <div class="servicio-card">
+        <div class="servicio-num">01</div>
+        <span class="servicio-icon">✍️</span>
+        <div class="servicio-name">Personalización<br>en directo</div>
+        <p class="servicio-desc">Tu taller de personalización montado en el evento. Tote bags, gorras, neceseres y más.</p>
+        <div class="servicio-price">Desde 299€</div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-num">02</div>
+        <span class="servicio-icon">🗺️</span>
+        <div class="servicio-name">Seating Plan<br>Personalizado</div>
+        <p class="servicio-desc">El cartel de mesas convertido en experiencia: gafas, vasitos, chapas o piezas de bambú con el nombre de cada invitado.</p>
+        <div class="servicio-price">Desde 350€</div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-num">03</div>
+        <span class="servicio-icon">🎰</span>
+        <div class="servicio-name">Máquina<br>Expendedora</div>
+        <p class="servicio-desc">Cápsulas con productos personalizados. Gratuita o con moneda personalizada.</p>
+        <div class="servicio-price">Desde 350€</div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-num">04</div>
+        <span class="servicio-icon">🪝</span>
+        <div class="servicio-name">Máquina<br>Gancho</div>
+        <p class="servicio-desc">Premios personalizados dentro de una máquina de gancho decorada a medida para tu evento.</p>
+        <div class="servicio-price">Desde 399€</div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-num">05</div>
+        <span class="servicio-icon">🛍️</span>
+        <div class="servicio-name">Merch<br>Corner</div>
+        <p class="servicio-desc">Espacio de merchandising personalizado montado y gestionado por nosotros en tu evento.</p>
+        <div class="servicio-price">Desde 350€</div>
+      </div>
+      <div class="servicio-card collab-only" style="display:none">
+        <div class="servicio-num">06</div>
+        <span class="servicio-icon">📦</span>
+        <div class="servicio-name">B2B<br>Productos</div>
+        <p class="servicio-desc">Pedidos de productos personalizados para ofrecer a tus clientes como servicio adicional.</p>
+        <div class="servicio-price">Consultar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DETALLE: PERSONALIZACIÓN EN DIRECTO -->
+<div class="servicio-detalle">
+  <div class="container">
+    <div class="detalle-grid reveal">
+      <div class="detalle-img">
+        <div class="placeholder-icon">🖼</div>
+        <span class="placeholder-text">Img: Personalización en directo</span>
+      </div>
+      <div class="detalle-content">
+        <span class="section-label">Servicio 01</span>
+        <h2 class="section-title">PERSONALIZACIÓN<br>EN DIRECTO</h2>
+        <p class="section-body">Instalamos nuestro puesto en tu evento y personalizamos artículos delante de tus invitados. Cada pieza es única. Cada nombre, mensaje o diseño se aplica en el momento.</p>
+        <ul class="opciones-list">
+          <li>Tote bags de algodón personalizadas</li>
+          <li>Gorras bordadas o con transfer</li>
+          <li>Neceseres personalizados</li>
+          <li>Camisetas con nombre o diseño</li>
+          <li>Cualquier artículo textil — consultar</li>
+        </ul>
+        <div class="precio-box">
+          <div class="precio-desde">Desde</div>
+          <div class="precio-valor">299<span style="font-size:28px">€</span></div>
+          <div class="precio-nota">Pack MINI · hasta 30 invitados · 2 horas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETALLE: SEATING PLAN -->
+<div class="servicio-detalle" style="background:var(--beige)">
+  <div class="container">
+    <div class="detalle-grid reverse reveal">
+      <div class="detalle-img">
+        <div class="placeholder-icon">🖼</div>
+        <span class="placeholder-text">Img: Seating Plan</span>
+      </div>
+      <div class="detalle-content">
+        <span class="section-label">Servicio 02</span>
+        <h2 class="section-title">SEATING PLAN<br>PERSONALIZADO</h2>
+        <p class="section-body">El primer impacto que tienen tus invitados al llegar — hazlo memorable. Cada invitado encuentra su nombre en un artículo personalizado y descubre así su mesa.</p>
+        <ul class="opciones-list">
+          <li>Gafas de sol con nombre — desde 399€</li>
+          <li>Vasitos de chupito grabados — desde 350€</li>
+          <li>Chapas y pins personalizados — desde 350€</li>
+          <li>Piezas de bambú grabadas a láser — desde 350€</li>
+          <li>Solo panel + diseño + montaje — desde 200€</li>
+        </ul>
+        <div class="precio-box">
+          <div class="precio-desde">Desde</div>
+          <div class="precio-valor">350<span style="font-size:28px">€</span></div>
+          <div class="precio-nota">Precio según producto y número de invitados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETALLE: MÁQUINAS -->
+<div class="servicio-detalle">
+  <div class="container">
+    <div class="detalle-grid reveal">
+      <div class="detalle-img">
+        <div class="placeholder-icon">🖼</div>
+        <span class="placeholder-text">Img: Máquina Expendedora</span>
+      </div>
+      <div class="detalle-content">
+        <span class="section-label">Servicios 03 · 04</span>
+        <h2 class="section-title">MÁQUINAS<br>PERSONALIZADAS</h2>
+        <p class="section-body">Dos experiencias únicas. La expendedora de cápsulas con productos personalizados, o la máquina de gancho con premios a medida. Ambas con exterior vinilado para tu evento.</p>
+        <ul class="opciones-list">
+          <li>Expendedora: gratuita o con moneda personalizada</li>
+          <li>Gancho: partidas gratis o con moneda del evento</li>
+          <li>Vinilado exterior con tu diseño o fecha</li>
+          <li>Premios 100% personalizados (tote bags, gorras...)</li>
+          <li>Partidas ilimitadas durante el evento</li>
+        </ul>
+        <div class="precio-box">
+          <div class="precio-desde">Desde</div>
+          <div class="precio-valor">350<span style="font-size:28px">€</span></div>
+          <div class="precio-nota">Incluye productos, vinilado y montaje</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETALLE: MERCH CORNER -->
+<div class="servicio-detalle" style="background:var(--beige)">
+  <div class="container">
+    <div class="detalle-grid reverse reveal">
+      <div class="detalle-img">
+        <div class="placeholder-icon">🖼</div>
+        <span class="placeholder-text">Img: Merch Corner</span>
+      </div>
+      <div class="detalle-content">
+        <span class="section-label">Servicio 05</span>
+        <h2 class="section-title">MERCH<br>CORNER</h2>
+        <p class="section-body">Un espacio de merchandising personalizado, montado y gestionado por nosotros. Tus invitados eligen, personalizan y se llevan su artículo favorito.</p>
+        <ul class="opciones-list">
+          <li>Stand con tu branding y diseño</li>
+          <li>Tote bags, gorras, neceseres, camisetas</li>
+          <li>Azafata/o de servicio (versión premium)</li>
+          <li>Ideal para bodas, eventos corporativos y festivales privados</li>
+        </ul>
+        <div class="precio-box">
+          <div class="precio-desde">Desde</div>
+          <div class="precio-valor">350<span style="font-size:28px">€</span></div>
+          <div class="precio-nota">Stand + productos + montaje</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2B (solo colaboradores) -->
+<section class="b2b-section collab-only" style="background:var(--cream)" style="display:none">
+  <div class="container">
+    <span class="section-label">Para empresas y colaboradores</span>
+    <h2 class="section-title">PRODUCTOS<br>B2B</h2>
+    <p class="section-body">¿Necesitas productos personalizados sin evento en directo? También trabajamos pedidos B2B: merch corporativo, regalos de empresa y detalles para eventos.</p>
+    <div class="b2b-grid reveal">
+      <div class="b2b-card">
+        <span class="b2b-icon">👜</span>
+        <div class="b2b-name">Tote Bags</div>
+        <p class="b2b-desc">Bolsas de algodón personalizadas con logo, nombre o diseño. Mínimo 20 unidades.</p>
+        <div class="b2b-desde" style="color:var(--captain)">Desde 4,50€/ud</div>
+      </div>
+      <div class="b2b-card">
+        <span class="b2b-icon">🧢</span>
+        <div class="b2b-name">Gorras</div>
+        <p class="b2b-desc">Gorras bordadas con tu logo o diseño. Mínimo 10 unidades.</p>
+        <div class="b2b-desde" style="color:var(--captain)">Desde 8€/ud</div>
+      </div>
+      <div class="b2b-card">
+        <span class="b2b-icon">📓</span>
+        <div class="b2b-name">Libretas</div>
+        <p class="b2b-desc">Cuadernos personalizados para eventos corporativos. Mínimo 20 unidades.</p>
+        <div class="b2b-desde" style="color:var(--captain)">Desde 6€/ud</div>
+      </div>
+      <div class="b2b-card">
+        <span class="b2b-icon">🪵</span>
+        <div class="b2b-name">Bambú grabado</div>
+        <p class="b2b-desc">Posavasos, fichas y piezas de bambú grabadas a láser. Mínimo 30 unidades.</p>
+        <div class="b2b-desde" style="color:var(--captain)">Desde 3€/ud</div>
+      </div>
+      <div class="b2b-card">
+        <span class="b2b-icon">🎁</span>
+        <div class="b2b-name">Kit regalo empresa</div>
+        <p class="b2b-desc">Pack de 3 productos personalizados listos para regalar. Mínimo 10 kits.</p>
+        <div class="b2b-desde" style="color:var(--captain)">Desde 18€/kit</div>
+      </div>
+      <div class="b2b-card">
+        <span class="b2b-icon">✨</span>
+        <div class="b2b-name">Otros artículos</div>
+        <p class="b2b-desc">Cualquier producto personalizable. Cuéntanos tu idea y lo estudiamos.</p>
+        <div class="b2b-desde">Presupuesto a medida</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMISIÓN COLABORADORES (solo colaboradores) -->
+<section class="comision-section collab-only" style="display:none">
+  <div class="container">
+    <span class="section-label" style="color:var(--baby)">Modelo de colaboración</span>
+    <h2 class="section-title" style="color:var(--white)">TU<br>COMISIÓN</h2>
+    <p class="section-body" style="color:#888; max-width:560px">Bendito Lab gestiona íntegramente el servicio y cobra directamente al cliente. Tú recibes tu comisión en un plazo de 1 a 3 días tras la celebración del evento.</p>
+
+    <div class="comision-grid reveal">
+      <div class="comision-card">
+        <div class="comision-inv">Hasta 50 invitados</div>
+        <div class="comision-pct">10<span style="font-size:40px">%</span></div>
+        <div class="comision-pct-label">sobre el precio base</div>
+        <div class="comision-ejemplo">
+          <div class="comision-ejemplo-title">Ejemplo — Pack Íntima</div>
+          <div class="comision-ejemplo-line"><span>Precio al cliente</span><span>499€</span></div>
+          <div class="comision-ejemplo-line"><span>Tu comisión (10%)</span><span style="color:#7aff7a">49,90€</span></div>
+          <div class="comision-ejemplo-line total"><span>Cobras</span><span style="color:#7aff7a">49,90€</span></div>
+        </div>
+      </div>
+      <div class="comision-card highlight">
+        <div class="comision-inv">Hasta 100 invitados</div>
+        <div class="comision-pct">12<span style="font-size:40px">%</span></div>
+        <div class="comision-pct-label">sobre el precio base</div>
+        <div class="comision-ejemplo">
+          <div class="comision-ejemplo-title">Ejemplo — Pack Clásica</div>
+          <div class="comision-ejemplo-line"><span>Precio al cliente</span><span>650€</span></div>
+          <div class="comision-ejemplo-line"><span>Tu comisión (12%)</span><span style="color:#7aff7a">78€</span></div>
+          <div class="comision-ejemplo-line total"><span>Cobras</span><span style="color:#7aff7a">78€</span></div>
+        </div>
+      </div>
+      <div class="comision-card">
+        <div class="comision-inv">Hasta 150 invitados</div>
+        <div class="comision-pct">15<span style="font-size:40px">%</span></div>
+        <div class="comision-pct-label">sobre el precio base</div>
+        <div class="comision-ejemplo">
+          <div class="comision-ejemplo-title">Ejemplo — Pack Premium</div>
+          <div class="comision-ejemplo-line"><span>Precio al cliente</span><span>799€</span></div>
+          <div class="comision-ejemplo-line"><span>Tu comisión (15%)</span><span style="color:#7aff7a">119,85€</span></div>
+          <div class="comision-ejemplo-line total"><span>Cobras</span><span style="color:#7aff7a">119,85€</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comision-condiciones reveal">
+      <div class="condicion-item">
+        <span class="condicion-icon">💳</span>
+        <div>
+          <div class="condicion-title">Bendito cobra al cliente</div>
+          <p class="condicion-desc">Nosotros gestionamos íntegramente el cobro. Tú no tienes que gestionar pagos ni presupuestos.</p>
+        </div>
+      </div>
+      <div class="condicion-item">
+        <span class="condicion-icon">⚡</span>
+        <div>
+          <div class="condicion-title">Pago en 1–3 días</div>
+          <p class="condicion-desc">Recibes tu comisión inmediatamente después del evento. Sin esperas ni burocracia.</p>
+        </div>
+      </div>
+      <div class="condicion-item">
+        <span class="condicion-icon">🤝</span>
+        <div>
+          <div class="condicion-title">Sin exclusividades</div>
+          <p class="condicion-desc">Puedes trabajar con nosotros sin compromisos de exclusividad. Cada evento es independiente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKS -->
+<section id="packs" class="packs-section">
+  <div class="container">
+    <span class="section-label" style="color:var(--baby)">Personalización en directo</span>
+    <h2 class="section-title" style="color:var(--white)">ELIGE TU<br>PACK</h2>
+    <p class="section-body">Cuatro packs adaptados al tamaño de tu evento. Todos incluyen equipo, montaje, desmontaje y productos.</p>
+    <div class="packs-grid reveal">
+      <div class="pack-card">
+        <div class="pack-name">MINI</div>
+        <div class="pack-invitados">Hasta 30 invitados</div>
+        <div class="pack-precio"><span class="pack-precio-eur">€</span>299</div>
+        <div class="pack-horas">2 horas de servicio</div>
+        <ul class="pack-features">
+          <li>Montaje y desmontaje</li>
+          <li>Equipo profesional</li>
+          <li>Hasta 3 productos</li>
+          <li>Diseños predefinidos</li>
+        </ul>
+      </div>
+      <div class="pack-card featured">
+        <div class="pack-name">ÍNTIMA ✦</div>
+        <div class="pack-invitados">Hasta 50 invitados · Más popular</div>
+        <div class="pack-precio"><span class="pack-precio-eur">€</span>499</div>
+        <div class="pack-horas">3 horas de servicio</div>
+        <ul class="pack-features">
+          <li>Montaje y desmontaje</li>
+          <li>Equipo profesional</li>
+          <li>Hasta 4 productos</li>
+          <li>Diseño personalizado</li>
+        </ul>
+      </div>
+      <div class="pack-card">
+        <div class="pack-name">CLÁSICA</div>
+        <div class="pack-invitados">Hasta 100 invitados</div>
+        <div class="pack-precio"><span class="pack-precio-eur">€</span>650</div>
+        <div class="pack-horas">4 horas de servicio</div>
+        <ul class="pack-features">
+          <li>Montaje y desmontaje</li>
+          <li>Equipo profesional</li>
+          <li>Productos a elegir</li>
+          <li>Diseño personalizado</li>
+          <li>Coordinación previa</li>
+        </ul>
+      </div>
+      <div class="pack-card">
+        <div class="pack-name">PREMIUM</div>
+        <div class="pack-invitados">Hasta 150 invitados</div>
+        <div class="pack-precio"><span class="pack-precio-eur">€</span>799</div>
+        <div class="pack-horas">5 horas de servicio</div>
+        <ul class="pack-features">
+          <li>Montaje y desmontaje</li>
+          <li>Equipo profesional</li>
+          <li>Sin límite de productos</li>
+          <li>Diseño premium</li>
+          <li>Coordinación total</li>
+          <li>Reporte post-evento</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COTIZADOR -->
+<section id="cotizador" class="cotizador-section">
+  <div class="container">
+    <span class="section-label">Calcula tu evento</span>
+    <h2 class="section-title">COTIZADOR<br>INTERACTIVO</h2>
+    <p class="section-body">Selecciona los servicios que te interesan y obtén una estimación al momento. Sin compromiso.</p>
+  </div>
+
+  <div class="cotizador-wrapper">
+    <div class="cotizador-header">
+      <h3>MI PRESUPUESTO</h3>
+      <div class="cotizador-total-display">
+        <div class="cotizador-total-label">Total estimado</div>
+        <div class="cotizador-total-value" id="header-total" style="color:var(--sunshine)">0€</div>
+      </div>
+    </div>
+
+    <div class="cotizador-body">
+
+      <!-- PASO 1: Servicios -->
+      <div class="cotizador-step">
+        <div class="step-label">Paso 01</div>
+        <div class="step-title">¿Qué servicios te interesan?</div>
+        <div class="selector-grid cols-3" id="servicios-selector">
+          <button class="sel-btn" data-service="personalizacion" onclick="toggleService(this)">
+            <span class="sel-btn-name">✍️ Personalización en directo</span>
+            <span class="sel-btn-detail">Pack según invitados</span>
+            <span class="sel-btn-price">desde 299€</span>
+          </button>
+          <button class="sel-btn" data-service="seating" onclick="toggleService(this)">
+            <span class="sel-btn-name">🗺️ Seating Plan</span>
+            <span class="sel-btn-detail">Con producto personalizado</span>
+            <span class="sel-btn-price">desde 350€</span>
+          </button>
+          <button class="sel-btn" data-service="expendedora" onclick="toggleService(this)">
+            <span class="sel-btn-name">🎰 Máquina expendedora</span>
+            <span class="sel-btn-detail">Cápsulas con regalo</span>
+            <span class="sel-btn-price">desde 350€</span>
+          </button>
+          <button class="sel-btn" data-service="gancho" onclick="toggleService(this)">
+            <span class="sel-btn-name">🪝 Máquina gancho</span>
+            <span class="sel-btn-detail">Premios personalizados</span>
+            <span class="sel-btn-price">desde 399€</span>
+          </button>
+          <button class="sel-btn" data-service="merch" onclick="toggleService(this)">
+            <span class="sel-btn-name">🛍️ Merch corner</span>
+            <span class="sel-btn-detail">Stand + productos</span>
+            <span class="sel-btn-price">desde 350€</span>
+          </button>
+          <button class="sel-btn" id="b2b-service-btn" style="display:none" data-service="b2b" onclick="toggleService(this)">
+            <span class="sel-btn-name">📦 Productos B2B</span>
+            <span class="sel-btn-detail">Pedido personalizado</span>
+            <span class="sel-btn-price">consultar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PASO 2: Pack (si personalizacion) -->
+      <div class="cotizador-step" id="step-pack" style="display:none">
+        <div class="step-label">Paso 02</div>
+        <div class="step-title">Elige tu pack de personalización en directo</div>
+        <div class="selector-grid cols-4">
+          <button class="sel-btn" onclick="selectPack(this, 299)" data-price="299">
+            <span class="sel-btn-name">MINI</span>
+            <span class="sel-btn-detail">Hasta 30 inv · 2h</span>
+            <span class="sel-btn-price">299€</span>
+          </button>
+          <button class="sel-btn" onclick="selectPack(this, 499)" data-price="499">
+            <span class="sel-btn-name">ÍNTIMA</span>
+            <span class="sel-btn-detail">Hasta 50 inv · 3h</span>
+            <span class="sel-btn-price">499€</span>
+          </button>
+          <button class="sel-btn" onclick="selectPack(this, 650)" data-price="650">
+            <span class="sel-btn-name">CLÁSICA</span>
+            <span class="sel-btn-detail">Hasta 100 inv · 4h</span>
+            <span class="sel-btn-price">650€</span>
+          </button>
+          <button class="sel-btn" onclick="selectPack(this, 799)" data-price="799">
+            <span class="sel-btn-name">PREMIUM</span>
+            <span class="sel-btn-detail">Hasta 150 inv · 5h</span>
+            <span class="sel-btn-price">799€</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PASO 3: Seating (si seating) -->
+      <div class="cotizador-step" id="step-seating" style="display:none">
+        <div class="step-label">Paso 03</div>
+        <div class="step-title">Seating plan — producto y número de invitados</div>
+        <div class="selector-grid cols-2" style="margin-bottom:16px">
+          <button class="sel-btn" onclick="selectSeatingProduct(this, 'gafas')">
+            <span class="sel-btn-name">🕶️ Gafas de sol</span>
+            <span class="sel-btn-detail">Premium · más impacto</span>
+            <span class="sel-btn-price">+1€/inv vs básico</span>
+          </button>
+          <button class="sel-btn" onclick="selectSeatingProduct(this, 'basico')">
+            <span class="sel-btn-name">🥃 Vasitos / Chapas / Bambú</span>
+            <span class="sel-btn-detail">Opción estándar</span>
+            <span class="sel-btn-price">desde 350€</span>
+          </button>
+        </div>
+        <div class="selector-grid cols-4">
+          <button class="sel-btn" onclick="selectSeating(this)" data-inv="30">
+            <span class="sel-btn-name">Hasta 30</span>
+            <span class="sel-btn-detail">invitados</span>
+          </button>
+          <button class="sel-btn" onclick="selectSeating(this)" data-inv="50">
+            <span class="sel-btn-name">Hasta 50</span>
+            <span class="sel-btn-detail">invitados</span>
+          </button>
+          <button class="sel-btn" onclick="selectSeating(this)" data-inv="100">
+            <span class="sel-btn-name">Hasta 100</span>
+            <span class="sel-btn-detail">invitados</span>
+          </button>
+          <button class="sel-btn" onclick="selectSeating(this)" data-inv="150">
+            <span class="sel-btn-name">Hasta 150</span>
+            <span class="sel-btn-detail">invitados</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PASO 4: Extras -->
+      <div class="cotizador-step">
+        <div class="step-label">Extras</div>
+        <div class="step-title">¿Quieres añadir algo más?</div>
+        <div class="extras-grid">
+          <div class="extra-row">
+            <div class="extra-info">
+              <div class="extra-name">Hora adicional de servicio</div>
+              <div class="extra-price">150€/hora</div>
+            </div>
+            <div class="extra-controls">
+              <div class="qty-control">
+                <button class="qty-btn" onclick="changeQty('horas', -1)">−</button>
+                <span class="qty-value" id="qty-horas">0</span>
+                <button class="qty-btn" onclick="changeQty('horas', 1)">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="extra-row">
+            <div class="extra-info">
+              <div class="extra-name">Diseño gráfico personalizado</div>
+              <div class="extra-price">80€</div>
+            </div>
+            <div class="extra-controls">
+              <button class="extra-toggle" id="toggle-diseno" onclick="toggleExtra('diseno', 80, this)"></button>
+            </div>
+          </div>
+          <div class="extra-row">
+            <div class="extra-info">
+              <div class="extra-name">Regalo infantil</div>
+              <div class="extra-price">8€/niño</div>
+            </div>
+            <div class="extra-controls">
+              <div class="qty-control">
+                <button class="qty-btn" onclick="changeQty('ninos', -1)">−</button>
+                <span class="qty-value" id="qty-ninos">0</span>
+                <button class="qty-btn" onclick="changeQty('ninos', 1)">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="extra-row">
+            <div class="extra-info">
+              <div class="extra-name">Monedas personalizadas (para máquinas)</div>
+              <div class="extra-price">2€/ud · mín. 30</div>
+            </div>
+            <div class="extra-controls">
+              <div class="qty-control">
+                <button class="qty-btn" onclick="changeQty('monedas', -1)">−</button>
+                <span class="qty-value" id="qty-monedas">0</span>
+                <button class="qty-btn" onclick="changeQty('monedas', 1)">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="extra-row">
+            <div class="extra-info">
+              <div class="extra-name">Vinilado máquina (personalizado)</div>
+              <div class="extra-price">100€</div>
+            </div>
+            <div class="extra-controls">
+              <button class="extra-toggle" id="toggle-vinilado" onclick="toggleExtra('vinilado', 100, this)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 5: Desplazamiento -->
+      <div class="cotizador-step">
+        <div class="step-label">Desplazamiento</div>
+        <div class="step-title">¿Cuántos km hay desde Ciudad Real?</div>
+        <div class="distancia-row">
+          <input type="number" class="distancia-input" id="km-input" placeholder="Ej: 45 km" min="0" oninput="calcKm()">
+          <div class="distancia-calc" id="km-total">0€</div>
+        </div>
+        <p style="font-size:12px; color:#aaa; margin-top:8px">0,40€/km ida y vuelta · Ciudad Real como punto de origen</p>
+      </div>
+
+      <!-- PANEL COMISIÓN (solo colaboradores) -->
+      <div class="comision-panel" id="comision-panel">
+        <div class="comision-panel-title">💚 TU COMISIÓN ESTIMADA</div>
+        <div id="comision-lines"></div>
+        <div class="comision-panel-total">
+          <div class="comision-panel-total-label">TOTAL COMISIÓN</div>
+          <div class="comision-panel-total-value" id="comision-total-value">0€</div>
+        </div>
+        <div class="comision-panel-nota">Abono en 1–3 días tras la celebración del evento · Bendito Lab gestiona el cobro al cliente</div>
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="resumen-box" id="resumen-box">
+        <div class="resumen-title">RESUMEN DEL PRESUPUESTO</div>
+        <div id="resumen-lines"></div>
+        <div class="resumen-total">
+          <div class="resumen-total-label">TOTAL ESTIMADO</div>
+          <div class="resumen-total-value" id="resumen-total">0€</div>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap">
+          <button onclick="copiarResumen()" style="background:transparent; border:1px solid #444; color:#888; padding:10px 20px; font-family:'Lato'; font-weight:500; font-size:12px; letter-spacing:2px; cursor:pointer; text-transform:uppercase; transition:all 0.2s" onmouseover="this.style.borderColor='var(--cream)';this.style.color='var(--cream)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='rgba(255,255,255,0.4)'">Copiar resumen</button>
+          <a id="whatsapp-link" href="#" target="_blank" style="background:#25D366; color:white; padding:10px 20px; font-family:'Lato'; font-weight:500; font-size:12px; letter-spacing:2px; text-decoration:none; display:inline-block; text-transform:uppercase">WhatsApp →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="como-section">
+  <div class="container reveal">
+    <span class="section-label">El proceso</span>
+    <h2 class="section-title">CÓMO<br>FUNCIONA</h2>
+    <div class="pasos-grid client-only">
+      <div class="paso">
+        <div class="paso-num">01</div>
+        <div class="paso-title">Cuéntanos tu evento</div>
+        <p class="paso-desc">Tipo de evento, fecha, número de invitados y servicios que te interesan. Puedes usar el cotizador o escribirnos directamente.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">02</div>
+        <div class="paso-title">Presupuesto en 24h</div>
+        <p class="paso-desc">Te enviamos una propuesta detallada con todo incluido. Sin sorpresas.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">03</div>
+        <div class="paso-title">Confirmamos tu fecha</div>
+        <p class="paso-desc">Con una señal reservamos tu fecha en el calendario. Coordinamos los detalles contigo.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">04</div>
+        <div class="paso-title">Nosotros nos encargamos</div>
+        <p class="paso-desc">El día del evento, montaje, servicio y desmontaje. Tú solo disfruta.</p>
+      </div>
+    </div>
+    <div class="pasos-grid collab-only" style="display:none">
+      <div class="paso">
+        <div class="paso-num">01</div>
+        <div class="paso-title">Propón Dilo Bonito</div>
+        <p class="paso-desc">Ofrece el servicio a tus clientes con nuestro material. Te damos todo lo que necesitas.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">02</div>
+        <div class="paso-title">Gestionamos juntos</div>
+        <p class="paso-desc">Tú decides tu comisión o margen. Nosotros ponemos el presupuesto base.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">03</div>
+        <div class="paso-title">Coordinación total</div>
+        <p class="paso-desc">Nos coordinamos con el espacio para el montaje. Sin trabajo extra para ti.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">04</div>
+        <div class="paso-title">Tú te llevas el mérito</div>
+        <p class="paso-desc">Nosotros ejecutamos. Tus clientes quedan encantados. Tú consolidas la relación.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLAB BANNER (solo colaboradores) -->
+<div class="collab-banner collab-only" style="display:none">
+  <h2>¿TRABAJAMOS JUNTOS?</h2>
+  <p>Ofrecemos condiciones especiales para fincas, wedding planners y organizadores de eventos. Sin exclusividades, sin complicaciones.</p>
+  <a href="mailto:colaboradores@benditolab.com">Contactar para colaborar →</a>
+</div>
+
+<!-- CONTACTO / FORMULARIO -->
+<section id="contacto" class="form-section">
+  <div class="container">
+    <span class="section-label" style="color:var(--baby)">Hablamos</span>
+    <h2 class="section-title" style="color:var(--white)">SOLICITA<br>INFORMACIÓN</h2>
+    <p class="section-body" style="color:#888">Cuéntanos tu evento y te respondemos en menos de 24 horas con una propuesta a medida.</p>
+
+    <div class="form-grid reveal">
+      <div class="form-wrapper">
+        <div class="form-group">
+          <label class="form-label">Nombre *</label>
+          <input type="text" class="form-input" id="f-nombre" placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Teléfono *</label>
+          <input type="tel" class="form-input" id="f-tel" placeholder="647 000 000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="f-email" placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo de evento *</label>
+          <select class="form-select" id="f-tipo">
+            <option value="">Selecciona...</option>
+            <option>Boda</option>
+            <option>Cumpleaños</option>
+            <option>Comunión</option>
+            <option>Evento corporativo</option>
+            <option>Fiesta privada</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fecha aproximada</label>
+          <input type="date" class="form-input" id="f-fecha">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Número de invitados</label>
+          <input type="number" class="form-input" id="f-invitados" placeholder="Aprox.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cuéntanos más</label>
+          <textarea class="form-textarea" id="f-mensaje" placeholder="Servicios que te interesan, lugar del evento, dudas..."></textarea>
+        </div>
+        <button class="form-submit" onclick="enviarFormulario()">ENVIAR SOLICITUD →</button>
+        <div class="success-msg" id="success-msg">✓ Mensaje enviado. Te contactamos en menos de 24h.</div>
+      </div>
+
+      <div class="form-info">
+        <div class="info-item">
+          <div class="info-item-label">Teléfono</div>
+          <div class="info-item-value">647 444 308</div>
+          <div class="info-item-sub">Lunes a viernes · 9:00 a 19:00</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Email</div>
+          <div class="info-item-value">contacto@benditolab.com</div>
+          <div class="info-item-sub">Respuesta en menos de 24h</div>
+        </div>
+        <div class="info-item collab-only" style="display:none">
+          <div class="info-item-label">Colaboraciones</div>
+          <div class="info-item-value">colaboradores@benditolab.com</div>
+          <div class="info-item-sub">Para acuerdos de partnership</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Instagram</div>
+          <div class="info-item-value">@dilobonito</div>
+          <div class="info-item-sub">Síguenos para inspiración</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Zona de servicio</div>
+          <div class="info-item-value">Ciudad Real y provincia</div>
+          <div class="info-item-sub">Desplazamiento a toda España · 0,40€/km</div>
+        </div>
+        <a class="whatsapp-btn" href="https://wa.me/34647444308" target="_blank">
+          💬 Escribir por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">DILO <span>BONITO</span></div>
+        <p class="footer-tagline">Personalización en vivo para eventos. Cada invitado se lleva un recuerdo único. Bendito Lab · Ciudad Real.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Servicios</div>
+        <ul class="footer-links">
+          <li><a href="#servicios">Personalización en directo</a></li>
+          <li><a href="#servicios">Seating Plan</a></li>
+          <li><a href="#servicios">Máquina expendedora</a></li>
+          <li><a href="#servicios">Máquina gancho</a></li>
+          <li><a href="#servicios">Merch corner</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contacto</div>
+        <ul class="footer-links">
+          <li><a href="tel:647444308">647 444 308</a></li>
+          <li><a href="mailto:contacto@benditolab.com">contacto@benditolab.com</a></li>
+          <li><a href="https://instagram.com/dilobonito" target="_blank">@dilobonito</a></li>
+          <li><a href="mailto:colaboradores@benditolab.com">colaboradores@benditolab.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Dilo Bonito · Bendito Lab · Ciudad Real</span>
+      <span class="footer-by">Elaborado por <span>Bendito Lab</span></span>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOAT TOTAL -->
+<div class="float-total" id="float-total" onclick="document.getElementById('cotizador').scrollIntoView({behavior:'smooth'})">
+  <span class="float-total-label">Mi presupuesto</span>
+  <span class="float-total-value" id="float-total-value">0€</span>
+</div>
+
+<script>
+// ─── STATE ───
+const state = {
+  version: 'clientes',
+  services: new Set(),
+  pack: 0,
+  seatingProduct: 'basico',
+  seatingInv: 0,
+  extras: { diseno: 0, vinilado: 0 },
+  qtys: { horas: 0, ninos: 0, monedas: 0 },
+  km: 0
+};
+
+// ─── VERSION ───
+function setVersion(v) {
+  state.version = v;
+  document.body.classList.toggle('collab', v === 'colaboradores');
+  document.getElementById('btn-clientes').classList.toggle('active', v === 'clientes');
+  document.getElementById('btn-colaboradores').classList.toggle('active', v === 'colaboradores');
+
+  // Show/hide elements
+  document.querySelectorAll('.client-only').forEach(el => {
+    el.style.display = v === 'clientes' ? '' : 'none';
+  });
+  document.querySelectorAll('.collab-only').forEach(el => {
+    el.style.display = v === 'colaboradores' ? '' : 'none';
+  });
+
+  // B2B service btn in cotizador
+  document.getElementById('b2b-service-btn').style.display = v === 'colaboradores' ? '' : 'none';
+
+  // Panel comisión — ocultar si cliente
+  if (v === 'clientes') {
+    document.getElementById('comision-panel').classList.remove('visible');
+  }
+
+  calcTotal();
+}
+
+// ─── SERVICIOS ───
+function toggleService(btn) {
+  const s = btn.dataset.service;
+  if (state.services.has(s)) {
+    state.services.delete(s);
+    btn.classList.remove('active');
+  } else {
+    state.services.add(s);
+    btn.classList.add('active');
+  }
+  document.getElementById('step-pack').style.display = state.services.has('personalizacion') ? '' : 'none';
+  document.getElementById('step-seating').style.display = state.services.has('seating') ? '' : 'none';
+  if (!state.services.has('personalizacion')) state.pack = 0;
+  if (!state.services.has('seating')) { state.seatingInv = 0; }
+  calcTotal();
+}
+
+// ─── PACK ───
+function selectPack(btn, price) {
+  document.querySelectorAll('#step-pack .sel-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.pack = price;
+  calcTotal();
+}
+
+// ─── SEATING ───
+function selectSeatingProduct(btn, type) {
+  document.querySelectorAll('#step-seating .selector-grid:first-child .sel-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.seatingProduct = type;
+  calcSeating();
+}
+
+function selectSeating(btn) {
+  document.querySelectorAll('#step-seating .selector-grid:last-child .sel-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.seatingInv = parseInt(btn.dataset.inv);
+  calcSeating();
+}
+
+function calcSeating() {
+  const prices = {
+    gafas: { 30: 399, 50: 520, 100: 820, 150: 1120 },
+    basico: { 30: 350, 50: 450, 100: 699, 150: 930 }
+  };
+  if (state.seatingInv > 0) {
+    state.seatingPrice = prices[state.seatingProduct][state.seatingInv] || 0;
+  } else {
+    state.seatingPrice = 0;
+  }
+  calcTotal();
+}
+
+// ─── EXTRAS ───
+function toggleExtra(key, price, btn) {
+  if (btn.classList.contains('on')) {
+    btn.classList.remove('on');
+    state.extras[key] = 0;
+  } else {
+    btn.classList.add('on');
+    state.extras[key] = price;
+  }
+  calcTotal();
+}
+
+function changeQty(key, delta) {
+  state.qtys[key] = Math.max(0, state.qtys[key] + delta);
+  document.getElementById('qty-' + key).textContent = state.qtys[key];
+  calcTotal();
+}
+
+// ─── KM ───
+function calcKm() {
+  const km = parseFloat(document.getElementById('km-input').value) || 0;
+  state.km = km * 2 * 0.40;
+  document.getElementById('km-total').textContent = state.km > 0 ? state.km.toFixed(0) + '€' : '0€';
+  calcTotal();
+}
+
+// ─── SERVICIOS BASE PRICES ───
+function getServiceBasePrice(s) {
+  const prices = {
+    expendedora: 399,
+    gancho: 499,
+    merch: 350,
+    b2b: 0
+  };
+  return prices[s] || 0;
+}
+
+// ─── COMISIÓN ───
+function getComisionPct(invitados) {
+  if (invitados <= 50) return 0.10;
+  if (invitados <= 100) return 0.12;
+  return 0.15;
+}
+
+function getInvitadosFromState() {
+  // Primero por pack
+  if (state.pack === 299) return 30;
+  if (state.pack === 499) return 50;
+  if (state.pack === 650) return 100;
+  if (state.pack === 799) return 150;
+  // Por seating
+  if (state.seatingInv > 0) return state.seatingInv;
+  return 50; // default
+}
+
+function calcComision(total, lines) {
+  if (state.version !== 'colaboradores') return;
+
+  const inv = getInvitadosFromState();
+  const pct = getComisionPct(inv);
+  const pctLabel = Math.round(pct * 100) + '%';
+
+  const panel = document.getElementById('comision-panel');
+  const comisionLines = document.getElementById('comision-lines');
+  const comisionTotal = document.getElementById('comision-total-value');
+
+  if (total === 0 || lines.length === 0) {
+    panel.classList.remove('visible');
+    return;
+  }
+
+  panel.classList.add('visible');
+
+  // Calcular comisión por línea (excluimos desplazamiento y monedas de la comisión)
+  const noComision = ['Desplazamiento'];
+  let comisionBase = 0;
+  const comisionLinesHTML = [];
+
+  lines.forEach(([k, v]) => {
+    const amount = parseFloat(v.replace(/[^0-9.]/g, '')) || 0;
+    if (!noComision.includes(k) && amount > 0 && !v.includes('consultar') && !v.includes('desde')) {
+      const c = amount * pct;
+      comisionBase += c;
+      comisionLinesHTML.push(`<div class="comision-panel-line"><span>${k}</span><span>${c.toFixed(2)}€</span></div>`);
+    }
+  });
+
+  comisionLines.innerHTML = comisionLinesHTML.join('') ||
+    '<div class="comision-panel-line"><span>Sobre servicios seleccionados</span><span></span></div>';
+  comisionTotal.textContent = comisionBase > 0 ? comisionBase.toFixed(2) + '€' : '—';
+
+  // Update header with pct info
+  document.querySelector('.comision-panel-title').textContent =
+    `💚 TU COMISIÓN ESTIMADA (${pctLabel} · hasta ${inv} invitados)`;
+}
+
+// ─── CALC TOTAL ───
+function calcTotal() {
+  let total = 0;
+  const lines = [];
+
+  // Pack
+  if (state.pack > 0 && state.services.has('personalizacion')) {
+    total += state.pack;
+    lines.push(['Personalización en directo', state.pack + '€']);
+  }
+
+  // Seating
+  if (state.services.has('seating') && state.seatingInv > 0) {
+    const p = state.seatingPrice || 350;
+    total += p;
+    lines.push(['Seating plan (' + state.seatingInv + ' inv.)', p + '€']);
+  } else if (state.services.has('seating') && state.seatingInv === 0) {
+    total += 350;
+    lines.push(['Seating plan (base)', 'desde 350€']);
+  }
+
+  // Other services
+  ['expendedora', 'gancho', 'merch'].forEach(s => {
+    if (state.services.has(s)) {
+      const p = getServiceBasePrice(s);
+      total += p;
+      const names = { expendedora: 'Máquina expendedora', gancho: 'Máquina gancho', merch: 'Merch corner' };
+      lines.push([names[s], 'desde ' + p + '€']);
+    }
+  });
+
+  if (state.services.has('b2b')) {
+    lines.push(['Productos B2B', 'consultar']);
+  }
+
+  // Extras
+  if (state.qtys.horas > 0) {
+    const p = state.qtys.horas * 150;
+    total += p; lines.push([state.qtys.horas + ' hora(s) extra', p + '€']);
+  }
+  if (state.extras.diseno > 0) { total += 80; lines.push(['Diseño gráfico', '80€']); }
+  if (state.qtys.ninos > 0) {
+    const p = state.qtys.ninos * 8;
+    total += p; lines.push([state.qtys.ninos + ' regalo(s) infantil', p + '€']);
+  }
+  if (state.qtys.monedas > 0) {
+    const p = state.qtys.monedas * 2;
+    total += p; lines.push([state.qtys.monedas + ' moneda(s) personalizada', p + '€']);
+  }
+  if (state.extras.vinilado > 0) { total += 100; lines.push(['Vinilado máquina', '100€']); }
+  if (state.km > 0) { total += state.km; lines.push(['Desplazamiento', state.km.toFixed(0) + '€']); }
+
+  // Render
+  const fmt = total > 0 ? total.toFixed(0) + '€' : '0€';
+  document.getElementById('header-total').textContent = fmt;
+  document.getElementById('resumen-total').textContent = total > 0 ? total.toFixed(0) + '€' : '—';
+  document.getElementById('float-total-value').textContent = fmt;
+
+  // Float visibility
+  const ft = document.getElementById('float-total');
+  ft.style.display = total > 0 ? 'flex' : 'none';
+
+  // Lines
+  const linesContainer = document.getElementById('resumen-lines');
+  linesContainer.innerHTML = lines.map(([k, v]) =>
+    `<div class="resumen-line"><span>${k}</span><span>${v}</span></div>`
+  ).join('') || '<div class="resumen-line"><span style="color:#666">Selecciona servicios para ver el resumen</span><span></span></div>';
+
+  // WhatsApp
+  const wa = buildWAMessage(lines, total);
+  document.getElementById('whatsapp-link').href = 'https://wa.me/34647444308?text=' + encodeURIComponent(wa);
+
+  // Comisión colaborador
+  calcComision(total, lines);
+}
+
+function buildWAMessage(lines, total) {
+  let msg = '¡Hola! He calculado mi presupuesto en el dossier de Dilo Bonito:\n\n';
+  lines.forEach(([k, v]) => { msg += `• ${k}: ${v}\n`; });
+  if (total > 0) msg += `\n*TOTAL ESTIMADO: ${total.toFixed(0)}€*`;
+  msg += '\n\n¿Podéis confirmarme disponibilidad y detalles?';
+  return msg;
+}
+
+function copiarResumen() {
+  const lines = [];
+  document.querySelectorAll('.resumen-line').forEach(l => {
+    const spans = l.querySelectorAll('span');
+    if (spans[0] && spans[1]) lines.push(spans[0].textContent + ': ' + spans[1].textContent);
+  });
+  const total = document.getElementById('resumen-total').textContent;
+  const text = 'PRESUPUESTO DILO BONITO\n\n' + lines.join('\n') + '\n\nTOTAL: ' + total;
+  navigator.clipboard.writeText(text).then(() => alert('✓ Resumen copiado al portapapeles'));
+}
+
+// ─── FORMULARIO ───
+function enviarFormulario() {
+  const nombre = document.getElementById('f-nombre').value;
+  const tel = document.getElementById('f-tel').value;
+  if (!nombre || !tel) { alert('Por favor, rellena al menos nombre y teléfono.'); return; }
+
+  const tipo = document.getElementById('f-tipo').value;
+  const fecha = document.getElementById('f-fecha').value;
+  const invitados = document.getElementById('f-invitados').value;
+  const mensaje = document.getElementById('f-mensaje').value;
+
+  let wa = `¡Hola! Soy ${nombre}.\n\nTipo de evento: ${tipo || 'No especificado'}\nFecha: ${fecha || 'Por confirmar'}\nInvitados: ${invitados || 'Por confirmar'}\n\n${mensaje}\n\nTeléfono: ${tel}`;
+  window.open('https://wa.me/34647444308?text=' + encodeURIComponent(wa), '_blank');
+
+  document.getElementById('success-msg').style.display = 'block';
+  setTimeout(() => document.getElementById('success-msg').style.display = 'none', 5000);
+}
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Init
+calcTotal();
+</script>
+
+<!-- ─── CUSTOMIZER BUTTON ─── -->
+<button id="customizer-btn" onclick="toggleCustomizer()">
+  ✏️ Personalizar
+</button>
+
+<!-- ─── CUSTOMIZER PANEL ─── -->
+<div id="customizer-panel">
+  <div class="cust-header">
+    <h3>PERSONALIZAR</h3>
+    <button class="cust-close" onclick="toggleCustomizer()">✕</button>
+  </div>
+
+  <div class="cust-body">
+
+    <!-- COLORES PRINCIPALES -->
+    <div class="cust-section">
+      <div class="cust-section-title" onclick="toggleSection(this)">
+        🎨 Colores principales <span class="arrow">▾</span>
+      </div>
+      <div class="cust-rows">
+        <div class="cust-row">
+          <div class="cust-row-label">Fondo general<small>--cream</small></div>
+          <input type="color" class="cust-color" value="#F5F0E0" data-var="--cream" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Azul marino<small>--deep · secciones oscuras</small></div>
+          <input type="color" class="cust-color" value="#1E3A5F" data-var="--deep" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Azul medio<small>--captain · botones, labels</small></div>
+          <input type="color" class="cust-color" value="#3B6BA5" data-var="--captain" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Azul cielo<small>--baby · fondos secundarios</small></div>
+          <input type="color" class="cust-color" value="#A8C8E8" data-var="--baby" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Amarillo<small>--sunshine · destacados, CTAs</small></div>
+          <input type="color" class="cust-color" value="#F2C94C" data-var="--sunshine" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Rosa<small>--rose · secciones hero, alternadas</small></div>
+          <input type="color" class="cust-color" value="#F0A8A8" data-var="--rose" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Coral<small>--poppy · hover botones</small></div>
+          <input type="color" class="cust-color" value="#E8704A" data-var="--poppy" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Blanco base<small>--white · tarjetas, nav</small></div>
+          <input type="color" class="cust-color" value="#FDFCF8" data-var="--white" onchange="applyColor(this)">
+        </div>
+      </div>
+    </div>
+
+    <!-- COLORES DE TEXTO -->
+    <div class="cust-section">
+      <div class="cust-section-title collapsed" onclick="toggleSection(this)">
+        🖊️ Colores de texto <span class="arrow">▾</span>
+      </div>
+      <div class="cust-rows hidden">
+        <div class="cust-row">
+          <div class="cust-row-label">Texto oscuro<small>--text-dark · cuerpo principal</small></div>
+          <input type="color" class="cust-color" value="#1E3A5F" data-var="--text-dark" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Texto medio<small>--text-mid · subtítulos</small></div>
+          <input type="color" class="cust-color" value="#3B5A7A" data-var="--text-mid" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Texto suave<small>--text-light · notas, pies</small></div>
+          <input type="color" class="cust-color" value="#7A96B0" data-var="--text-light" onchange="applyColor(this)">
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Bordes<small>--sand · líneas divisorias</small></div>
+          <input type="color" class="cust-color" value="#DDD5C4" data-var="--sand" onchange="applyColor(this)">
+        </div>
+      </div>
+    </div>
+
+    <!-- TIPOGRAFÍA -->
+    <div class="cust-section">
+      <div class="cust-section-title collapsed" onclick="toggleSection(this)">
+        🔤 Tipografía <span class="arrow">▾</span>
+      </div>
+      <div class="cust-rows hidden">
+        <div class="cust-row">
+          <div class="cust-row-label">Fuente títulos<small>League Spartan recomendada</small></div>
+          <select class="cust-select" onchange="applyFont('title', this.value)">
+            <option value="League Spartan">League Spartan</option>
+            <option value="Anton">Anton</option>
+            <option value="Bebas Neue">Bebas Neue</option>
+            <option value="Oswald">Oswald</option>
+            <option value="Montserrat">Montserrat</option>
+          </select>
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Fuente cuerpo<small>Lato recomendada</small></div>
+          <select class="cust-select" onchange="applyFont('body', this.value)">
+            <option value="Lato">Lato</option>
+            <option value="DM Sans">DM Sans</option>
+            <option value="Inter">Inter</option>
+            <option value="Barlow">Barlow</option>
+            <option value="Raleway">Raleway</option>
+          </select>
+        </div>
+        <div class="cust-row">
+          <div class="cust-row-label">Tamaño título hero<small>clamp mínimo (px)</small></div>
+          <input type="number" class="cust-text" value="68" min="40" max="120"
+            onchange="document.documentElement.style.setProperty('--hero-size', this.value + 'px')">
+        </div>
+      </div>
+    </div>
+
+    <!-- TEXTOS CLAVE -->
+    <div class="cust-section">
+      <div class="cust-section-title collapsed" onclick="toggleSection(this)">
+        ✍️ Textos clave <span class="arrow">▾</span>
+      </div>
+      <div class="cust-rows hidden">
+        <div class="cust-row" style="flex-direction:column; align-items:flex-start; gap:6px">
+          <div class="cust-row-label">Título hero (clientes)</div>
+          <input type="text" class="cust-text" style="width:100%; text-align:left"
+            value="HAZ QUE TU EVENTO SEA" id="edit-hero-title"
+            onchange="editText('hero-title-client', this.value)">
+        </div>
+        <div class="cust-row" style="flex-direction:column; align-items:flex-start; gap:6px">
+          <div class="cust-row-label">Subtítulo hero (clientes)</div>
+          <textarea style="width:100%; border:1px solid #e0e0e0; padding:6px; font-family:Lato; font-size:12px; resize:vertical; height:60px"
+            onchange="editText('hero-sub-client', this.value)">Personalizamos artículos en directo para que cada invitado se lleve un recuerdo único.</textarea>
+        </div>
+        <div class="cust-row" style="flex-direction:column; align-items:flex-start; gap:6px">
+          <div class="cust-row-label">Teléfono de contacto</div>
+          <input type="text" class="cust-text" style="width:100%; text-align:left"
+            value="647 444 308" onchange="editAllText('647 444 308', this.value)">
+        </div>
+        <div class="cust-row" style="flex-direction:column; align-items:flex-start; gap:6px">
+          <div class="cust-row-label">Email de contacto</div>
+          <input type="text" class="cust-text" style="width:100%; text-align:left"
+            value="contacto@benditolab.com" onchange="editAllText('contacto@benditolab.com', this.value)">
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end cust-body -->
+
+  <div class="cust-footer">
+    <div id="cust-saved-msg">✓ Cambios guardados en el navegador</div>
+    <button class="cust-btn cust-btn-primary" onclick="exportCSS()">📋 Copiar CSS generado</button>
+    <button class="cust-btn cust-btn-secondary" onclick="resetAll()">↩ Restaurar original</button>
+  </div>
+
+  <div class="cust-code-area" id="cust-code-area"></div>
+</div>
+
+<script>
+// ─── CUSTOMIZER ───
+
+const DEFAULTS = {
+  '--cream':      '#F5F0E0',
+  '--deep':       '#1E3A5F',
+  '--captain':    '#3B6BA5',
+  '--baby':       '#A8C8E8',
+  '--sunshine':   '#F2C94C',
+  '--rose':       '#F0A8A8',
+  '--poppy':      '#E8704A',
+  '--white':      '#FDFCF8',
+  '--text-dark':  '#1E3A5F',
+  '--text-mid':   '#3B5A7A',
+  '--text-light': '#7A96B0',
+  '--sand':       '#DDD5C4',
+};
+
+function toggleCustomizer() {
+  const panel = document.getElementById('customizer-panel');
+  if (panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    return;
+  }
+  // Ask for password
+  const pwd = prompt('Contraseña de administrador:');
+  if (pwd === 'benditolab2025') {
+    panel.classList.add('open');
+  } else if (pwd !== null) {
+    alert('Contraseña incorrecta.');
+  }
+}
+
+function toggleSection(el) {
+  el.classList.toggle('collapsed');
+  const rows = el.nextElementSibling;
+  rows.classList.toggle('hidden');
+}
+
+function applyColor(input) {
+  const varName = input.dataset.var;
+  const value = input.value;
+  document.documentElement.style.setProperty(varName, value);
+  // Also update aliases
+  if (varName === '--deep') {
+    document.documentElement.style.setProperty('--black', value);
+    document.documentElement.style.setProperty('--green', value);
+    document.documentElement.style.setProperty('--accent', value);
+  }
+  if (varName === '--captain') {
+    document.documentElement.style.setProperty('--accent-mid', value);
+  }
+  if (varName === '--baby') {
+    document.documentElement.style.setProperty('--accent-light', hexToLight(value));
+  }
+  saveToStorage();
+}
+
+function hexToLight(hex) {
+  // Make a lighter version of the color for backgrounds
+  return hex + '44';
+}
+
+function applyFont(type, family) {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  const encoded = family.replace(' ', '+');
+  link.href = `https://fonts.googleapis.com/css2?family=${encoded}:wght@400;700;900&display=swap`;
+  document.head.appendChild(link);
+
+  if (type === 'title') {
+    document.querySelectorAll('.section-title, .hero-title, .pack-name, .pack-precio, .stat-number, .precio-valor, .nav-logo, .footer-brand, .servicio-name, .servicio-num, .cotizador-header h3, .resumen-title, .comision-pct, .float-total-value').forEach(el => {
+      el.style.fontFamily = family + ', sans-serif';
+    });
+  } else {
+    document.body.style.fontFamily = family + ', sans-serif';
+  }
+  saveToStorage();
+}
+
+function editText(id, value) {
+  // Find elements by content — for hero
+  const heroTitles = document.querySelectorAll('.hero-title');
+  heroTitles.forEach(t => {
+    if (!t.querySelector('.accent')) return;
+    // keep the accent span
+  });
+}
+
+function editAllText(oldText, newText) {
+  document.querySelectorAll('*:not(script):not(style)').forEach(el => {
+    if (el.children.length === 0 && el.textContent.includes(oldText)) {
+      el.textContent = el.textContent.replace(oldText, newText);
+    }
+  });
+}
+
+function saveToStorage() {
+  const saved = {};
+  Object.keys(DEFAULTS).forEach(v => {
+    const val = getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    if (val) saved[v] = val;
+  });
+  try { localStorage.setItem('dilo-bonito-theme', JSON.stringify(saved)); } catch(e) {}
+  const msg = document.getElementById('cust-saved-msg');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 2000);
+}
+
+function loadFromStorage() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('dilo-bonito-theme') || '{}');
+    Object.entries(saved).forEach(([v, val]) => {
+      document.documentElement.style.setProperty(v, val);
+      // Update color inputs
+      const input = document.querySelector(`[data-var="${v}"]`);
+      if (input) input.value = val;
+    });
+  } catch(e) {}
+}
+
+function resetAll() {
+  Object.entries(DEFAULTS).forEach(([v, val]) => {
+    document.documentElement.style.setProperty(v, val);
+    const input = document.querySelector(`[data-var="${v}"]`);
+    if (input) input.value = val;
+  });
+  try { localStorage.removeItem('dilo-bonito-theme'); } catch(e) {}
+}
+
+function exportCSS() {
+  const lines = [':root {'];
+  Object.keys(DEFAULTS).forEach(v => {
+    const val = getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    lines.push(`  ${v}: ${val || DEFAULTS[v]};`);
+  });
+  lines.push('}');
+  const css = lines.join('\n');
+
+  const area = document.getElementById('cust-code-area');
+  area.textContent = css;
+  area.classList.add('visible');
+
+  navigator.clipboard.writeText(css).then(() => {
+    const msg = document.getElementById('cust-saved-msg');
+    msg.textContent = '✓ CSS copiado al portapapeles — envíamelo para aplicarlo';
+    msg.style.display = 'block';
+    setTimeout(() => {
+      msg.textContent = '✓ Cambios guardados en el navegador';
+      msg.style.display = 'none';
+      area.classList.remove('visible');
+    }, 4000);
+  });
+}
+
+// Load saved theme on startup
+document.addEventListener('DOMContentLoaded', loadFromStorage);
+</script>
+
+</body>
+</html>
