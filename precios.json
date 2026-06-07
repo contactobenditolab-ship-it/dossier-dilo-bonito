@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "actualizado": "2025-06-07",
+  "packs": {
+    "mini": {
+      "precio": 299,
+      "invitados": 30,
+      "horas": 2
+    },
+    "intima": {
+      "precio": 499,
+      "invitados": 50,
+      "horas": 3
+    },
+    "clasica": {
+      "precio": 650,
+      "invitados": 100,
+      "horas": 4
+    },
+    "premium": {
+      "precio": 799,
+      "invitados": 150,
+      "horas": 5
+    }
+  },
+  "seating": {
+    "gafas": {
+      "inv30": 399,
+      "inv50": 520,
+      "inv100": 820,
+      "inv150": 1120
+    },
+    "basico": {
+      "inv30": 350,
+      "inv50": 450,
+      "inv100": 699,
+      "inv150": 930
+    },
+    "soloPanel": 200
+  },
+  "maquinas": {
+    "expendedoraGratis": 499,
+    "expendedoraMoneda": 399,
+    "ganchoGratis": 499,
+    "ganchoMoneda": 399
+  },
+  "merch": {
+    "basico": 350,
+    "completo": 580,
+    "premium": 799
+  },
+  "extras": {
+    "horaExtra": 150,
+    "diseno": 80,
+    "regaloInfantil": 8,
+    "moneda": 2,
+    "vinilado": 100,
+    "km": 0.4
+  },
+  "comisiones": {
+    "hasta50": 10,
+    "hasta100": 12,
+    "hasta150": 15
+  }
+}
