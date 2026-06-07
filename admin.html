@@ -158,6 +158,22 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 <div class="panel" id="panel-imagenes">
   <div class="s-hdr"><span class="s-icon">🖼️</span><div><div class="s-title">Imágenes</div><div class="s-desc">Clic en cada tarjeta → selecciona foto → "Guardar todo". Se suben a GitHub y aparecen en el dossier en ~30s.</div></div></div>
 
+  <div class="stag">Logo del sitio</div>
+  <div class="img-grid" style="grid-template-columns:1fr 1fr;margin-bottom:8px;">
+    <div class="img-card" onclick="trigImg('img-logo-dilo')">
+      <div class="img-lbl">🔤 LOGO DILO BONITO (cabecera nav) <span class="img-ok" id="ok-img-logo-dilo">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-logo-dilo" style="aspect-ratio:3/1;background:#f5f0e0;"><div class="img-ph">📸 Logo Dilo Bonito<br><small>PNG transparente recomendado</small></div></div>
+      <button class="img-btn">Cambiar logo</button>
+      <input type="file" id="img-logo-dilo" accept="image/*" style="display:none" onchange="loadImg(this,'img-logo-dilo')">
+    </div>
+    <div class="img-card" onclick="trigImg('img-logo-bendito')">
+      <div class="img-lbl">🔤 LOGO BENDITO LAB (footer) <span class="img-ok" id="ok-img-logo-bendito">✓ subida</span></div>
+      <div class="img-prev" id="prev-img-logo-bendito" style="aspect-ratio:3/1;background:#1e3a5f;"><div class="img-ph">📸 Logo Bendito Lab<br><small>PNG transparente recomendado</small></div></div>
+      <button class="img-btn">Cambiar logo</button>
+      <input type="file" id="img-logo-bendito" accept="image/*" style="display:none" onchange="loadImg(this,'img-logo-bendito')">
+    </div>
+  </div>
+
   <div class="stag">Todas las páginas</div>
   <div class="img-grid" style="grid-template-columns:1fr 1fr;">
     <div class="img-card" onclick="trigImg('img-cabecera')">
@@ -540,6 +556,8 @@ function saveAll(){
 
 const REPO='contactobenditolab-ship-it/dossier-dilo-bonito';
 const IMG_MAP={
+  'img-logo-dilo':     'logo.png',
+  'img-logo-bendito':  'logo-bendito.png',
   'img-cabecera':      'images/cabecera.jpg',
   'img-hero':          'images/hero.jpg',
   'img-presentacion':  'images/presentacion.jpg',
