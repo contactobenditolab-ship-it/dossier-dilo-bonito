@@ -1861,7 +1861,7 @@
     background: var(--white, #FDFCF8);
     border-bottom: 1px solid var(--sand, #DDD5C4);
   }
-  .header-logo-bar img { height: 90px; width: auto; object-fit: contain; }
+  .header-logo-bar img { height: 80px; width: auto; object-fit: contain; }
   .main-nav {
     display: flex; align-items: center; justify-content: center;
     gap: 8px; padding: 0 40px; height: 50px; position: relative;
@@ -1931,8 +1931,9 @@
 
 <header class="main-header">
   <div class="header-logo-bar">
-    <a href="index.html">
-      <img src="logo.png" alt="Dilo Bonito por Bendito Lab">
+    <a href="index.html" style="display:flex;flex-direction:column;align-items:center;gap:0;text-decoration:none;">
+      <img src="logo-bendito.png" alt="Bendito Lab" style="height:72px;width:auto;">
+      <span style="font-family:'Lato',sans-serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#888;margin-top:2px;font-weight:700;">Dilo Bonito es un servicio de Bendito Lab</span>
     </a>
   </div>
   <nav class="main-nav">
@@ -2036,6 +2037,13 @@ document.addEventListener('click', e => {
 <section style="padding:80px 0; background:var(--cream);">
   <div class="container">
     <span class="section-label" style="text-align:center;display:block;margin-bottom:16px;">Nuestras marcas</span>
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:var(--cream);border:1px solid var(--gray);padding:10px 24px;font-family:'Lato',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);">
+        <img src="logo-bendito.png" alt="Bendito Lab" style="height:22px;width:auto;opacity:0.75;">
+        <span>·</span>
+        <span><strong style="color:var(--deep);">Bendito Lab</strong> es la empresa — <strong style="color:var(--captain);">Dilo Bonito</strong> es su servicio para eventos</span>
+      </div>
+    </div>
     <h2 class="section-title" style="text-align:center;margin-bottom:60px;">DOS FORMAS DE<br><span style="color:var(--captain)">PERSONALIZARTE</span></h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">
 
@@ -2841,7 +2849,7 @@ document.addEventListener('click', e => {
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2025 Dilo Bonito · Bendito Lab · Ciudad Real</span>
+      <span class="footer-copy">© 2025 <strong>Bendito Lab</strong> · Dilo Bonito es una marca de Bendito Lab · Ciudad Real</span>
       <span class="footer-by">Elaborado por <span>Bendito Lab</span></span>
     </div>
   </div>
