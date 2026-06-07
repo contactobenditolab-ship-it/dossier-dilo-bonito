@@ -3238,5 +3238,104 @@ function exportCSS() {
 document.addEventListener('DOMContentLoaded', loadFromStorage);
 </script>
 
+
+<script>
+// ── CARGAR PRECIOS DESDE ADMIN ──
+(function loadAdminPrices() {
+  try {
+    const saved = localStorage.getItem('dilo-precios');
+    if (!saved) return;
+    const p = JSON.parse(saved);
+
+    // Update pack buttons in cotizador
+    const packMap = {
+      299: p.packs?.mini?.precio,
+      499: p.packs?.intima?.precio,
+      650: p.packs?.clasica?.precio,
+      799: p.packs?.premium?.precio,
+    };
+
+    // Update pack cards display
+    const packCards = document.querySelectorAll('.pack-card');
+    const packKeys = ['mini','intima','clasica','premium'];
+    packCards.forEach((card, i) => {
+      const key = packKeys[i];
+      if (p.packs?.[key]) {
+        const precio = p.packs[key].precio;
+        const precioEl = card.querySelector('.pack-precio');
+        if (precioEl) precioEl.innerHTML = '<span class="pack-precio-eur">€</span>' + precio;
+      }
+    });
+
+    // Update cotizador select buttons
+    document.querySelectorAll('#step-pack .sel-btn').forEach((btn, i) => {
+      const keys = ['mini','intima','clasica','premium'];
+      const precio = p.packs?.[keys[i]]?.precio;
+      if (precio) {
+        btn.setAttribute('data-price', precio);
+        btn.setAttribute('onclick', `selectPack(this, ${precio})`);
+        const priceEl = btn.querySelector('.sel-btn-price');
+        if (priceEl) priceEl.textContent = precio + '€';
+      }
+    });
+
+    // Update extras
+    if (p.extras) {
+      // Update state defaults
+      window.PRECIO_HORA_EXTRA    = p.extras.horaExtra      || 150;
+      window.PRECIO_DISENO        = p.extras.diseno          || 80;
+      window.PRECIO_NINO          = p.extras.regaloInfantil  || 8;
+      window.PRECIO_MONEDA        = p.extras.moneda          || 2;
+      window.PRECIO_VINILADO      = p.extras.vinilado        || 100;
+      window.PRECIO_KM            = p.extras.km              || 0.40;
+    }
+
+    // Update extra prices shown in UI
+    const extraRows = document.querySelectorAll('.extra-row');
+    if (extraRows.length >= 6) {
+      const extraPrices = [
+        (p.extras?.horaExtra || 150) + '€/hora',
+        (p.extras?.diseno || 80) + '€',
+        (p.extras?.regaloInfantil || 8) + '€/niño',
+        (p.extras?.moneda || 2) + '€/ud · mín. 30',
+        (p.extras?.vinilado || 100) + '€',
+      ];
+      extraRows.forEach((row, i) => {
+        if (extraPrices[i]) {
+          const el = row.querySelector('.extra-price');
+          if (el) el.textContent = extraPrices[i];
+        }
+      });
+    }
+
+    // Update "desde X€" in service cards
+    const servicioCards = document.querySelectorAll('.servicio-card');
+    if (servicioCards.length >= 1 && p.packs?.mini?.precio) {
+      const desdeEl = servicioCards[0]?.querySelector('.servicio-price');
+      if (desdeEl) desdeEl.textContent = 'Desde ' + p.packs.mini.precio + '€';
+    }
+
+    // Update seating desde prices
+    if (p.seating) {
+      window.SEATING_PRICES = {
+        gafas:  { 30: p.seating.gafas?.inv30, 50: p.seating.gafas?.inv50, 100: p.seating.gafas?.inv100, 150: p.seating.gafas?.inv150 },
+        basico: { 30: p.seating.basico?.inv30, 50: p.seating.basico?.inv50, 100: p.seating.basico?.inv100, 150: p.seating.basico?.inv150 },
+      };
+    }
+
+    // Update comisiones
+    if (p.comisiones) {
+      window.COMISION_HASTA50  = p.comisiones.hasta50  / 100;
+      window.COMISION_HASTA100 = p.comisiones.hasta100 / 100;
+      window.COMISION_HASTA150 = p.comisiones.hasta150 / 100;
+    }
+
+    console.log('✅ Precios cargados desde panel admin');
+  } catch(e) {
+    console.log('Usando precios por defecto');
+  }
+})();
+</script>
+
 </body>
 </html>
