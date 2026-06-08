@@ -328,10 +328,12 @@ input[type="file"]{display:none;}
           <span id="tok-ok" style="color:#27AE60;display:none;">✓</span>
         </div>
 
-        <div class="card"><div class="card-title">Logos</div><div id="grp-logos"></div></div>
-        <div class="card"><div class="card-title">Carrusel</div><div id="grp-carrusel"></div></div>
-        <div class="card"><div class="card-title">Hero y secciones</div><div id="grp-hero"></div></div>
-        <div class="card"><div class="card-title">Bendito Lab B2B</div><div id="grp-b2b"></div></div>
+        <div class="card"><div class="card-title">Logos (nav de todas las páginas)</div><div id="grp-logos"></div></div>
+        <div class="card"><div class="card-title">Portada · Fotos del carrusel</div><div id="grp-portada_carrusel"></div></div>
+        <div class="card"><div class="card-title">Dilo Bonito · Fotos de servicios</div><div id="grp-dilo_bonito"></div></div>
+        <div class="card"><div class="card-title">Colaboradores · Foto hero</div><div id="grp-colaboradores"></div></div>
+        <div class="card"><div class="card-title">Bendito Lab · Fotos B2B</div><div id="grp-bendito_lab"></div></div>
+        <div class="card"><div class="card-title">Imágenes extra (sin uso activo)</div><div id="grp-extras"></div></div>
       </div>
 
       <!-- ══════════ DB TEXTOS ══════════ -->
@@ -493,18 +495,43 @@ var productos = [
 
 // ── IMÁGENES ──────────────────────────────────────────────
 var IMG_GROUPS = {
-  logos:   [{key:'logo.png',path:'logo.png',name:'Logo Dilo Bonito'},{key:'logo-bendito.png',path:'logo-bendito.png',name:'Logo Bendito Lab'}],
-  carrusel:[
-    {key:'cabecera.jpg',path:'images/cabecera.jpg',name:'Carrusel 1'},
-    {key:'personalizacion.jpg',path:'images/personalizacion.jpg',name:'Carrusel 2'},
-    {key:'img-neceser.jpg',path:'images/img-neceser.jpg',name:'Carrusel 3'},
-    {key:'img-gorra.jpg',path:'images/img-gorra.jpg',name:'Carrusel 4'},
-    {key:'img-tote.jpg',path:'images/img-tote.jpg',name:'Carrusel 5'},
-    {key:'merch.jpg',path:'images/merch.jpg',name:'Carrusel 6'},
-    {key:'seating.jpg',path:'images/seating.jpg',name:'Carrusel 7'},
+  // Logos — aparecen en el nav de todas las páginas
+  logos: [
+    {key:'logo-bendito.png', path:'logo-bendito.png', name:'Logo Bendito Lab (nav y cabecera)'},
+    {key:'logo.png',         path:'logo.png',         name:'Logo Dilo Bonito (nav Dilo Bonito)'},
   ],
-  hero:    [{key:'hero.jpg',path:'images/hero.jpg',name:'Hero fondo'},{key:'presentacion.jpg',path:'images/presentacion.jpg',name:'Presentación'},{key:'maquinas.jpg',path:'images/maquinas.jpg',name:'Máquinas'}],
-  b2b:     [{key:'b2b-1.jpg',path:'images/b2b-1.jpg',name:'B2B 1'},{key:'b2b-2.jpg',path:'images/b2b-2.jpg',name:'B2B 2'},{key:'b2b-3.jpg',path:'images/b2b-3.jpg',name:'B2B 3'}],
+  // Portada — carrusel de fotos de la página principal
+  portada_carrusel: [
+    {key:'cabecera.jpg',        path:'images/cabecera.jpg',        name:'Portada carrusel — Foto 1'},
+    {key:'personalizacion.jpg', path:'images/personalizacion.jpg', name:'Portada carrusel — Foto 2'},
+    {key:'img-neceser.jpg',     path:'images/img-neceser.jpg',     name:'Portada carrusel — Foto 3 (neceser)'},
+    {key:'img-gorra.jpg',       path:'images/img-gorra.jpg',       name:'Portada carrusel — Foto 4 (gorra)'},
+    {key:'img-tote.jpg',        path:'images/img-tote.jpg',        name:'Portada carrusel — Foto 5 (tote bag)'},
+    {key:'merch.jpg',           path:'images/merch.jpg',           name:'Portada carrusel — Foto 6 (merch)'},
+    {key:'seating.jpg',         path:'images/seating.jpg',         name:'Portada carrusel — Foto 7 (seating)'},
+  ],
+  // Dilo Bonito — imágenes de cada servicio en la página dilo-bonito.html
+  dilo_bonito: [
+    {key:'personalizacion.jpg', path:'images/personalizacion.jpg', name:'Dilo Bonito — Personalización en directo'},
+    {key:'seating.jpg',         path:'images/seating.jpg',         name:'Dilo Bonito — Seating Plan'},
+    {key:'maquinas.jpg',        path:'images/maquinas.jpg',        name:'Dilo Bonito — Máquina expendedora'},
+    {key:'merch.jpg',           path:'images/merch.jpg',           name:'Dilo Bonito — Merch Corner'},
+  ],
+  // Colaboradores — foto de fondo del hero
+  colaboradores: [
+    {key:'personalizacion.jpg', path:'images/personalizacion.jpg', name:'Colaboradores — Foto hero (fondo)'},
+  ],
+  // Bendito Lab B2B — fotos de la página de empresas
+  bendito_lab: [
+    {key:'b2b-1.jpg', path:'images/b2b-1.jpg', name:'Bendito Lab — Foto 1'},
+    {key:'b2b-2.jpg', path:'images/b2b-2.jpg', name:'Bendito Lab — Foto 2'},
+    {key:'b2b-3.jpg', path:'images/b2b-3.jpg', name:'Bendito Lab — Foto 3'},
+  ],
+  // Extras — disponibles para uso general
+  extras: [
+    {key:'hero.jpg',         path:'images/hero.jpg',         name:'Extra — Hero (sin uso activo)'},
+    {key:'presentacion.jpg', path:'images/presentacion.jpg', name:'Extra — Presentación (sin uso activo)'},
+  ],
 };
 
 // ══ LOGIN ══════════════════════════════════════════════════
