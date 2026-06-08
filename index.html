@@ -310,7 +310,7 @@ body::before {
 .acceso-toggle {
   background: none;
   border: none;
-  color: rgba(168,200,232,.35);
+  color: rgba(168,200,232,.45);
   font-size: 11px;
   font-family: 'Lato', sans-serif;
   letter-spacing: 2px;
@@ -421,13 +421,32 @@ body::before {
 .m-ok p { font-size: 13px; color: #888; margin-top: 8px; }
 
 @media (max-width: 560px) {
-  .headline { font-size: 56px; }
-  .logo img { height: 52px; }
+  .headline { font-size: 48px; letter-spacing: -2px; }
+  .logo img { height: 48px; }
   .divider { display: none; }
   .modal { padding: 32px 24px; }
   .m-grid2 { grid-template-columns: 1fr; }
-  body, html { overflow-y: auto; }
-  .wrapper { height: auto; min-height: 100vh; padding: 60px 24px 100px; }
+  /* Scroll libre en móvil */
+  body, html { overflow-y: auto; overflow-x: hidden; height: auto; }
+  .wrapper {
+    height: auto;
+    min-height: 100dvh;
+    padding: 80px 20px 48px;
+    overflow: visible;
+  }
+  /* Acceso siempre visible */
+  .acceso-wrap { margin-top: 24px; }
+  .acceso-toggle {
+    font-size: 12px;
+    color: rgba(168,200,232,.5);
+    padding: 8px 16px;
+  }
+  .acceso-form input { width: 130px; }
+  /* Contacto en columna en móvil muy pequeño */
+  .contact-line { flex-direction: column; gap: 12px; }
+  /* Botones más compactos */
+  .btn-main, .btn-ghost { padding: 14px 28px; font-size: 13px; }
+  .bottom-bar { font-size: 10px; padding: 0 16px; text-align: center; }
 }
 </style>
 </head>
