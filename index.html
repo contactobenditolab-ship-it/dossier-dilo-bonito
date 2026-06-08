@@ -193,7 +193,7 @@ footer a{color:var(--sunshine);text-decoration:none;font-size:12px;}
 </header>
 
 <!-- CARRUSEL -->
-<div class="carousel" id="carousel">
+<div class="carousel" id="carousel" data-section="carrusel">
   <div class="c-track" id="c-track">
     <div class="c-slide"><img src="images/cabecera.jpg" alt="Personalización en vivo" loading="eager"></div>
     <div class="c-slide"><img src="images/personalizacion.jpg" alt="Personalización" loading="lazy"></div>
@@ -209,10 +209,10 @@ footer a{color:var(--sunshine);text-decoration:none;font-size:12px;}
 </div>
 
 <!-- HERO CLAIM -->
-<section class="hero-claim">
-  <div class="hero-eyebrow">Personalización que deja huella</div>
-  <h1 class="hero-h1">HACEMOS QUE<br>TU MOMENTO<br><em>SEA ÚNICO.</em></h1>
-  <p class="hero-sub">Artículos personalizados para eventos y empresas. En vivo durante la celebración o a medida para tu marca.</p>
+<section class="hero-claim" id="sec-hero" data-section="hero">
+  <div class="hero-eyebrow" id="p-eyebrow">Personalización que deja huella</div>
+  <h1 class="hero-h1" id="p-h1">HACEMOS QUE<br>TU MOMENTO<br><em id="p-h1-em">SEA ÚNICO.</em></h1>
+  <p class="hero-sub" id="p-sub">Artículos personalizados para eventos y empresas. En vivo durante la celebración o a medida para tu marca.</p>
   <div class="hero-actions">
     <a href="#cotizacion" class="btn-primary">Solicitar cotización →</a>
     <a href="dilo-bonito.html" class="btn-ghost">Ver servicios</a>
@@ -220,14 +220,14 @@ footer a{color:var(--sunshine);text-decoration:none;font-size:12px;}
 </section>
 
 <!-- DOS LÍNEAS DE NEGOCIO -->
-<div class="lineas">
+<div class="lineas" id="sec-lineas" data-section="lineas">
 
   <!-- DILO BONITO -->
   <div class="linea linea-db">
     <div>
-      <div class="linea-tag">Para eventos y celebraciones</div>
-      <div class="linea-title">DILO<br>BONITO.</div>
-      <p class="linea-desc">Personalización en vivo durante tu evento. Bodas, comuniones, cumpleaños, eventos corporativos. Tus invitados eligen, personalizan y se llevan un recuerdo único.</p>
+      <div class="linea-tag" id="p-db-tag">Para eventos y celebraciones</div>
+      <div class="linea-title" id="p-db-title">DILO<br>BONITO.</div>
+      <p class="linea-desc" id="p-db-desc">Personalización en vivo durante tu evento. Bodas, comuniones, cumpleaños, eventos corporativos. Tus invitados eligen, personalizan y se llevan un recuerdo único.</p>
       <div class="linea-pills">
         <span class="pill">Bodas</span>
         <span class="pill">Comuniones</span>
@@ -235,30 +235,30 @@ footer a{color:var(--sunshine);text-decoration:none;font-size:12px;}
         <span class="pill">Cumpleaños</span>
       </div>
     </div>
-    <a href="dilo-bonito.html" class="linea-cta">Ver el servicio →</a>
+    <a href="dilo-bonito.html" class="linea-cta" id="p-db-cta">Ver el servicio →</a>
     <div class="linea-num">01</div>
   </div>
 
   <!-- BENDITO LAB -->
   <div class="linea linea-bl">
     <div>
-      <div class="linea-tag">Para empresas y marcas</div>
-      <div class="linea-title">BENDITO<br>LAB.</div>
-      <p class="linea-desc">Artículos personalizados para empresas. Regalos corporativos, merchandising de marca, uniformes y productos promocionales a medida para tu negocio.</p>
+      <div class="linea-tag" id="p-bl-tag">Para empresas y marcas</div>
+      <div class="linea-title" id="p-bl-title">BENDITO<br>LAB.</div>
+      <p class="linea-desc" id="p-bl-desc">Artículos personalizados para empresas. Regalos corporativos, merchandising de marca, uniformes y productos promocionales a medida para tu negocio.</p>
       <div class="linea-pills">
         <span class="pill">Regalos corporativos</span>
         <span class="pill">Merchandising</span>
         <span class="pill">Uniformes</span>
       </div>
     </div>
-    <a href="bendito-lab.html" class="linea-cta">Ver catálogo →</a>
+    <a href="bendito-lab.html" class="linea-cta" id="p-bl-cta">Ver catálogo →</a>
     <div class="linea-num">02</div>
   </div>
 
 </div>
 
 <!-- COTIZACIÓN -->
-<section class="cotizacion" id="cotizacion">
+<section class="cotizacion" id="sec-cotizacion" data-section="cotizacion">
   <div class="cotizacion-inner">
     <div class="cot-left">
       <div class="eyebrow">Hablemos</div>
@@ -290,7 +290,7 @@ footer a{color:var(--sunshine);text-decoration:none;font-size:12px;}
     </div>
     <div class="cot-right">
       <div class="cot-form" id="cot-form">
-        <div class="cot-form-title">Cuéntanos tu proyecto</div>
+        <div class="cot-form-title" id="p-cot-title">Cuéntanos tu proyecto</div>
         <div class="cot-grid2">
           <div class="cot-field">
             <label>Nombre *</label>
@@ -330,23 +330,28 @@ footer a{color:var(--sunshine);text-decoration:none;font-size:12px;}
 </section>
 
 <!-- REDES SOCIALES -->
-<section class="redes">
+<section class="redes" id="sec-redes" data-section="redes">
   <div class="redes-inner">
     <div class="redes-eyebrow">Síguenos</div>
     <h2>SÍGUENOS<br>EN REDES</h2>
-    <p class="redes-sub">Cada evento es único. Mira lo que hacemos en Instagram y TikTok.</p>
+    <p class="redes-sub" id="p-redes-sub">Cada evento es único. Mira lo que hacemos en Instagram y TikTok.</p>
     <div class="redes-grid">
-      <a href="https://instagram.com/bendito_lab" target="_blank" class="red-card">
+      <a href="https://instagram.com/bendito_lab" target="_blank" class="red-card" id="red-ig1">
         <span class="red-icon">📸</span>
         <span class="red-name">Instagram</span>
         <span class="red-handle">@bendito_lab</span>
       </a>
-      <a href="https://instagram.com/dilobonitopersonalizados" target="_blank" class="red-card">
+      <a href="https://instagram.com/dilobonitopersonalizados" target="_blank" class="red-card" id="red-ig2">
         <span class="red-icon">✨</span>
         <span class="red-name">Instagram</span>
         <span class="red-handle">@dilobonitopersonalizados</span>
       </a>
-      <a href="https://wa.me/34647444308" target="_blank" class="red-card">
+      <a href="https://tiktok.com/@bendito_lab" target="_blank" class="red-card" id="red-tiktok">
+        <span class="red-icon">🎵</span>
+        <span class="red-name">TikTok</span>
+        <span class="red-handle">@bendito_lab</span>
+      </a>
+      <a href="https://wa.me/34647444308" target="_blank" class="red-card" id="red-wa">
         <span class="red-icon">💬</span>
         <span class="red-name">WhatsApp</span>
         <span class="red-handle">647 444 308</span>
@@ -453,5 +458,68 @@ async function enviarCotizacion(){
   }
 }
 </script>
+
+<script>
+// ── ADMIN BRIDGE ──────────────────────────────────────────
+// Aplica cambios desde el admin via localStorage o postMessage
+var BL_STORE = 'bl-portada-v1';
+
+function applyPortadaData(d) {
+  if (!d) return;
+  // Colores CSS
+  var root = document.documentElement.style;
+  var colors = ['deep','captain','sunshine','poppy','cream','baby'];
+  colors.forEach(function(c) {
+    if (d['color-'+c]) root.setProperty('--'+c, d['color-'+c]);
+  });
+  // Textos
+  var fields = {
+    'p-eyebrow':'textContent','p-h1':'innerHTML','p-sub':'textContent',
+    'p-db-tag':'textContent','p-db-title':'innerHTML','p-db-desc':'textContent','p-db-cta':'textContent',
+    'p-bl-tag':'textContent','p-bl-title':'innerHTML','p-bl-desc':'textContent','p-bl-cta':'textContent',
+    'p-cot-title':'textContent','p-redes-sub':'textContent'
+  };
+  Object.keys(fields).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && d[id]) el[fields[id]] = d[id];
+  });
+  // Visibilidad de secciones
+  ['sec-hero','sec-lineas','sec-cotizacion','sec-redes'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && d[id+'_visible'] === false) el.style.display = 'none';
+    else if (el) el.style.display = '';
+  });
+  // Redes
+  if (d.redes) {
+    d.redes.forEach(function(r) {
+      var el = document.getElementById(r.id);
+      if (!el) return;
+      if (r.href) el.href = r.href;
+      var nameEl = el.querySelector('.red-name');
+      var handleEl = el.querySelector('.red-handle');
+      var iconEl = el.querySelector('.red-icon');
+      if (nameEl && r.name) nameEl.textContent = r.name;
+      if (handleEl && r.handle) handleEl.textContent = r.handle;
+      if (iconEl && r.icon) iconEl.textContent = r.icon;
+      el.style.display = r.visible === false ? 'none' : '';
+    });
+  }
+}
+
+// Cargar al iniciar
+try {
+  var saved = JSON.parse(localStorage.getItem(BL_STORE) || 'null');
+  if (saved) applyPortadaData(saved);
+} catch(e) {}
+
+// Escuchar mensajes del admin (iframe o window.opener)
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'bl-update') {
+    applyPortadaData(e.data.data);
+    localStorage.setItem(BL_STORE, JSON.stringify(e.data.data));
+  }
+});
+</script>
+
 </body>
 </html>
