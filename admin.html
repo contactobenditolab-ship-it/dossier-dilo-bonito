@@ -3,87 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Bendito Lab</title>
-<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800;900&family=Lato:wght@300;400;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Admin · Bendito Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0F1117;--surface:#1A1D27;--surface2:#22263A;--border:#2A2F45;--accent:#F2C94C;--green:#4CAF7D;--red:#E85555;--blue:#A8C8E8;--text:#E8EAF0;--mid:#8892AA;--dim:#4A5068;}
-*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
-body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
-#login{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;}
-.login-box{background:var(--surface);border:1px solid var(--border);padding:48px;width:360px;text-align:center;}
-.login-title{font-family:'League Spartan',sans-serif;font-weight:900;font-size:26px;color:var(--accent);margin-bottom:6px;}
-.login-sub{font-size:12px;color:var(--mid);margin-bottom:32px;}
-.login-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:14px;font-family:'DM Mono',monospace;font-size:18px;letter-spacing:6px;text-align:center;outline:none;margin-bottom:12px;}
-.login-input:focus{border-color:var(--accent);}
-.login-btn{width:100%;background:var(--accent);color:#1a1d27;font-family:'League Spartan',sans-serif;font-weight:800;font-size:15px;letter-spacing:1px;padding:14px;border:none;cursor:pointer;}
-.login-btn:hover{opacity:.85;}
-.login-err{color:var(--red);font-size:12px;margin-top:8px;display:none;}
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.topbar-logo{font-family:'League Spartan',sans-serif;font-weight:900;font-size:17px;color:var(--accent);}
-.topbar-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 8px;text-transform:uppercase;margin-left:10px;}
-.topbar-right{display:flex;align-items:center;gap:10px;}
-.save-btn{background:var(--green);color:#fff;font-family:'League Spartan',sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;padding:9px 20px;border:none;cursor:pointer;}
-.save-btn:hover{opacity:.85;}
-.prev-btn{background:transparent;border:1px solid var(--border);color:var(--mid);font-size:11px;font-weight:700;letter-spacing:1px;padding:9px 14px;cursor:pointer;text-decoration:none;font-family:'Lato';}
-.prev-btn:hover{border-color:var(--accent);color:var(--accent);}
-.dirty{color:var(--accent);font-size:11px;font-weight:700;display:none;margin-right:8px;}
-.app{display:flex;flex:1;}
-.sidebar{width:210px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;overflow-y:auto;flex-shrink:0;}
-.sb-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);padding:8px 16px 4px;font-weight:700;}
-.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;border-left:3px solid transparent;transition:all .15s;color:var(--mid);font-size:13px;}
-.sb-item:hover{background:var(--surface2);color:var(--text);}
-.sb-item.active{background:rgba(242,201,76,.08);border-left-color:var(--accent);color:var(--accent);font-weight:700;}
-.sb-div{border:none;border-top:1px solid var(--border);margin:8px 0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Lato',sans-serif;background:#F0EDE6;color:#222;height:100vh;overflow:hidden;}
+#login{position:fixed;inset:0;background:#1E3A5F;display:flex;align-items:center;justify-content:center;z-index:9999;}
+.login-box{background:#fff;padding:48px 40px;width:360px;text-align:center;}
+.login-title{font-family:'League Spartan',sans-serif;font-weight:900;font-size:28px;color:#1E3A5F;letter-spacing:-1px;margin-bottom:4px;}
+.login-sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:32px;}
+.login-input{width:100%;padding:14px;border:1.5px solid #ddd;font-size:16px;text-align:center;letter-spacing:4px;margin-bottom:10px;outline:none;}
+.login-input:focus{border-color:#1E3A5F;}
+.login-btn{width:100%;background:#1E3A5F;color:#F2C94C;border:none;font-family:'League Spartan',sans-serif;font-weight:900;font-size:15px;letter-spacing:1px;padding:15px;cursor:pointer;}
+.login-btn:hover{background:#3B6BA5;}
+.login-err{color:#C0392B;font-size:12px;margin-top:10px;display:none;}
+#app{display:none;height:100vh;flex-direction:column;}
+.topbar{background:#1E3A5F;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;flex-shrink:0;}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.topbar-logo{font-family:'League Spartan',sans-serif;font-weight:900;font-size:18px;color:#F2C94C;letter-spacing:1px;}
+.topbar-badge{background:rgba(242,201,76,.2);color:#F2C94C;font-size:10px;letter-spacing:2px;padding:3px 10px;border:1px solid rgba(242,201,76,.3);}
+.dirty{font-size:11px;color:#E8704A;letter-spacing:1px;display:none;}
+.dirty.show{display:block;}
+.saved-ok{font-size:11px;color:#27AE60;letter-spacing:1px;display:none;}
+.saved-ok.show{display:inline;}
+.topbar-right{display:flex;gap:8px;align-items:center;}
+.prev-btn{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);padding:6px 14px;font-size:11px;letter-spacing:1px;cursor:pointer;text-decoration:none;white-space:nowrap;}
+.prev-btn:hover{background:rgba(255,255,255,.2);}
+.save-btn{background:#F2C94C;color:#1E3A5F;border:none;font-family:'League Spartan',sans-serif;font-weight:900;font-size:13px;padding:8px 20px;cursor:pointer;letter-spacing:.5px;}
+.save-btn:hover{background:#E8704A;color:#fff;}
+.workspace{display:flex;flex:1;overflow:hidden;}
+.sidebar{width:210px;background:#fff;border-right:1px solid #E0DDD6;overflow-y:auto;flex-shrink:0;}
+.sb-lbl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#999;padding:18px 16px 6px;font-weight:700;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-size:13px;color:#444;border-left:3px solid transparent;transition:all .15s;}
+.sb-item:hover{background:#F5F0E0;color:#1E3A5F;}
+.sb-item.active{background:#F5F0E0;color:#1E3A5F;border-left-color:#F2C94C;font-weight:700;}
+.sb-item span{font-size:15px;width:20px;text-align:center;}
+.sb-div{border:none;border-top:1px solid #E0DDD6;margin:8px 0;}
 .main{flex:1;overflow-y:auto;padding:32px;}
-.panel{display:none;}.panel.active{display:block;}
-.saved-ok{background:rgba(76,175,125,.15);border:1px solid var(--green);color:var(--green);padding:12px 16px;margin-bottom:24px;font-size:13px;font-weight:700;display:none;}
-.s-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
-.s-icon{font-size:22px;}.s-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:18px;}.s-desc{font-size:12px;color:var(--dim);margin-top:2px;}
-.field{margin-bottom:14px;}
-.lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:5px;display:block;font-weight:700;}
-.inp{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Lato',sans-serif;font-size:14px;padding:10px 12px;outline:none;}
-.inp:focus{border-color:var(--accent);}
-.ta{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Lato',sans-serif;font-size:13px;padding:10px 12px;outline:none;resize:vertical;min-height:65px;line-height:1.6;}
-.ta:focus{border-color:var(--accent);}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-.row4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.section-gap{margin-top:32px;}
-.pc{background:var(--surface);border:1px solid var(--border);padding:18px 16px;}
-.pc:hover{border-color:var(--accent);}
-.pc-name{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:4px;font-weight:700;}
-.pc-sub{font-size:11px;color:var(--dim);margin-bottom:10px;}
-.pc-wrap{display:flex;align-items:center;gap:8px;}
-.pc-inp{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--accent);font-family:'DM Mono',monospace;font-size:20px;padding:8px 10px;text-align:right;outline:none;}
-.pc-inp:focus{border-color:var(--accent);}
-.pc-unit{font-size:13px;color:var(--mid);}
-.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
-.img-card{background:var(--surface);border:1px solid var(--border);padding:14px;cursor:pointer;}
-.img-card:hover{border-color:var(--accent);}
-.img-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:flex;justify-content:space-between;font-weight:700;}
-.img-ok{background:var(--green);color:#fff;font-size:9px;padding:2px 6px;display:none;}
-.img-ok.on{display:inline;}
-.img-prev{width:100%;aspect-ratio:16/9;background:var(--surface2);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;}
-.img-prev img{width:100%;height:100%;object-fit:cover;}
-.img-ph{font-size:11px;color:var(--dim);text-align:center;}
-.img-btn{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--mid);font-size:11px;font-weight:700;letter-spacing:1px;padding:8px;cursor:pointer;text-transform:uppercase;font-family:'Lato';}
-.img-btn:hover{border-color:var(--accent);color:var(--accent);}
-.tbl{width:100%;border-collapse:collapse;margin-bottom:16px;}
-.tbl th{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface);font-weight:700;}
-.tbl td{padding:11px 12px;border-bottom:1px solid rgba(42,47,69,.4);vertical-align:middle;}
-.tbl tr:hover td{background:rgba(255,255,255,.02);}
-.td-n{font-size:13px;color:var(--text);font-weight:700;}
-.td-d{font-size:11px;color:var(--dim);}
-.ti{background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--accent);font-family:'DM Mono',monospace;font-size:15px;width:85px;padding:4px 6px;text-align:right;outline:none;}
-.ti:focus{border-bottom-color:var(--accent);}
-.ti-wide{width:180px;text-align:left;}
-.stag{display:inline-block;background:rgba(168,200,232,.12);color:var(--blue);font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 8px;text-transform:uppercase;margin-bottom:14px;}
-.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;}
-.tab{padding:10px 18px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mid);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;}
-.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
-.tab-c{display:none;}.tab-c.active{display:block;}
-.admin-foot{text-align:center;padding:20px;color:var(--dim);font-size:11px;border-top:1px solid var(--border);}
-@media(max-width:768px){.sidebar{display:none;}.row2,.row3,.row4,.img-grid{grid-template-columns:1fr;}.main{padding:16px;}}
+.panel{display:none;}
+.panel.active{display:block;}
+.panel-title{font-family:'League Spartan',sans-serif;font-weight:900;font-size:24px;color:#1E3A5F;letter-spacing:-1px;margin-bottom:4px;}
+.panel-desc{font-size:13px;color:#888;margin-bottom:28px;line-height:1.5;}
+.card{background:#fff;border:1px solid #E0DDD6;padding:24px;margin-bottom:20px;}
+.card-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:13px;color:#1E3A5F;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #F0EDE6;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.field:last-child{margin-bottom:0;}
+.field label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#888;}
+.field input,.field textarea,.field select{padding:10px 12px;border:1.5px solid #E0DDD6;background:#FAFAF8;font-family:'Lato',sans-serif;font-size:13px;color:#222;outline:none;transition:border-color .2s;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:#3B6BA5;background:#fff;}
+.field textarea{min-height:80px;resize:vertical;line-height:1.6;}
+.field-hint{font-size:11px;color:#aaa;margin-top:3px;}
+.img-card{background:#fff;border:1px solid #E0DDD6;padding:16px;display:flex;gap:16px;align-items:flex-start;margin-bottom:12px;}
+.img-preview{width:140px;height:90px;flex-shrink:0;background:#F0EDE6;border:1px solid #E0DDD6;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;}
+.img-preview img{width:100%;height:100%;object-fit:cover;}
+.img-info{flex:1;}
+.img-name{font-family:'League Spartan',sans-serif;font-weight:800;font-size:13px;color:#1E3A5F;margin-bottom:2px;}
+.img-key{font-size:10px;color:#aaa;letter-spacing:1px;margin-bottom:10px;}
+.img-upload-btn{display:inline-block;background:#1E3A5F;color:#F2C94C;font-family:'League Spartan',sans-serif;font-weight:900;font-size:11px;letter-spacing:1px;padding:7px 16px;cursor:pointer;}
+.img-upload-btn:hover{background:#3B6BA5;}
+input[type="file"]{display:none;}
+.img-status{font-size:11px;margin-top:8px;display:none;}
+.prog-wrap{height:3px;background:#F0EDE6;margin-top:6px;display:none;}
+.prog-bar{height:100%;background:#F2C94C;width:0%;transition:width .3s;}
+.carousel-slot{display:flex;align-items:center;gap:10px;background:#FAFAF8;border:1px solid #E0DDD6;padding:10px 14px;margin-bottom:8px;}
+.carousel-slot-num{width:24px;height:24px;background:#1E3A5F;color:#fff;font-family:'League Spartan',sans-serif;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.carousel-slot select{flex:1;padding:7px 10px;border:1.5px solid #E0DDD6;font-family:'Lato',sans-serif;font-size:13px;background:#fff;outline:none;}
+.token-bar{background:#FFF8E1;border:1px solid #F2C94C;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:20px;font-size:12px;flex-wrap:wrap;}
+.token-bar input{flex:1;min-width:200px;padding:7px 10px;border:1.5px solid #E0DDD6;font-size:12px;font-family:monospace;outline:none;}
+.token-bar button{background:#1E3A5F;color:#F2C94C;border:none;padding:7px 16px;font-size:11px;font-family:'League Spartan',sans-serif;font-weight:900;cursor:pointer;white-space:nowrap;}
+.prod-row{display:grid;grid-template-columns:1fr 2fr 100px 32px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid #F0EDE6;}
+.prod-row input{padding:8px;border:1.5px solid #E0DDD6;font-size:13px;width:100%;font-family:'Lato',sans-serif;}
+.del-btn{background:#fff;border:1px solid #ddd;color:#bbb;cursor:pointer;height:34px;width:32px;font-size:16px;}
+.del-btn:hover{border-color:#C0392B;color:#C0392B;}
+@media(max-width:768px){
+  .sidebar{width:44px;}
+  .sb-item{padding:10px;justify-content:center;}
+  .sb-item span{margin:0;width:auto;}
+  .sb-item > *:not(span){display:none;}
+  .sb-lbl,.sb-div{display:none;}
+  .main{padding:16px;}
+  .grid2,.grid3{grid-template-columns:1fr;}
+  .img-card{flex-direction:column;}
+  .img-preview{width:100%;height:140px;}
+  .topbar .prev-btn{display:none;}
+}
 </style>
 </head>
 <body>
@@ -91,565 +96,563 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 <div id="login">
   <div class="login-box">
     <div class="login-title">BENDITO LAB</div>
-    <div class="login-sub">Panel de administración · Acceso restringido</div>
-    <input type="password" class="login-input" id="pwd" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkLogin()">
+    <div class="login-sub">Panel de administración</div>
+    <input type="password" class="login-input" id="pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkLogin()">
     <button class="login-btn" onclick="checkLogin()">ENTRAR →</button>
     <div class="login-err" id="login-err">Contraseña incorrecta</div>
   </div>
 </div>
 
-<div class="topbar">
-  <div style="display:flex;align-items:center">
-    <div class="topbar-logo">ADMIN</div>
-    <div class="topbar-badge">INTERNO</div>
-    <span class="dirty" id="dirty-ind">● Sin guardar</span>
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">ADMIN</div>
+      <div class="topbar-badge">INTERNO</div>
+      <span class="dirty" id="dirty-ind">● Sin guardar</span>
+      <span class="saved-ok" id="saved-ok">✓ Guardado</span>
+    </div>
+    <div class="topbar-right">
+      <a href="index.html" target="_blank" class="prev-btn">👁 Portada</a>
+      <a href="colaboradores.html" target="_blank" class="prev-btn">👁 Colaboradores</a>
+      <a href="bendito-lab.html" target="_blank" class="prev-btn">👁 Bendito Lab</a>
+      <button class="save-btn" onclick="saveAll()">💾 Guardar todo</button>
+    </div>
   </div>
-  <div class="topbar-right">
-    <a href="index.html" target="_blank" class="prev-btn">👁 Dilo Bonito</a>
-    <a href="colaboradores.html" target="_blank" class="prev-btn">👁 Colaboradores</a>
-    <a href="bendito-lab.html" target="_blank" class="prev-btn">👁 Bendito Lab</a>
-    <button class="save-btn" onclick="saveAll()">💾 Guardar todo</button>
+
+  <div class="workspace">
+    <nav class="sidebar">
+      <div class="sb-lbl">Portada</div>
+      <div class="sb-item active" onclick="show('carrusel',this)"><span>🖼️</span> Carrusel</div>
+      <div class="sb-item" onclick="show('hero',this)"><span>✏️</span> Hero</div>
+      <div class="sb-item" onclick="show('bloques',this)"><span>📋</span> Bloques</div>
+      <div class="sb-item" onclick="show('contacto-sec',this)"><span>📞</span> Contacto</div>
+      <hr class="sb-div">
+      <div class="sb-lbl">Imágenes</div>
+      <div class="sb-item" onclick="show('imagenes',this)"><span>📸</span> Imágenes</div>
+      <hr class="sb-div">
+      <div class="sb-lbl">Dilo Bonito</div>
+      <div class="sb-item" onclick="show('db-textos',this)"><span>✏️</span> Textos DB</div>
+      <div class="sb-item" onclick="show('db-precios',this)"><span>💰</span> Precios</div>
+      <hr class="sb-div">
+      <div class="sb-lbl">Bendito Lab</div>
+      <div class="sb-item" onclick="show('bl-textos',this)"><span>✏️</span> Textos BL</div>
+      <div class="sb-item" onclick="show('bl-productos',this)"><span>📦</span> Productos</div>
+      <hr class="sb-div">
+      <div class="sb-lbl">Sistema</div>
+      <div class="sb-item" onclick="show('ajustes',this)"><span>⚙️</span> Ajustes</div>
+    </nav>
+
+    <div class="main">
+
+      <!-- CARRUSEL -->
+      <div class="panel active" id="panel-carrusel">
+        <div class="panel-title">Carrusel de portada</div>
+        <div class="panel-desc">Elige qué fotos aparecen y en qué orden. Sube las fotos en la sección <strong>Imágenes</strong>.</div>
+        <div class="card">
+          <div class="card-title">Orden de fotos</div>
+          <p style="font-size:12px;color:#999;margin-bottom:14px;">Arrastra o cambia el selector para reordenar. Máximo 12 posiciones.</p>
+          <div id="carousel-order"></div>
+          <button onclick="addSlot()" style="width:100%;margin-top:10px;padding:10px;background:#F5F0E0;border:1.5px dashed #ccc;color:#666;cursor:pointer;font-size:12px;">+ Añadir posición</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Configuración del carrusel</div>
+          <div class="grid2">
+            <div class="field"><label>Velocidad (segundos)</label><input type="number" id="car-speed" value="4" min="2" max="20" onchange="markDirty()"></div>
+            <div class="field"><label>Altura escritorio (px)</label><input type="number" id="car-height" value="520" min="200" max="900" step="10" onchange="markDirty()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO -->
+      <div class="panel" id="panel-hero">
+        <div class="panel-title">Hero · Texto principal</div>
+        <div class="panel-desc">El bloque grande que aparece al entrar a la portada.</div>
+        <div class="card">
+          <div class="card-title">Título</div>
+          <div class="field"><label>Línea 1</label><input type="text" id="hero-l1" placeholder="HAZ QUE TU" onchange="markDirty()"></div>
+          <div class="field"><label>Línea 2</label><input type="text" id="hero-l2" placeholder="EVENTO SEA" onchange="markDirty()"></div>
+          <div class="field"><label>Línea 3 — en color (acento)</label><input type="text" id="hero-l3" placeholder="INOLVIDABLE" onchange="markDirty()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Subtítulo</div>
+          <div class="field"><textarea id="hero-sub" rows="3" onchange="markDirty()" placeholder="Texto bajo el título..."></textarea></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Botones</div>
+          <div class="grid2">
+            <div class="field"><label>Botón principal</label><input type="text" id="hero-cta1" placeholder="Solicitar información" onchange="markDirty()"></div>
+            <div class="field"><label>Botón secundario</label><input type="text" id="hero-cta2" placeholder="Ver servicios" onchange="markDirty()"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Estadísticas</div>
+          <div class="grid3">
+            <div class="field"><label>Número 1</label><input type="text" id="hero-s1n" placeholder="150+" onchange="markDirty()"></div>
+            <div class="field"><label>Texto 1</label><input type="text" id="hero-s1t" placeholder="Invitados max." onchange="markDirty()"></div>
+            <div></div>
+            <div class="field"><label>Número 2</label><input type="text" id="hero-s2n" placeholder="4" onchange="markDirty()"></div>
+            <div class="field"><label>Texto 2</label><input type="text" id="hero-s2t" placeholder="Packs disponibles" onchange="markDirty()"></div>
+            <div></div>
+            <div class="field"><label>Número 3</label><input type="text" id="hero-s3n" placeholder="24h" onchange="markDirty()"></div>
+            <div class="field"><label>Texto 3</label><input type="text" id="hero-s3t" placeholder="Respuesta garantizada" onchange="markDirty()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOQUES -->
+      <div class="panel" id="panel-bloques">
+        <div class="panel-title">Bloques de marca</div>
+        <div class="panel-desc">Los dos bloques de la portada: Dilo Bonito (eventos) y Bendito Lab (empresas).</div>
+        <div class="card">
+          <div class="card-title">Bloque — Dilo Bonito (fondo azul oscuro)</div>
+          <div class="field"><label>Etiqueta superior</label><input type="text" id="db-tag" placeholder="Para eventos y celebraciones" onchange="markDirty()"></div>
+          <div class="field"><label>Descripción</label><textarea id="db-desc" rows="3" onchange="markDirty()"></textarea></div>
+          <div class="field"><label>Texto del botón</label><input type="text" id="db-cta" placeholder="Ver servicios →" onchange="markDirty()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Bloque — Bendito Lab (fondo azul claro)</div>
+          <div class="field"><label>Etiqueta superior</label><input type="text" id="bl-tag" placeholder="Para empresas y marcas" onchange="markDirty()"></div>
+          <div class="field"><label>Descripción</label><textarea id="bl-desc" rows="3" onchange="markDirty()"></textarea></div>
+          <div class="field"><label>Texto del botón</label><input type="text" id="bl-cta" placeholder="Ver catálogo →" onchange="markDirty()"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Sección ¿Quiénes somos?</div>
+          <div class="field"><label>Título</label><input type="text" id="qs-titulo" placeholder="DILO BONITO" onchange="markDirty()"></div>
+          <div class="field"><label>Texto</label><textarea id="qs-texto" rows="4" onchange="markDirty()"></textarea></div>
+        </div>
+      </div>
+
+      <!-- CONTACTO -->
+      <div class="panel" id="panel-contacto-sec">
+        <div class="panel-title">Contacto</div>
+        <div class="panel-desc">Datos que aparecen en el footer y sección de contacto.</div>
+        <div class="card">
+          <div class="card-title">Datos de contacto</div>
+          <div class="grid2">
+            <div class="field"><label>Teléfono</label><input type="text" id="c-tel" placeholder="647 444 308" onchange="markDirty()"></div>
+            <div class="field"><label>Email general</label><input type="email" id="c-email" onchange="markDirty()"></div>
+            <div class="field"><label>Email colaboradores</label><input type="email" id="c-email-colab" onchange="markDirty()"></div>
+            <div class="field"><label>Web</label><input type="text" id="c-web" onchange="markDirty()"></div>
+            <div class="field"><label>Instagram Bendito Lab</label><input type="text" id="c-ig-bl" placeholder="@bendito_lab" onchange="markDirty()"></div>
+            <div class="field"><label>Instagram Dilo Bonito</label><input type="text" id="c-ig-db" placeholder="@dilobonitopersonalizados" onchange="markDirty()"></div>
+            <div class="field"><label>Zona de servicio</label><input type="text" id="c-zona" placeholder="Ciudad Real y provincia" onchange="markDirty()"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Sección de contacto (portada)</div>
+          <div class="field"><label>Título</label><input type="text" id="form-titulo" placeholder="SOLICITA INFORMACIÓN" onchange="markDirty()"></div>
+          <div class="field"><label>Subtítulo</label><textarea id="form-sub" rows="2" onchange="markDirty()"></textarea></div>
+        </div>
+      </div>
+
+      <!-- IMÁGENES -->
+      <div class="panel" id="panel-imagenes">
+        <div class="panel-title">Imágenes</div>
+        <div class="panel-desc">Sube imágenes directamente. Aparecen en la web en unos 30 segundos.</div>
+
+        <div class="token-bar">
+          <span>🔑 Token GitHub:</span>
+          <input type="password" id="gh-token" placeholder="ghp_XXXXXXXXXXXXXXXX" onchange="saveToken()">
+          <button onclick="saveToken()">Guardar</button>
+          <span id="tok-ok" style="color:#27AE60;display:none;">✓</span>
+        </div>
+
+        <div class="card"><div class="card-title">Logos</div><div id="grp-logos"></div></div>
+        <div class="card"><div class="card-title">Carrusel de portada</div><div id="grp-carrusel"></div></div>
+        <div class="card"><div class="card-title">Hero y secciones</div><div id="grp-hero"></div></div>
+        <div class="card"><div class="card-title">Bendito Lab — B2B</div><div id="grp-b2b"></div></div>
+      </div>
+
+      <!-- DILO BONITO TEXTOS -->
+      <div class="panel" id="panel-db-textos">
+        <div class="panel-title">Dilo Bonito · Textos</div>
+        <div class="panel-desc">Textos de la página de servicios para eventos.</div>
+        <div class="card">
+          <div class="card-title">Hero de la página Dilo Bonito</div>
+          <div class="field"><label>Etiqueta</label><input type="text" id="dt-tag" onchange="markDirty()"></div>
+          <div class="field"><label>Título línea 1</label><input type="text" id="dt-l1" onchange="markDirty()"></div>
+          <div class="field"><label>Título línea 2</label><input type="text" id="dt-l2" onchange="markDirty()"></div>
+          <div class="field"><label>Título línea 3 (acento)</label><input type="text" id="dt-l3" onchange="markDirty()"></div>
+          <div class="field"><label>Subtítulo</label><textarea id="dt-sub" rows="3" onchange="markDirty()"></textarea></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Quick stats</div>
+          <div class="grid2">
+            <div class="field"><label>Stat 1</label><input type="text" id="dt-qs1" onchange="markDirty()"></div>
+            <div class="field"><label>Stat 2</label><input type="text" id="dt-qs2" onchange="markDirty()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DILO BONITO PRECIOS -->
+      <div class="panel" id="panel-db-precios">
+        <div class="panel-title">Dilo Bonito · Precios</div>
+        <div class="panel-desc">Precios de packs y extras. Los cambios se guardan en el navegador.</div>
+        <div class="card">
+          <div class="card-title">Packs (€ desde)</div>
+          <div class="grid2">
+            <div class="field"><label>MINI</label><input type="number" id="p-mini" placeholder="299" onchange="markDirty()"></div>
+            <div class="field"><label>ÍNTIMA</label><input type="number" id="p-intima" placeholder="499" onchange="markDirty()"></div>
+            <div class="field"><label>CLÁSICA</label><input type="number" id="p-clasica" placeholder="650" onchange="markDirty()"></div>
+            <div class="field"><label>PREMIUM</label><input type="number" id="p-premium" placeholder="799" onchange="markDirty()"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Extras (€)</div>
+          <div class="grid3">
+            <div class="field"><label>Hora extra</label><input type="number" id="e-hora" placeholder="150" onchange="markDirty()"></div>
+            <div class="field"><label>Diseño exclusivo</label><input type="number" id="e-dis" placeholder="80" onchange="markDirty()"></div>
+            <div class="field"><label>Regalo infantil /ud</label><input type="number" id="e-nin" placeholder="8" onchange="markDirty()"></div>
+            <div class="field"><label>Post-evento mínimo</label><input type="number" id="e-mon" placeholder="15" onchange="markDirty()"></div>
+            <div class="field"><label>Post-evento máximo</label><input type="number" id="e-max" placeholder="30" onchange="markDirty()"></div>
+            <div class="field"><label>Km desplazamiento (€)</label><input type="number" id="e-km" step="0.01" placeholder="0.40" onchange="markDirty()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BENDITO LAB TEXTOS -->
+      <div class="panel" id="panel-bl-textos">
+        <div class="panel-title">Bendito Lab · Textos B2B</div>
+        <div class="panel-desc">Textos de la página de artículos para empresas.</div>
+        <div class="card">
+          <div class="card-title">Hero B2B</div>
+          <div class="field"><label>Etiqueta</label><input type="text" id="bt-tag" onchange="markDirty()"></div>
+          <div class="field"><label>Título línea 1</label><input type="text" id="bt-l1" onchange="markDirty()"></div>
+          <div class="field"><label>Título línea 2</label><input type="text" id="bt-l2" onchange="markDirty()"></div>
+          <div class="field"><label>Subtítulo</label><textarea id="bt-sub" rows="3" onchange="markDirty()"></textarea></div>
+          <div class="grid2">
+            <div class="field"><label>Texto botón CTA</label><input type="text" id="bt-ctat" onchange="markDirty()"></div>
+            <div class="field"><label>Enlace botón CTA</label><input type="text" id="bt-ctas" onchange="markDirty()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BENDITO LAB PRODUCTOS -->
+      <div class="panel" id="panel-bl-productos">
+        <div class="panel-title">Bendito Lab · Catálogo</div>
+        <div class="panel-desc">Productos B2B con nombre, descripción y precio orientativo.</div>
+        <div class="card">
+          <div class="card-title">Productos</div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 100px 32px;gap:8px;padding:6px 0;border-bottom:2px solid #F0EDE6;margin-bottom:4px;">
+            <span style="font-size:10px;font-weight:700;letter-spacing:1px;color:#aaa;text-transform:uppercase;">Producto</span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:1px;color:#aaa;text-transform:uppercase;">Descripción</span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:1px;color:#aaa;text-transform:uppercase;">Precio</span>
+            <span></span>
+          </div>
+          <div id="productos-list"></div>
+          <button onclick="addProducto()" style="width:100%;margin-top:12px;padding:10px;background:#F5F0E0;border:1.5px dashed #ccc;color:#666;cursor:pointer;font-size:12px;">+ Añadir producto</button>
+        </div>
+      </div>
+
+      <!-- AJUSTES -->
+      <div class="panel" id="panel-ajustes">
+        <div class="panel-title">Ajustes del sistema</div>
+        <div class="panel-desc">Configuración técnica del panel de administración.</div>
+        <div class="card">
+          <div class="card-title">Token de GitHub (subida de imágenes)</div>
+          <p style="font-size:12px;color:#888;margin-bottom:14px;">Necesario para subir imágenes desde el panel. Se guarda solo en este navegador. <br>Crea uno en GitHub → Settings → Developer settings → Personal access tokens (scope: repo).</p>
+          <div class="field">
+            <label>Token</label>
+            <input type="password" id="gh-token-2" placeholder="ghp_XXXXXXXXXXXXXXXX">
+            <div class="field-hint">El token no se envía a ningún servidor, queda guardado en tu navegador (localStorage).</div>
+          </div>
+          <button onclick="saveToken2()" style="background:#1E3A5F;color:#F2C94C;border:none;padding:10px 24px;font-family:'League Spartan',sans-serif;font-weight:900;font-size:13px;cursor:pointer;margin-top:4px;">Guardar token</button>
+          <span id="tok-ok-2" style="color:#27AE60;font-size:12px;margin-left:10px;display:none;">✓ Guardado</span>
+        </div>
+        <div class="card">
+          <div class="card-title">Repositorio GitHub</div>
+          <div class="grid2">
+            <div class="field"><label>Organización / Usuario</label><input type="text" id="gh-user" value="contactobenditolab-ship-it" onchange="markDirty()"></div>
+            <div class="field"><label>Repositorio</label><input type="text" id="gh-repo" value="dossier-dilo-bonito" onchange="markDirty()"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
-
-<div class="app">
-<nav class="sidebar">
-  <div class="sb-lbl">General</div>
-  <div class="sb-item active" onclick="show('contacto',this)"><span>📞</span>Contacto</div>
-  <div class="sb-item" onclick="show('imagenes',this)"><span>🖼️</span>Imágenes</div>
-  <hr class="sb-div">
-  <div class="sb-lbl">Dilo Bonito</div>
-  <div class="sb-item" onclick="show('dilo-textos',this)"><span>✏️</span>Textos</div>
-  <div class="sb-item" onclick="show('dilo-precios',this)"><span>💰</span>Precios</div>
-  <div class="sb-item" onclick="show('dilo-extras',this)"><span>➕</span>Extras</div>
-  <div class="sb-item" onclick="show('dilo-packs',this)"><span>📦</span>Packs detalle</div>
-  <hr class="sb-div">
-  <div class="sb-lbl">Colaboradores</div>
-  <div class="sb-item" onclick="show('colab-textos',this)"><span>✏️</span>Textos</div>
-  <div class="sb-item" onclick="show('colab-comisiones',this)"><span>💸</span>Comisiones</div>
-  <hr class="sb-div">
-  <div class="sb-lbl">Bendito Lab B2B</div>
-  <div class="sb-item" onclick="show('b2b-textos',this)"><span>✏️</span>Textos</div>
-  <div class="sb-item" onclick="show('b2b-productos',this)"><span>🏷️</span>Productos</div>
-</nav>
-
-<main class="main">
-<div class="saved-ok" id="saved-ok">✓ Todos los cambios guardados correctamente</div>
-<div id="upload-status" style="display:none;background:rgba(168,200,232,.12);border:1px solid var(--blue);color:var(--blue);padding:12px 16px;margin-bottom:16px;font-size:13px;font-weight:700;"></div>
-
-<!-- CONTACTO -->
-<div class="panel active" id="panel-contacto">
-  <div class="s-hdr"><span class="s-icon">📞</span><div><div class="s-title">Datos de contacto</div><div class="s-desc">Aparecen en todas las páginas</div></div></div>
-  <div class="row2">
-    <div class="field"><label class="lbl">Teléfono</label><input class="inp" id="c-tel" value="647 444 308" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Email general</label><input class="inp" id="c-email" value="contacto@benditolab.com" oninput="dirty()"></div>
-  </div>
-  <div class="row2">
-    <div class="field"><label class="lbl">Email colaboradores</label><input class="inp" id="c-email-colab" value="colaboradores@benditolab.com" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Instagram</label><input class="inp" id="c-instagram" value="@dilobonito" oninput="dirty()"></div>
-  </div>
-  <div class="row2">
-    <div class="field"><label class="lbl">Web</label><input class="inp" id="c-web" value="www.benditolab.com" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Zona de servicio</label><input class="inp" id="c-zona" value="Ciudad Real y provincia" oninput="dirty()"></div>
-  </div>
-</div>
-
-<!-- IMÁGENES -->
-<div class="panel" id="panel-imagenes">
-  <div class="s-hdr"><span class="s-icon">🖼️</span><div><div class="s-title">Imágenes</div><div class="s-desc">Clic en cada tarjeta → selecciona foto → "Guardar todo". Se suben a GitHub y aparecen en el dossier en ~30s.</div></div></div>
-
-  <div class="stag">Logo del sitio</div>
-  <div class="img-grid" style="grid-template-columns:1fr 1fr;margin-bottom:8px;">
-    <div class="img-card" onclick="trigImg('img-logo-dilo')">
-      <div class="img-lbl">🔤 LOGO DILO BONITO (cabecera nav) <span class="img-ok" id="ok-img-logo-dilo">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-logo-dilo" style="aspect-ratio:3/1;background:#f5f0e0;"><div class="img-ph">📸 Logo Dilo Bonito<br><small>PNG transparente recomendado</small></div></div>
-      <button class="img-btn">Cambiar logo</button>
-      <input type="file" id="img-logo-dilo" accept="image/*" style="display:none" onchange="loadImg(this,'img-logo-dilo')">
-    </div>
-    <div class="img-card" onclick="trigImg('img-logo-bendito')">
-      <div class="img-lbl">🔤 LOGO BENDITO LAB (footer) <span class="img-ok" id="ok-img-logo-bendito">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-logo-bendito" style="aspect-ratio:3/1;background:#1e3a5f;"><div class="img-ph">📸 Logo Bendito Lab<br><small>PNG transparente recomendado</small></div></div>
-      <button class="img-btn">Cambiar logo</button>
-      <input type="file" id="img-logo-bendito" accept="image/*" style="display:none" onchange="loadImg(this,'img-logo-bendito')">
-    </div>
-  </div>
-
-  <div class="stag">Todas las páginas</div>
-  <div class="img-grid" style="grid-template-columns:1fr 1fr;">
-    <div class="img-card" onclick="trigImg('img-cabecera')">
-      <div class="img-lbl">🖼 CABECERA / FONDO HERO <span class="img-ok" id="ok-img-cabecera">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-cabecera" style="aspect-ratio:21/9;"><div class="img-ph">📸 Imagen de fondo del hero<br><small>Recomendado: 1920×600px</small></div></div>
-      <button class="img-btn">Cambiar imagen de cabecera</button>
-      <input type="file" id="img-cabecera" accept="image/*" style="display:none" onchange="loadImg(this,'img-cabecera')">
-    </div>
-    <div class="img-card" onclick="trigImg('img-hero')">
-      <div class="img-lbl">🟡 SECCIÓN HERO — lateral derecho <span class="img-ok" id="ok-img-hero">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-hero"><div class="img-ph">📸 Imagen lado derecho del hero<br><small>Recomendado: 900×700px</small></div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-hero" accept="image/*" style="display:none" onchange="loadImg(this,'img-hero')">
-    </div>
-  </div>
-
-  <div class="stag" style="margin-top:16px">Dilo Bonito — Secciones de servicio</div>
-  <p style="font-size:12px;color:var(--dim);margin-bottom:12px;">Estas imágenes aparecen junto a la descripción de cada servicio en el dossier</p>
-  <div class="img-grid">
-    <div class="img-card" onclick="trigImg('img-presentacion')">
-      <div class="img-lbl">✍️ PRESENTACIÓN (intro) <span class="img-ok" id="ok-img-presentacion">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-presentacion"><div class="img-ph">📸 Imagen sección "Qué es Dilo Bonito"</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-presentacion" accept="image/*" style="display:none" onchange="loadImg(this,'img-presentacion')">
-    </div>
-    <div class="img-card" onclick="trigImg('img-personalizacion')">
-      <div class="img-lbl">✍️ PERSONALIZACIÓN EN DIRECTO <span class="img-ok" id="ok-img-personalizacion">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-personalizacion"><div class="img-ph">📸 Foto del stand de personalización</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-personalizacion" accept="image/*" style="display:none" onchange="loadImg(this,'img-personalizacion')">
-    </div>
-    <div class="img-card" onclick="trigImg('img-seating')">
-      <div class="img-lbl">🗺️ SEATING PLAN <span class="img-ok" id="ok-img-seating">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-seating"><div class="img-ph">📸 Foto del seating plan</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-seating" accept="image/*" style="display:none" onchange="loadImg(this,'img-seating')">
-    </div>
-    <div class="img-card" onclick="trigImg('img-maquinas')">
-      <div class="img-lbl">🎰 MÁQUINAS <span class="img-ok" id="ok-img-maquinas">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-maquinas"><div class="img-ph">📸 Foto de las máquinas</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-maquinas" accept="image/*" style="display:none" onchange="loadImg(this,'img-maquinas')">
-    </div>
-    <div class="img-card" onclick="trigImg('img-merch')">
-      <div class="img-lbl">🛍️ MERCH CORNER <span class="img-ok" id="ok-img-merch">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-merch"><div class="img-ph">📸 Foto del merch corner</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-merch" accept="image/*" style="display:none" onchange="loadImg(this,'img-merch')">
-    </div>
-  </div>
-
-  <div class="stag" style="margin-top:16px">Bendito Lab B2B</div>
-  <div class="img-grid">
-    <div class="img-card" onclick="trigImg('img-b2b-1')">
-      <div class="img-lbl">👜 B2B — Tote bag <span class="img-ok" id="ok-img-b2b-1">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-b2b-1"><div class="img-ph">📸 Foto tote bag personalizada</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-b2b-1" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-1')">
-    </div>
-    <div class="img-card" onclick="trigImg('img-b2b-2')">
-      <div class="img-lbl">👝 B2B — Neceser <span class="img-ok" id="ok-img-b2b-2">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-b2b-2"><div class="img-ph">📸 Foto neceser personalizado</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-b2b-2" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-2')">
-    </div>
-    <div class="img-card" onclick="trigImg('img-b2b-3')">
-      <div class="img-lbl">🧢 B2B — Gorra <span class="img-ok" id="ok-img-b2b-3">✓ subida</span></div>
-      <div class="img-prev" id="prev-img-b2b-3"><div class="img-ph">📸 Foto gorra personalizada</div></div>
-      <button class="img-btn">Cambiar imagen</button>
-      <input type="file" id="img-b2b-3" accept="image/*" style="display:none" onchange="loadImg(this,'img-b2b-3')">
-    </div>
-  </div>
-</div>
-
-<!-- DILO TEXTOS -->
-<div class="panel" id="panel-dilo-textos">
-  <div class="s-hdr"><span class="s-icon">✨</span><div><div class="s-title">Dilo Bonito — Textos</div><div class="s-desc">Todos los textos del dossier de clientes</div></div></div>
-  <div class="tab-bar">
-    <div class="tab active" onclick="stab(this,'th')">Hero</div>
-    <div class="tab" onclick="stab(this,'ts')">Servicios</div>
-    <div class="tab" onclick="stab(this,'tn')">Navegación</div>
-  </div>
-  <div class="tab-c active" id="th">
-    <div class="field"><label class="lbl">Tag superior</label><input class="inp" id="dt-tag" value="Personalización en vivo para tu evento" oninput="dirty()"></div>
-    <div class="row3">
-      <div class="field"><label class="lbl">Título línea 1</label><input class="inp" id="dt-l1" value="HAZ QUE TU" oninput="dirty()"></div>
-      <div class="field"><label class="lbl">Título línea 2</label><input class="inp" id="dt-l2" value="EVENTO SEA" oninput="dirty()"></div>
-      <div class="field"><label class="lbl">Título línea 3 (color)</label><input class="inp" id="dt-l3" value="INOLVIDABLE" oninput="dirty()"></div>
-    </div>
-    <div class="field"><label class="lbl">Subtítulo</label><textarea class="ta" id="dt-sub" oninput="dirty()">Personalizamos artículos en directo para que cada invitado se lleve un recuerdo único. Bodas, cumpleaños, comuniones, eventos de empresa.</textarea></div>
-    <div class="field"><label class="lbl">Texto botón CTA</label><input class="inp" id="dt-cta" value="Calcular mi presupuesto →" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Qué es — párrafo 1</label><textarea class="ta" id="dt-qs1" oninput="dirty()">Somos el servicio de personalización en vivo de Bendito Lab. Llevamos nuestro taller directamente a tu evento.</textarea></div>
-    <div class="field"><label class="lbl">Qué es — párrafo 2</label><textarea class="ta" id="dt-qs2" oninput="dirty()">Cada invitado elige, personaliza y se lleva su artículo en el momento. Sin esperas, sin complicaciones.</textarea></div>
-  </div>
-  <div class="tab-c" id="ts">
-    <div class="field"><label class="lbl">✍️ Personalización en directo</label><textarea class="ta" id="dt-s1" oninput="dirty()">Tu taller de personalización montado en el evento. Tote bags, gorras, neceseres y más.</textarea></div>
-    <div class="field"><label class="lbl">🗺️ Seating Plan</label><textarea class="ta" id="dt-s2" oninput="dirty()">El cartel de mesas convertido en experiencia: gafas, vasitos, chapas o piezas de bambú con el nombre de cada invitado.</textarea></div>
-    <div class="field"><label class="lbl">🎰 Máquina expendedora</label><textarea class="ta" id="dt-s3" oninput="dirty()">Cápsulas con productos personalizados. Gratuita o con moneda personalizada.</textarea></div>
-    <div class="field"><label class="lbl">🪝 Máquina gancho</label><textarea class="ta" id="dt-s4" oninput="dirty()">Premios personalizados dentro de una máquina de gancho decorada a medida para tu evento.</textarea></div>
-    <div class="field"><label class="lbl">🛍️ Merch Corner</label><textarea class="ta" id="dt-s5" oninput="dirty()">Espacio de merchandising personalizado montado y gestionado por nosotros en tu evento.</textarea></div>
-  </div>
-  <div class="tab-c" id="tn">
-    <div class="field"><label class="lbl">Botón "Solicitar info"</label><input class="inp" id="dn-sol" value="Solicitar info" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Botón colaboradores (nav)</label><input class="inp" id="dn-col" value="¿Quieres Dilo Bonito en tu negocio?" oninput="dirty()"></div>
-    <div class="row2">
-      <div class="field"><label class="lbl">Dropdown — nombre Dilo Bonito</label><input class="inp" id="dn-d1" value="Dilo Bonito" oninput="dirty()"></div>
-      <div class="field"><label class="lbl">Dropdown — descripción</label><input class="inp" id="dn-d1d" value="Experiencias de personalización en directo para eventos" oninput="dirty()"></div>
-    </div>
-    <div class="row2">
-      <div class="field"><label class="lbl">Dropdown — nombre Bendito Lab</label><input class="inp" id="dn-d2" value="Bendito Lab" oninput="dirty()"></div>
-      <div class="field"><label class="lbl">Dropdown — descripción</label><input class="inp" id="dn-d2d" value="Personalización B2B · Artículos para empresas" oninput="dirty()"></div>
-    </div>
-  </div>
-</div>
-
-<!-- DILO PRECIOS -->
-<div class="panel" id="panel-dilo-precios">
-  <div class="s-hdr"><span class="s-icon">💰</span><div><div class="s-title">Dilo Bonito — Precios</div></div></div>
-  <div class="s-lbl" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:10px;">PACKS</div>
-  <div class="row4">
-    <div class="pc"><div class="pc-name">MINI</div><div class="pc-sub">Hasta 30 inv · 2h</div><div class="pc-wrap"><input class="pc-inp" id="p-mini" value="299" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-    <div class="pc"><div class="pc-name">ÍNTIMA</div><div class="pc-sub">Hasta 50 inv · 3h</div><div class="pc-wrap"><input class="pc-inp" id="p-intima" value="499" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-    <div class="pc"><div class="pc-name">CLÁSICA</div><div class="pc-sub">Hasta 100 inv · 4h</div><div class="pc-wrap"><input class="pc-inp" id="p-clasica" value="650" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-    <div class="pc"><div class="pc-name">PREMIUM</div><div class="pc-sub">Hasta 150 inv · 5h</div><div class="pc-wrap"><input class="pc-inp" id="p-premium" value="799" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-  </div>
-  <div style="margin-top:28px;margin-bottom:10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;">SEATING PLAN</div>
-  <table class="tbl">
-    <thead><tr><th>Modalidad</th><th style="text-align:right">Hasta 30</th><th style="text-align:right">Hasta 50</th><th style="text-align:right">Hasta 100</th><th style="text-align:right">Hasta 150</th></tr></thead>
-    <tbody>
-      <tr><td class="td-n">🕶️ Gafas de sol</td><td style="text-align:right"><input class="ti" id="sg-30" value="399" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sg-50" value="520" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sg-100" value="820" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sg-150" value="1120" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td></tr>
-      <tr><td class="td-n">🥃 Vasitos / Chapas / Bambú</td><td style="text-align:right"><input class="ti" id="sb-30" value="350" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sb-50" value="450" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sb-100" value="699" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td><td style="text-align:right"><input class="ti" id="sb-150" value="930" oninput="dirty()"><span style="color:var(--dim);font-size:11px">€</span></td></tr>
-      <tr><td class="td-n">🪵 Solo panel</td><td colspan="4"><input class="ti" id="sp-panel" value="200" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> € fijo</span></td></tr>
-    </tbody>
-  </table>
-  <div style="margin-top:20px;margin-bottom:10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;">MÁQUINAS</div>
-  <div class="row4">
-    <div class="pc"><div class="pc-name">Expendedora</div><div class="pc-sub">Sin moneda</div><div class="pc-wrap"><input class="pc-inp" id="p-eg" value="499" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-    <div class="pc"><div class="pc-name">Expendedora</div><div class="pc-sub">Con moneda</div><div class="pc-wrap"><input class="pc-inp" id="p-em" value="399" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-    <div class="pc"><div class="pc-name">Gancho</div><div class="pc-sub">Partidas libres</div><div class="pc-wrap"><input class="pc-inp" id="p-gg" value="499" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-    <div class="pc"><div class="pc-name">Gancho</div><div class="pc-sub">Con moneda</div><div class="pc-wrap"><input class="pc-inp" id="p-gm" value="399" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-  </div>
-  <div style="margin-top:20px;margin-bottom:10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;">MERCH CORNER</div>
-  <div class="row3">
-    <div class="pc"><div class="pc-name">Básico</div><div class="pc-sub">Stand + 1 producto 30ud</div><div class="pc-wrap"><input class="pc-inp" id="p-mb" value="350" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-    <div class="pc"><div class="pc-name">Completo</div><div class="pc-sub">3 productos 50ud</div><div class="pc-wrap"><input class="pc-inp" id="p-mc" value="580" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-    <div class="pc"><div class="pc-name">Premium</div><div class="pc-sub">Con azafata</div><div class="pc-wrap"><input class="pc-inp" id="p-mp" value="799" type="number" oninput="dirty()"><span class="pc-unit">€</span></div></div>
-  </div>
-</div>
-
-<!-- DILO EXTRAS -->
-<div class="panel" id="panel-dilo-extras">
-  <div class="s-hdr"><span class="s-icon">➕</span><div><div class="s-title">Extras y complementos</div><div class="s-desc">Aparecen en el cotizador del dossier</div></div></div>
-  <table class="tbl">
-    <thead><tr><th>Concepto</th><th>Descripción</th><th style="text-align:right">Precio</th></tr></thead>
-    <tbody>
-      <tr><td><div class="td-n">Hora extra</div></td><td><div class="td-d">Por hora adicional de servicio</div></td><td style="text-align:right"><input class="ti" id="e-hora" value="150" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €/h</span></td></tr>
-      <tr><td><div class="td-n">Diseño gráfico</div></td><td><div class="td-d">Diseño exclusivo para el evento</div></td><td style="text-align:right"><input class="ti" id="e-dis" value="80" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td></tr>
-      <tr><td><div class="td-n">Regalo infantil</div></td><td><div class="td-d">Por niño</div></td><td style="text-align:right"><input class="ti" id="e-nin" value="8" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €/ud</span></td></tr>
-      <tr><td><div class="td-n">Monedas personalizadas</div></td><td><div class="td-d">Para máquinas</div></td><td style="text-align:right"><input class="ti" id="e-mon" value="2" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €/ud</span></td></tr>
-      <tr><td><div class="td-n">Vinilado máquina</div></td><td><div class="td-d">Personalización exterior</div></td><td style="text-align:right"><input class="ti" id="e-vin" value="100" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td></tr>
-      <tr><td><div class="td-n">Desplazamiento</div></td><td><div class="td-d">Fuera de Ciudad Real · ida y vuelta</div></td><td style="text-align:right"><input class="ti" id="e-km" value="0.40" step="0.01" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €/km</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- DILO PACKS -->
-<div class="panel" id="panel-dilo-packs">
-  <div class="s-hdr"><span class="s-icon">📦</span><div><div class="s-title">Packs — textos de características</div></div></div>
-  <div class="field"><label class="lbl">MINI — características (una por línea)</label><textarea class="ta" id="dp-mini" oninput="dirty()">Montaje y desmontaje
-Equipo profesional
-Hasta 3 productos
-Diseños predefinidos</textarea></div>
-  <div class="field"><label class="lbl">ÍNTIMA — características</label><textarea class="ta" id="dp-intima" oninput="dirty()">Montaje y desmontaje
-Equipo profesional
-Hasta 4 productos
-Diseño personalizado</textarea></div>
-  <div class="field"><label class="lbl">CLÁSICA — características</label><textarea class="ta" id="dp-clasica" oninput="dirty()">Montaje y desmontaje
-Equipo profesional
-Productos a elegir
-Diseño personalizado
-Coordinación previa</textarea></div>
-  <div class="field"><label class="lbl">PREMIUM — características</label><textarea class="ta" id="dp-premium" oninput="dirty()">Montaje y desmontaje
-Equipo profesional
-Sin límite de productos
-Diseño premium
-Coordinación total
-Reporte post-evento</textarea></div>
-</div>
-
-<!-- COLAB TEXTOS -->
-<div class="panel" id="panel-colab-textos">
-  <div class="s-hdr"><span class="s-icon">🤝</span><div><div class="s-title">Colaboradores — Textos</div><div class="s-desc">Página "¿Quieres Dilo Bonito en tu negocio?"</div></div></div>
-  <div class="field"><label class="lbl">Tag superior</label><input class="inp" id="ct-tag" value="Para fincas · Wedding planners · Organizadores" oninput="dirty()"></div>
-  <div class="row3">
-    <div class="field"><label class="lbl">Título línea 1</label><input class="inp" id="ct-l1" value="¿QUIERES" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Título línea 2 (acento)</label><input class="inp" id="ct-l2" value="DILO BONITO" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Título línea 3</label><input class="inp" id="ct-l3" value="EN TU NEGOCIO?" oninput="dirty()"></div>
-  </div>
-  <div class="field"><label class="lbl">Subtítulo hero</label><textarea class="ta" id="ct-sub" oninput="dirty()">Añade personalización en vivo a tu cartera de servicios sin trabajo extra. Tú consigues el cliente — nosotros lo hacemos todo.</textarea></div>
-  <div class="row2">
-    <div class="field"><label class="lbl">Paso 1 — título</label><input class="inp" id="ct-p1" value="Tú consigues el cliente" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Paso 1 — descripción</label><textarea class="ta" id="ct-p1d" oninput="dirty()">Nos presentas el evento. Con eso es suficiente.</textarea></div>
-  </div>
-  <div class="row2">
-    <div class="field"><label class="lbl">Paso 2 — título</label><input class="inp" id="ct-p2" value="Nosotros gestionamos todo" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Paso 2 — descripción</label><textarea class="ta" id="ct-p2d" oninput="dirty()">Hablamos con el cliente, presupuestamos, coordinamos y ejecutamos.</textarea></div>
-  </div>
-  <div class="row2">
-    <div class="field"><label class="lbl">Paso 3 — título</label><input class="inp" id="ct-p3" value="Cobras tu comisión" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Paso 3 — descripción</label><textarea class="ta" id="ct-p3d" oninput="dirty()">En 1–3 días tras el evento recibes tu comisión sin esperas.</textarea></div>
-  </div>
-  <div class="row2">
-    <div class="field"><label class="lbl">CTA final — título</label><input class="inp" id="ct-ctat" value="¿HABLAMOS?" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">CTA final — subtexto</label><textarea class="ta" id="ct-ctas" oninput="dirty()">Si crees que Dilo Bonito puede encajar en tu cartera, escríbenos sin compromiso.</textarea></div>
-  </div>
-</div>
-
-<!-- COLAB COMISIONES -->
-<div class="panel" id="panel-colab-comisiones">
-  <div class="s-hdr"><span class="s-icon">💸</span><div><div class="s-title">Comisiones colaboradores</div></div></div>
-  <div class="row3">
-    <div class="pc"><div class="pc-name">Tramo 1</div><div class="pc-sub">Hasta 50 invitados</div><div class="pc-wrap"><input class="pc-inp" id="com-50" value="10" type="number" oninput="dirty()"><span class="pc-unit">%</span></div></div>
-    <div class="pc"><div class="pc-name">Tramo 2</div><div class="pc-sub">Hasta 100 invitados</div><div class="pc-wrap"><input class="pc-inp" id="com-100" value="12" type="number" oninput="dirty()"><span class="pc-unit">%</span></div></div>
-    <div class="pc"><div class="pc-name">Tramo 3</div><div class="pc-sub">Hasta 150 invitados</div><div class="pc-wrap"><input class="pc-inp" id="com-150" value="15" type="number" oninput="dirty()"><span class="pc-unit">%</span></div></div>
-  </div>
-  <div class="field" style="margin-top:20px"><label class="lbl">Plazo de pago</label><input class="inp" id="com-plazo" value="1–3 días tras el evento" oninput="dirty()"></div>
-</div>
-
-<!-- B2B TEXTOS -->
-<div class="panel" id="panel-b2b-textos">
-  <div class="s-hdr"><span class="s-icon">📦</span><div><div class="s-title">Bendito Lab B2B — Textos</div></div></div>
-  <div class="field"><label class="lbl">Tag superior hero</label><input class="inp" id="bt-tag" value="Bendito Lab · Personalización B2B" oninput="dirty()"></div>
-  <div class="row3">
-    <div class="field"><label class="lbl">Título línea 1</label><input class="inp" id="bt-l1" value="TU MARCA" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Título línea 2</label><input class="inp" id="bt-l2" value="EN CADA" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">Título línea 3 (acento)</label><input class="inp" id="bt-l3" value="PRODUCTO" oninput="dirty()"></div>
-  </div>
-  <div class="field"><label class="lbl">Subtítulo hero</label><textarea class="ta" id="bt-sub" oninput="dirty()">Fabricamos y personalizamos artículos para empresas, equipos y campañas. Sin mínimos imposibles, con calidad garantizada y entrega en toda España.</textarea></div>
-  <div class="field"><label class="lbl">Quiénes somos — párrafo 1</label><textarea class="ta" id="bt-qs1" oninput="dirty()">Bendito Lab es tu distribuidor de confianza para artículos promocionales y merchandising corporativo.</textarea></div>
-  <div class="field"><label class="lbl">Quiénes somos — párrafo 2</label><textarea class="ta" id="bt-qs2" oninput="dirty()">Desde 10 unidades hasta pedidos de gran volumen — con los mismos estándares de calidad y atención personalizada.</textarea></div>
-  <div class="row2">
-    <div class="field"><label class="lbl">CTA final — título</label><input class="inp" id="bt-ctat" value="¿EMPEZAMOS TU PROYECTO?" oninput="dirty()"></div>
-    <div class="field"><label class="lbl">CTA final — subtexto</label><textarea class="ta" id="bt-ctas" oninput="dirty()">Cuéntanos qué necesitas y te enviamos presupuesto en menos de 24 horas.</textarea></div>
-  </div>
-</div>
-
-<!-- B2B PRODUCTOS -->
-<div class="panel" id="panel-b2b-productos">
-  <div class="s-hdr"><span class="s-icon">🏷️</span><div><div class="s-title">Bendito Lab — Productos y precios</div></div></div>
-  <table class="tbl">
-    <thead><tr><th>Producto</th><th>Descripción</th><th style="text-align:right">Precio desde</th><th style="text-align:right">Mínimo</th></tr></thead>
-    <tbody>
-      <tr><td class="td-n">👜 Tote Bags</td><td><input class="ti ti-wide" id="bp-t-d" value="Bolsas de algodón 100% personalizadas" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-t-p" value="4.50" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-t-m" value="20" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
-      <tr><td class="td-n">🧢 Gorras</td><td><input class="ti ti-wide" id="bp-g-d" value="Gorras bordadas o con transfer" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-g-p" value="8" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-g-m" value="10" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
-      <tr><td class="td-n">👝 Neceseres</td><td><input class="ti ti-wide" id="bp-n-d" value="Neceseres de tela personalizados" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-n-p" value="6" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-n-m" value="15" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
-      <tr><td class="td-n">👕 Camisetas</td><td><input class="ti ti-wide" id="bp-c-d" value="Camisetas con tu diseño" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-c-p" value="10" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-c-m" value="10" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
-      <tr><td class="td-n">📓 Libretas</td><td><input class="ti ti-wide" id="bp-l-d" value="Cuadernos corporativos con tu logo" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-l-p" value="6" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-l-m" value="20" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
-      <tr><td class="td-n">🪵 Bambú grabado</td><td><input class="ti ti-wide" id="bp-b-d" value="Posavasos y piezas grabadas a láser" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-b-p" value="3" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-b-m" value="30" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> ud</span></td></tr>
-      <tr><td class="td-n">🎁 Kit regalo</td><td><input class="ti ti-wide" id="bp-k-d" value="Pack 3 productos personalizados" oninput="dirty()"></td><td style="text-align:right"><input class="ti" id="bp-k-p" value="18" oninput="dirty()"><span style="color:var(--dim);font-size:11px"> €</span></td><td style="text-align:right"><input class="ti" id="bp-k-m" value="10" oninput="dirty()" style="width:50px"><span style="color:var(--dim);font-size:11px"> kits</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-</main>
-</div>
-<div class="admin-foot">Bendito Lab · Panel de administración interno · Acceso restringido</div>
 
 <script>
-const PWD='h13701aah03';
-let isDirty=false;
-const pendingImgs={};
+var PASS = 'h13701aah03';
+var STORE = 'bl-admin-v4';
+var dirty = false;
 
-// LOGIN
-function checkLogin(){
-  if(document.getElementById('pwd').value===PWD){
-    document.getElementById('login').style.display='none';
-    loadAll();
+var IMG_GROUPS = {
+  logos: [
+    {key:'logo.png', name:'Logo Dilo Bonito', path:'logo.png'},
+    {key:'logo-bendito.png', name:'Logo Bendito Lab', path:'logo-bendito.png'},
+  ],
+  carrusel: [
+    {key:'cabecera.jpg', name:'Carrusel — Cabecera', path:'images/cabecera.jpg'},
+    {key:'personalizacion.jpg', name:'Carrusel — Personalización', path:'images/personalizacion.jpg'},
+    {key:'img-neceser.jpg', name:'Carrusel — Neceser', path:'images/img-neceser.jpg'},
+    {key:'img-gorra.jpg', name:'Carrusel — Gorra', path:'images/img-gorra.jpg'},
+    {key:'img-tote.jpg', name:'Carrusel — Tote bag', path:'images/img-tote.jpg'},
+    {key:'merch.jpg', name:'Carrusel — Merch', path:'images/merch.jpg'},
+    {key:'seating.jpg', name:'Carrusel — Seating', path:'images/seating.jpg'},
+  ],
+  hero: [
+    {key:'hero.jpg', name:'Hero fondo', path:'images/hero.jpg'},
+    {key:'presentacion.jpg', name:'Presentación', path:'images/presentacion.jpg'},
+    {key:'maquinas.jpg', name:'Máquinas', path:'images/maquinas.jpg'},
+  ],
+  b2b: [
+    {key:'b2b-1.jpg', name:'B2B imagen 1', path:'images/b2b-1.jpg'},
+    {key:'b2b-2.jpg', name:'B2B imagen 2', path:'images/b2b-2.jpg'},
+    {key:'b2b-3.jpg', name:'B2B imagen 3', path:'images/b2b-3.jpg'},
+  ]
+};
+
+var CAR_OPTS = ['cabecera.jpg','personalizacion.jpg','img-neceser.jpg','img-gorra.jpg','img-tote.jpg','merch.jpg','seating.jpg','hero.jpg','presentacion.jpg','maquinas.jpg','b2b-1.jpg','b2b-2.jpg','b2b-3.jpg'];
+var carSlots = ['cabecera.jpg','personalizacion.jpg','img-neceser.jpg','img-gorra.jpg','img-tote.jpg','merch.jpg','seating.jpg'];
+var productos = [];
+
+// ── LOGIN ─────────────────────────────────────
+function checkLogin() {
+  if (document.getElementById('pwd').value === PASS) {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    init();
   } else {
-    document.getElementById('login-err').style.display='block';
-    document.getElementById('pwd').value='';
-    document.getElementById('pwd').focus();
+    document.getElementById('login-err').style.display = 'block';
+    document.getElementById('pwd').value = '';
   }
 }
-document.getElementById('pwd').addEventListener('keydown',e=>{if(e.key==='Enter')checkLogin();});
 
-// NAV
-function show(id,el){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
-  if(el)el.classList.add('active');
-}
-function stab(tab,cid){
-  tab.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  tab.classList.add('active');
-  tab.closest('.panel').querySelectorAll('.tab-c').forEach(c=>c.classList.remove('active'));
-  document.getElementById(cid).classList.add('active');
+// ── NAV ───────────────────────────────────────
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.sb-item').forEach(function(s){ s.classList.remove('active'); });
+  var p = document.getElementById('panel-' + id);
+  if (p) p.classList.add('active');
+  if (el) el.classList.add('active');
 }
 
-// DIRTY
-function dirty(){isDirty=true;document.getElementById('dirty-ind').style.display='inline';}
+// ── DIRTY ─────────────────────────────────────
+function markDirty() {
+  dirty = true;
+  document.getElementById('dirty-ind').classList.add('show');
+  document.getElementById('saved-ok').classList.remove('show');
+}
 
-// IMAGES
-function trigImg(id){document.getElementById(id).click();}
-function loadImg(input,key){
-  const file=input.files[0];
-  if(!file)return;
-  if(file.size>3*1024*1024){alert('Máximo 3MB por imagen');return;}
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const src=e.target.result;
-    document.getElementById('prev-'+key).innerHTML='<img src="'+src+'">';
-    pendingImgs[key]={dataUrl:src,name:file.name};
-    const ok=document.getElementById('ok-'+key);
-    if(ok)ok.classList.add('on');
-    dirty();
+// ── DATA ──────────────────────────────────────
+function getData() { try { return JSON.parse(localStorage.getItem(STORE)||'{}'); } catch(e){return{};} }
+function setData(d) { localStorage.setItem(STORE, JSON.stringify(d)); }
+
+var FIELD_IDS = ['hero-l1','hero-l2','hero-l3','hero-sub','hero-cta1','hero-cta2',
+  'hero-s1n','hero-s1t','hero-s2n','hero-s2t','hero-s3n','hero-s3t',
+  'db-tag','db-desc','db-cta','bl-tag','bl-desc','bl-cta',
+  'qs-titulo','qs-texto',
+  'c-tel','c-email','c-email-colab','c-web','c-ig-bl','c-ig-db','c-zona',
+  'form-titulo','form-sub',
+  'dt-tag','dt-l1','dt-l2','dt-l3','dt-sub','dt-qs1','dt-qs2',
+  'p-mini','p-intima','p-clasica','p-premium',
+  'e-hora','e-dis','e-nin','e-mon','e-max','e-km',
+  'bt-tag','bt-l1','bt-l2','bt-sub','bt-ctat','bt-ctas',
+  'car-speed','car-height','gh-user','gh-repo'];
+
+function loadFields() {
+  var d = getData();
+  FIELD_IDS.forEach(function(id){
+    var el = document.getElementById(id);
+    if (el && d[id] !== undefined) el.value = d[id];
+  });
+  if (d.carSlots) carSlots = d.carSlots;
+  if (d.productos) productos = d.productos;
+  if (localStorage.getItem('bl-gh-token')) {
+    document.getElementById('gh-token').value = '••••••••••••';
+    document.getElementById('gh-token-2').value = '••••••••••••';
+  }
+}
+
+function saveAll() {
+  var d = getData();
+  FIELD_IDS.forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) d[id] = el.value;
+  });
+  d.carSlots = carSlots;
+  d.productos = productos;
+  setData(d);
+  dirty = false;
+  document.getElementById('dirty-ind').classList.remove('show');
+  var ok = document.getElementById('saved-ok');
+  ok.classList.add('show');
+  setTimeout(function(){ ok.classList.remove('show'); }, 2500);
+}
+
+// ── TOKEN ─────────────────────────────────────
+function saveToken() {
+  var v = document.getElementById('gh-token').value;
+  if (v && !v.startsWith('••')) {
+    localStorage.setItem('bl-gh-token', v);
+    document.getElementById('gh-token').value = '••••••••••••';
+    var ok = document.getElementById('tok-ok');
+    ok.style.display = 'inline';
+    setTimeout(function(){ ok.style.display='none'; }, 2000);
+  }
+}
+function saveToken2() {
+  var v = document.getElementById('gh-token-2').value;
+  if (v && !v.startsWith('••')) {
+    localStorage.setItem('bl-gh-token', v);
+    document.getElementById('gh-token-2').value = '••••••••••••';
+    var ok = document.getElementById('tok-ok-2');
+    ok.style.display = 'inline';
+    setTimeout(function(){ ok.style.display='none'; }, 2000);
+  }
+}
+
+// ── CARRUSEL SLOTS ────────────────────────────
+function renderSlots() {
+  var c = document.getElementById('carousel-order');
+  c.innerHTML = '';
+  carSlots.forEach(function(img, i) {
+    var opts = CAR_OPTS.map(function(o){ return '<option value="'+o+'"'+(o===img?' selected':'')+'>'+o+'</option>'; }).join('');
+    var div = document.createElement('div');
+    div.className = 'carousel-slot';
+    div.innerHTML = '<div class="carousel-slot-num">'+(i+1)+'</div>'+
+      '<select onchange="carSlots['+i+']=this.value;markDirty()">'+opts+'</select>'+
+      '<button onclick="removeSlot('+i+')" class="del-btn">×</button>';
+    c.appendChild(div);
+  });
+}
+function addSlot() {
+  if (carSlots.length >= 12) return;
+  carSlots.push(CAR_OPTS[0]);
+  renderSlots(); markDirty();
+}
+function removeSlot(i) {
+  if (carSlots.length <= 1) return;
+  carSlots.splice(i,1);
+  renderSlots(); markDirty();
+}
+
+// ── IMÁGENES ──────────────────────────────────
+function renderImages(grpId, imgs) {
+  var c = document.getElementById('grp-'+grpId);
+  if (!c) return;
+  c.innerHTML = '';
+  imgs.forEach(function(img) {
+    var url = 'https://dossier-dilo-bonito.vercel.app/'+img.path;
+    var uid = img.key.replace(/[^a-z0-9]/gi,'-');
+    var div = document.createElement('div');
+    div.className = 'img-card';
+    div.innerHTML =
+      '<div class="img-preview" id="prev-'+uid+'"><img src="'+url+'?t='+Date.now()+'" alt="'+img.name+'" onerror="this.parentElement.innerHTML=\'Sin imagen\'"></div>'+
+      '<div class="img-info">'+
+        '<div class="img-name">'+img.name+'</div>'+
+        '<div class="img-key">'+img.path+'</div>'+
+        '<label class="img-upload-btn" for="file-'+uid+'">📤 Subir imagen</label>'+
+        '<input type="file" id="file-'+uid+'" accept="image/*" onchange="uploadImg(this,\''+img.path+'\',\''+uid+'\')">'+
+        '<div class="prog-wrap" id="prog-'+uid+'"><div class="prog-bar" id="pb-'+uid+'"></div></div>'+
+        '<div class="img-status" id="st-'+uid+'"></div>'+
+      '</div>';
+    c.appendChild(div);
+  });
+}
+
+async function uploadImg(input, filePath, uid) {
+  var file = input.files[0];
+  if (!file) return;
+  var token = localStorage.getItem('bl-gh-token');
+  if (!token) { alert('Añade el token de GitHub en la sección Imágenes o Ajustes.'); return; }
+  var ghUser = document.getElementById('gh-user').value || 'contactobenditolab-ship-it';
+  var ghRepo = document.getElementById('gh-repo').value || 'dossier-dilo-bonito';
+
+  var st = document.getElementById('st-'+uid);
+  var prog = document.getElementById('prog-'+uid);
+  var pb = document.getElementById('pb-'+uid);
+  st.style.display='block'; st.style.color='#888'; st.textContent='Leyendo archivo...';
+  prog.style.display='block'; pb.style.width='15%';
+
+  var reader = new FileReader();
+  reader.onload = async function(e) {
+    var b64 = e.target.result.split(',')[1];
+    pb.style.width = '40%';
+    st.textContent = 'Conectando con GitHub...';
+
+    var sha = null;
+    try {
+      var r = await fetch('https://api.github.com/repos/'+ghUser+'/'+ghRepo+'/contents/'+filePath,
+        {headers:{'Authorization':'token '+token,'User-Agent':'BenditoAdmin'}});
+      if (r.ok) sha = (await r.json()).sha;
+    } catch(e){}
+
+    pb.style.width = '65%';
+    st.textContent = 'Subiendo...';
+
+    var body = {message:'Admin: '+filePath, content:b64};
+    if (sha) body.sha = sha;
+
+    try {
+      var put = await fetch('https://api.github.com/repos/'+ghUser+'/'+ghRepo+'/contents/'+filePath,
+        {method:'PUT', headers:{'Authorization':'token '+token,'Content-Type':'application/json','User-Agent':'BenditoAdmin'}, body:JSON.stringify(body)});
+      pb.style.width='100%';
+      if (put.ok) {
+        st.style.color='#27AE60';
+        st.textContent='✓ Subida correctamente — visible en la web en ~30s';
+        setTimeout(function(){
+          var img = document.querySelector('#prev-'+uid+' img');
+          if (img) img.src='https://dossier-dilo-bonito.vercel.app/'+filePath+'?t='+Date.now();
+        }, 8000);
+      } else {
+        var err = await put.json();
+        throw new Error(err.message||put.status);
+      }
+    } catch(err) {
+      st.style.color='#C0392B';
+      st.textContent='✗ Error: '+err.message+'. Revisa el token.';
+    }
+    setTimeout(function(){ prog.style.display='none'; pb.style.width='0%'; }, 3000);
   };
   reader.readAsDataURL(file);
 }
 
-// GET VALUES
-function v(id){const el=document.getElementById(id);return el?el.value:'';}
-
-// COLLECT ALL DATA
-function getData(){
-  return {
-    _v:Date.now(),
-    contacto:{tel:v('c-tel'),email:v('c-email'),emailColab:v('c-email-colab'),instagram:v('c-instagram'),web:v('c-web'),zona:v('c-zona')},
-    dilo:{
-      textos:{tag:v('dt-tag'),l1:v('dt-l1'),l2:v('dt-l2'),l3:v('dt-l3'),sub:v('dt-sub'),cta:v('dt-cta'),qs1:v('dt-qs1'),qs2:v('dt-qs2'),s1:v('dt-s1'),s2:v('dt-s2'),s3:v('dt-s3'),s4:v('dt-s4'),s5:v('dt-s5'),navSol:v('dn-sol'),navCol:v('dn-col'),dd1:v('dn-d1'),dd1d:v('dn-d1d'),dd2:v('dn-d2'),dd2d:v('dn-d2d')},
-      precios:{mini:+v('p-mini'),intima:+v('p-intima'),clasica:+v('p-clasica'),premium:+v('p-premium'),sg30:+v('sg-30'),sg50:+v('sg-50'),sg100:+v('sg-100'),sg150:+v('sg-150'),sb30:+v('sb-30'),sb50:+v('sb-50'),sb100:+v('sb-100'),sb150:+v('sb-150'),spPanel:+v('sp-panel'),eg:+v('p-eg'),em:+v('p-em'),gg:+v('p-gg'),gm:+v('p-gm'),mb:+v('p-mb'),mc:+v('p-mc'),mp:+v('p-mp')},
-      extras:{hora:+v('e-hora'),dis:+v('e-dis'),nin:+v('e-nin'),mon:+v('e-mon'),vin:+v('e-vin'),km:+v('e-km')},
-      packs:{mini:v('dp-mini'),intima:v('dp-intima'),clasica:v('dp-clasica'),premium:v('dp-premium')},
-    },
-    colab:{
-      textos:{tag:v('ct-tag'),l1:v('ct-l1'),l2:v('ct-l2'),l3:v('ct-l3'),sub:v('ct-sub'),p1:v('ct-p1'),p1d:v('ct-p1d'),p2:v('ct-p2'),p2d:v('ct-p2d'),p3:v('ct-p3'),p3d:v('ct-p3d'),ctat:v('ct-ctat'),ctas:v('ct-ctas')},
-      comisiones:{c50:+v('com-50'),c100:+v('com-100'),c150:+v('com-150'),plazo:v('com-plazo')},
-    },
-    b2b:{
-      textos:{tag:v('bt-tag'),l1:v('bt-l1'),l2:v('bt-l2'),l3:v('bt-l3'),sub:v('bt-sub'),qs1:v('bt-qs1'),qs2:v('bt-qs2'),ctat:v('bt-ctat'),ctas:v('bt-ctas')},
-      productos:{
-        t:{d:v('bp-t-d'),p:+v('bp-t-p'),m:+v('bp-t-m')},g:{d:v('bp-g-d'),p:+v('bp-g-p'),m:+v('bp-g-m')},
-        n:{d:v('bp-n-d'),p:+v('bp-n-p'),m:+v('bp-n-m')},c:{d:v('bp-c-d'),p:+v('bp-c-p'),m:+v('bp-c-m')},
-        l:{d:v('bp-l-d'),p:+v('bp-l-p'),m:+v('bp-l-m')},b:{d:v('bp-b-d'),p:+v('bp-b-p'),m:+v('bp-b-m')},
-        k:{d:v('bp-k-d'),p:+v('bp-k-p'),m:+v('bp-k-m')},
-      }
-    }
-  };
+// ── PRODUCTOS ─────────────────────────────────
+function renderProductos() {
+  var c = document.getElementById('productos-list');
+  if (!c) return;
+  c.innerHTML = '';
+  productos.forEach(function(p, i) {
+    var row = document.createElement('div');
+    row.className = 'prod-row';
+    row.innerHTML =
+      '<input type="text" value="'+(p.nombre||'')+'" placeholder="Nombre" onchange="productos['+i+'].nombre=this.value;markDirty()">'+
+      '<input type="text" value="'+(p.desc||'')+'" placeholder="Descripción" onchange="productos['+i+'].desc=this.value;markDirty()">'+
+      '<input type="text" value="'+(p.precio||'')+'" placeholder="Precio" onchange="productos['+i+'].precio=this.value;markDirty()">'+
+      '<button class="del-btn" onclick="removeProducto('+i+')">×</button>';
+    c.appendChild(row);
+  });
+}
+function addProducto() {
+  productos.push({nombre:'',desc:'',precio:''});
+  renderProductos(); markDirty();
+}
+function removeProducto(i) {
+  productos.splice(i,1);
+  renderProductos(); markDirty();
 }
 
-// SAVE - textos/precios to localStorage, images to GitHub
-function saveAll(){
-  const d=getData();
-  
-  // 1. Save texts & prices (small data) to localStorage
-  try{
-    localStorage.setItem('bendito-v3',JSON.stringify(d));
-    // Legacy key for dossier
-    localStorage.setItem('dilo-precios',JSON.stringify({
-      packs:{mini:{precio:d.dilo.precios.mini,invitados:30,horas:2},intima:{precio:d.dilo.precios.intima,invitados:50,horas:3},clasica:{precio:d.dilo.precios.clasica,invitados:100,horas:4},premium:{precio:d.dilo.precios.premium,invitados:150,horas:5}},
-      seating:{gafas:{inv30:d.dilo.precios.sg30,inv50:d.dilo.precios.sg50,inv100:d.dilo.precios.sg100,inv150:d.dilo.precios.sg150},basico:{inv30:d.dilo.precios.sb30,inv50:d.dilo.precios.sb50,inv100:d.dilo.precios.sb100,inv150:d.dilo.precios.sb150},soloPanel:d.dilo.precios.spPanel},
-      maquinas:{expendedoraGratis:d.dilo.precios.eg,expendedoraMoneda:d.dilo.precios.em,ganchoGratis:d.dilo.precios.gg,ganchoMoneda:d.dilo.precios.gm},
-      merch:{basico:d.dilo.precios.mb,completo:d.dilo.precios.mc,premium:d.dilo.precios.mp},
-      extras:{horaExtra:d.dilo.extras.hora,diseno:d.dilo.extras.dis,regaloInfantil:d.dilo.extras.nin,moneda:d.dilo.extras.mon,vinilado:d.dilo.extras.vin,km:d.dilo.extras.km},
-      comisiones:{hasta50:d.colab.comisiones.c50,hasta100:d.colab.comisiones.c100,hasta150:d.colab.comisiones.c150},
-      textos:d.dilo.textos,contacto:d.contacto,
-    }));
-  }catch(e){alert('Error al guardar datos: '+e.message);return;}
-
-  // 2. Upload images to GitHub if any pending
-  const imgs=Object.entries(pendingImgs);
-  if(imgs.length>0){
-    uploadImages(imgs);
-  } else {
-    isDirty=false;
-    document.getElementById('dirty-ind').style.display='none';
-    flashSaved('✓ Cambios guardados correctamente');
+// ── INIT ──────────────────────────────────────
+function init() {
+  loadFields();
+  renderSlots();
+  Object.keys(IMG_GROUPS).forEach(function(g){ renderImages(g, IMG_GROUPS[g]); });
+  if (!productos.length) {
+    productos = [
+      {nombre:'Tote bag',desc:'Bolsa de tela algodón personalizable',precio:'Consultar'},
+      {nombre:'Gorra',desc:'Gorra bordada o DTF',precio:'Consultar'},
+      {nombre:'Neceser',desc:'Neceser personalizable',precio:'Consultar'},
+      {nombre:'Camiseta',desc:'Camiseta personalizada',precio:'Consultar'},
+    ];
   }
+  renderProductos();
 }
 
-const REPO='contactobenditolab-ship-it/dossier-dilo-bonito';
-const IMG_MAP={
-  'img-logo-dilo':     'logo.png',
-  'img-logo-bendito':  'logo-bendito.png',
-  'img-cabecera':      'images/cabecera.jpg',
-  'img-hero':          'images/hero.jpg',
-  'img-presentacion':  'images/presentacion.jpg',
-  'img-personalizacion':'images/personalizacion.jpg',
-  'img-seating':       'images/seating.jpg',
-  'img-maquinas':      'images/maquinas.jpg',
-  'img-merch':         'images/merch.jpg',
-  'img-b2b-1':         'images/b2b-1.jpg',
-  'img-b2b-2':         'images/b2b-2.jpg',
-  'img-b2b-3':         'images/b2b-3.jpg',
-};
-
-async function uploadImages(imgs){
-  const tok=localStorage.getItem('bl_gh_tok');
-  if(!tok){
-    const t=prompt('Introduce el token de GitHub para subir imágenes:');
-    if(!t){flashError('Imágenes no subidas — token necesario');return;}
-    localStorage.setItem('bl_gh_tok',t.trim());
-  }
-  const token=localStorage.getItem('bl_gh_tok');
-  const status=document.getElementById('upload-status');
-  status.style.display='block';
-  status.textContent='Subiendo imágenes...';
-  status.style.color='var(--blue)';
-  status.style.borderColor='var(--border)';
-  status.style.background='rgba(168,200,232,.12)';
-
-  let ok=0,err=0;
-  for(const [key,img] of imgs){
-    const path=IMG_MAP[key];if(!path)continue;
-    try{
-      // Get SHA of existing file
-      let sha=null;
-      const check=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{headers:{'Authorization':'token '+token}});
-      if(check.ok){const j=await check.json();sha=j.sha;}
-      // Upload
-      const body={message:'Admin: actualizar imagen '+path,content:img.dataUrl.split(',')[1]};
-      if(sha)body.sha=sha;
-      const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
-        method:'PUT',headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-        body:JSON.stringify(body)
-      });
-      if(res.ok){ok++;delete pendingImgs[key];}
-      else{err++;const j=await res.json();console.error(j);}
-    }catch(e){err++;console.error(e);}
-  }
-
-  if(err===0){
-    status.textContent='✓ '+ok+' imagen(es) subida(s). El dossier se actualizará en ~30s.';
-    status.style.color='var(--green)';status.style.borderColor='var(--green)';status.style.background='rgba(76,175,125,.12)';
-    setTimeout(()=>status.style.display='none',7000);
-    isDirty=false;document.getElementById('dirty-ind').style.display='none';
-    flashSaved('✓ Todo guardado correctamente');
-  } else {
-    status.textContent='⚠ '+ok+' subida(s), '+err+' error(es). El token puede haber caducado.';
-    status.style.color='var(--red)';
-    // Reset token so user can re-enter
-    if(err>0)localStorage.removeItem('bl_gh_tok');
-  }
-}
-
-function flashSaved(msg){
-  const el=document.getElementById('saved-ok');
-  el.textContent=msg;el.style.display='block';
-  setTimeout(()=>el.style.display='none',3500);
-}
-function flashError(msg){
-  const el=document.getElementById('saved-ok');
-  el.textContent=msg;el.style.background='rgba(232,85,85,.15)';el.style.borderColor='var(--red)';el.style.color='var(--red)';el.style.display='block';
-  setTimeout(()=>{el.style.display='none';el.style.background='';el.style.borderColor='var(--green)';el.style.color='var(--green)';},4000);
-}
-
-// LOAD
-function s(id,val){const el=document.getElementById(id);if(el&&val!==undefined&&val!==null)el.value=val;}
-function loadAll(){
-  try{
-    const raw=localStorage.getItem('bendito-v3');
-    if(!raw)return;
-    const d=JSON.parse(raw);
-    if(d.contacto){s('c-tel',d.contacto.tel);s('c-email',d.contacto.email);s('c-email-colab',d.contacto.emailColab);s('c-instagram',d.contacto.instagram);s('c-web',d.contacto.web);s('c-zona',d.contacto.zona);}
-    if(d.dilo?.textos){const t=d.dilo.textos;s('dt-tag',t.tag);s('dt-l1',t.l1);s('dt-l2',t.l2);s('dt-l3',t.l3);s('dt-sub',t.sub);s('dt-cta',t.cta);s('dt-qs1',t.qs1);s('dt-qs2',t.qs2);s('dt-s1',t.s1);s('dt-s2',t.s2);s('dt-s3',t.s3);s('dt-s4',t.s4);s('dt-s5',t.s5);s('dn-sol',t.navSol);s('dn-col',t.navCol);s('dn-d1',t.dd1);s('dn-d1d',t.dd1d);s('dn-d2',t.dd2);s('dn-d2d',t.dd2d);}
-    if(d.dilo?.precios){const p=d.dilo.precios;s('p-mini',p.mini);s('p-intima',p.intima);s('p-clasica',p.clasica);s('p-premium',p.premium);s('sg-30',p.sg30);s('sg-50',p.sg50);s('sg-100',p.sg100);s('sg-150',p.sg150);s('sb-30',p.sb30);s('sb-50',p.sb50);s('sb-100',p.sb100);s('sb-150',p.sb150);s('sp-panel',p.spPanel);s('p-eg',p.eg);s('p-em',p.em);s('p-gg',p.gg);s('p-gm',p.gm);s('p-mb',p.mb);s('p-mc',p.mc);s('p-mp',p.mp);}
-    if(d.dilo?.extras){const e=d.dilo.extras;s('e-hora',e.hora);s('e-dis',e.dis);s('e-nin',e.nin);s('e-mon',e.mon);s('e-vin',e.vin);s('e-km',e.km);}
-    if(d.dilo?.packs){s('dp-mini',d.dilo.packs.mini);s('dp-intima',d.dilo.packs.intima);s('dp-clasica',d.dilo.packs.clasica);s('dp-premium',d.dilo.packs.premium);}
-    if(d.colab?.textos){const t=d.colab.textos;s('ct-tag',t.tag);s('ct-l1',t.l1);s('ct-l2',t.l2);s('ct-l3',t.l3);s('ct-sub',t.sub);s('ct-p1',t.p1);s('ct-p1d',t.p1d);s('ct-p2',t.p2);s('ct-p2d',t.p2d);s('ct-p3',t.p3);s('ct-p3d',t.p3d);s('ct-ctat',t.ctat);s('ct-ctas',t.ctas);}
-    if(d.colab?.comisiones){s('com-50',d.colab.comisiones.c50);s('com-100',d.colab.comisiones.c100);s('com-150',d.colab.comisiones.c150);s('com-plazo',d.colab.comisiones.plazo);}
-    if(d.b2b?.textos){const t=d.b2b.textos;s('bt-tag',t.tag);s('bt-l1',t.l1);s('bt-l2',t.l2);s('bt-l3',t.l3);s('bt-sub',t.sub);s('bt-qs1',t.qs1);s('bt-qs2',t.qs2);s('bt-ctat',t.ctat);s('bt-ctas',t.ctas);}
-    if(d.b2b?.productos){const p=d.b2b.productos;['t','g','n','c','l','b','k'].forEach(k=>{if(p[k]){s('bp-'+k+'-d',p[k].d);s('bp-'+k+'-p',p[k].p);s('bp-'+k+'-m',p[k].m);}});}
-  }catch(e){console.log('Load error:',e);}
-}
-
-window.addEventListener('beforeunload',e=>{if(isDirty){e.preventDefault();e.returnValue='';}});
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey||e.metaKey) && e.key==='s') { e.preventDefault(); saveAll(); }
+});
 </script>
 </body>
 </html>
