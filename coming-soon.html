@@ -85,15 +85,24 @@ body::before {
   text-align: center;
 }
 
-/* ── LOGO ── */
-.logo {
-  margin-bottom: 56px;
+/* ── LOGO BARRA SUPERIOR ── */
+.logo-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(30,58,95,.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   opacity: 0;
-  transform: translateY(-20px);
-  animation: fadeUp .8s ease .1s forwards;
+  animation: fadeUp .7s ease .05s forwards;
 }
-.logo img {
-  height: 72px;
+.logo-bar img {
+  height: 56px;
   width: auto;
   filter: brightness(0) invert(1);
 }
@@ -381,13 +390,13 @@ body::before {
   </svg>
 </div>
 
-<!-- CONTENIDO PRINCIPAL -->
-<div class="wrapper">
+<!-- LOGO BARRA SUPERIOR -->
+<div class="logo-bar">
+  <img src="logo-bendito.png" alt="Bendito Lab">
+</div>
 
-  <!-- Logo -->
-  <div class="logo">
-    <img src="logo-bendito.png" alt="Bendito Lab">
-  </div>
+<!-- CONTENIDO PRINCIPAL -->
+<div class="wrapper" style="padding-top: 80px;">
 
   <!-- Badge -->
   <div class="badge">
