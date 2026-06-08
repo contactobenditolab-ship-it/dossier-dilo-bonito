@@ -296,6 +296,68 @@ body::before {
   to { opacity: 1; transform: translateY(0); }
 }
 
+
+/* ── ACCESO INTERNO ── */
+.acceso-wrap {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeUp .5s ease 1s forwards;
+}
+.acceso-toggle {
+  background: none;
+  border: none;
+  color: rgba(168,200,232,.35);
+  font-size: 11px;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color .2s;
+  padding: 4px 8px;
+}
+.acceso-toggle:hover { color: rgba(168,200,232,.7); }
+.acceso-form {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 8px 12px;
+}
+.acceso-form.visible { display: flex; }
+.acceso-form input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  width: 160px;
+}
+.acceso-form input::placeholder { color: rgba(255,255,255,.25); letter-spacing: 2px; }
+.acceso-form button {
+  background: rgba(242,201,76,.2);
+  border: 1px solid rgba(242,201,76,.3);
+  color: var(--sunshine);
+  width: 32px; height: 32px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.acceso-form button:hover { background: rgba(242,201,76,.4); }
+.acceso-err {
+  display: none;
+  font-size: 11px;
+  color: #E8704A;
+  white-space: nowrap;
+}
+
 /* ── MODAL CONTACTO ── */
 .modal-overlay {
   position: fixed; inset: 0;
@@ -427,6 +489,18 @@ body::before {
     </a>
   </div>
 
+  <!-- Acceso interno -->
+  <div class="acceso-wrap">
+    <button class="acceso-toggle" onclick="toggleAcceso()" id="acceso-toggle">
+      🔒 Acceso interno
+    </button>
+    <div class="acceso-form" id="acceso-form">
+      <input type="password" id="acceso-pwd" placeholder="Contraseña" onkeydown="if(event.key==='Enter')verificarAcceso()">
+      <button onclick="verificarAcceso()">→</button>
+      <span class="acceso-err" id="acceso-err">Contraseña incorrecta</span>
+    </div>
+  </div>
+
   <!-- Contacto rápido -->
   <div class="contact-line">
     <a href="tel:647444308" class="contact-item">
@@ -488,6 +562,36 @@ body::before {
 </div>
 
 <script>
+
+// ── ACCESO INTERNO ────────────────────────────────────
+function toggleAcceso() {
+  var form = document.getElementById('acceso-form');
+  var toggle = document.getElementById('acceso-toggle');
+  form.classList.toggle('visible');
+  if (form.classList.contains('visible')) {
+    toggle.textContent = '✕ Cancelar';
+    document.getElementById('acceso-pwd').focus();
+  } else {
+    toggle.textContent = '🔒 Acceso interno';
+    document.getElementById('acceso-err').style.display = 'none';
+  }
+}
+
+function verificarAcceso() {
+  var pwd = document.getElementById('acceso-pwd').value;
+  var err = document.getElementById('acceso-err');
+  if (pwd === 'h13701aah03') {
+    // Guardar sesión y redirigir a la portada real
+    sessionStorage.setItem('bl-internal-access', '1');
+    window.location.href = 'portada.html';
+  } else {
+    err.style.display = 'block';
+    document.getElementById('acceso-pwd').value = '';
+    document.getElementById('acceso-pwd').focus();
+    setTimeout(function(){ err.style.display = 'none'; }, 2500);
+  }
+}
+
 function abrirModal() {
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
