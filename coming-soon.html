@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bendito Lab · Próximamente</title>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;700;900&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --deep:    #1E3A5F;
+  --captain: #3B6BA5;
+  --baby:    #A8C8E8;
+  --sunshine:#F2C94C;
+  --poppy:   #E8704A;
+  --cream:   #F5F0E0;
+  --white:   #FDFCF8;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Lato', sans-serif;
+  background: var(--deep);
+  color: var(--white);
+  overflow: hidden;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 200px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .4;
+}
+
+/* ── BACKGROUND SHAPES ── */
+.bg-shape {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-shape-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(59,107,165,.25) 0%, transparent 70%);
+  top: -200px; right: -150px;
+  animation: drift1 12s ease-in-out infinite;
+}
+.bg-shape-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(242,201,76,.08) 0%, transparent 70%);
+  bottom: -100px; left: -100px;
+  animation: drift2 15s ease-in-out infinite;
+}
+.bg-shape-3 {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(232,112,74,.12) 0%, transparent 70%);
+  top: 40%; right: 15%;
+  animation: drift1 9s ease-in-out infinite reverse;
+}
+@keyframes drift1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(30px,-40px) scale(1.05); }
+}
+@keyframes drift2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(-20px,30px) scale(1.08); }
+}
+
+/* ── LAYOUT ── */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+/* ── LOGO ── */
+.logo {
+  margin-bottom: 56px;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeUp .8s ease .1s forwards;
+}
+.logo img {
+  height: 72px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* ── BADGE ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(242,201,76,.12);
+  border: 1px solid rgba(242,201,76,.3);
+  padding: 7px 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sunshine);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp .7s ease .25s forwards;
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  background: var(--sunshine);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .4; transform: scale(.7); }
+}
+
+/* ── HEADLINE ── */
+.headline {
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 900;
+  font-size: clamp(52px, 11vw, 128px);
+  line-height: .85;
+  letter-spacing: -3px;
+  color: var(--white);
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fadeUp .8s ease .4s forwards;
+}
+.headline em {
+  color: var(--sunshine);
+  font-style: normal;
+  display: block;
+}
+
+/* ── SUBLINE ── */
+.subline {
+  font-size: clamp(14px, 2vw, 17px);
+  font-weight: 300;
+  color: rgba(168,200,232,.75);
+  line-height: 1.75;
+  max-width: 480px;
+  margin: 24px auto 52px;
+  opacity: 0;
+  animation: fadeUp .7s ease .55s forwards;
+}
+
+/* ── CTA ── */
+.cta-group {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp .7s ease .7s forwards;
+}
+
+.btn-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--sunshine);
+  color: var(--deep);
+  text-decoration: none;
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 18px 40px;
+  border: none;
+  cursor: pointer;
+  transition: all .25s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-main::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--poppy);
+  transform: translateX(-100%);
+  transition: transform .3s ease;
+  z-index: 0;
+}
+.btn-main:hover::after { transform: translateX(0); }
+.btn-main:hover { color: #fff; }
+.btn-main span { position: relative; z-index: 1; }
+.btn-main:hover .btn-arrow { transform: translateX(4px); }
+.btn-arrow { position: relative; z-index: 1; transition: transform .2s; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--white);
+  text-decoration: none;
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 17px 32px;
+  border: 1.5px solid rgba(255,255,255,.25);
+  cursor: pointer;
+  transition: all .25s;
+}
+.btn-ghost:hover {
+  border-color: var(--sunshine);
+  color: var(--sunshine);
+}
+
+/* ── CONTACTO INLINE ── */
+.contact-line {
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp .6s ease .9s forwards;
+}
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(168,200,232,.6);
+  text-decoration: none;
+  transition: color .2s;
+}
+.contact-item:hover { color: var(--sunshine); }
+.contact-icon {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+}
+.divider {
+  width: 1px; height: 20px;
+  background: rgba(255,255,255,.1);
+}
+
+/* ── BOTTOM BAR ── */
+.bottom-bar {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(168,200,232,.3);
+  z-index: 1;
+  white-space: nowrap;
+  opacity: 0;
+  animation: fadeUp .5s ease 1.1s forwards;
+}
+
+/* ── CORNER DECO ── */
+.corner {
+  position: fixed;
+  z-index: 1;
+  opacity: .12;
+}
+.corner-tl { top: 24px; left: 24px; }
+.corner-br { bottom: 24px; right: 24px; transform: rotate(180deg); }
+.corner svg { width: 48px; height: 48px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MODAL CONTACTO ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--white);
+  color: var(--deep);
+  padding: 48px 40px;
+  max-width: 460px;
+  width: 100%;
+  position: relative;
+  transform: translateY(20px);
+  transition: transform .3s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none; font-size: 22px;
+  cursor: pointer; color: #aaa; line-height: 1;
+}
+.modal-close:hover { color: var(--deep); }
+.modal-title {
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 900; font-size: 32px; letter-spacing: -1px;
+  color: var(--deep); margin-bottom: 6px;
+}
+.modal-sub { font-size: 13px; color: #888; margin-bottom: 28px; line-height: 1.6; }
+.m-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.m-field label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #888; }
+.m-field input, .m-field textarea, .m-field select {
+  padding: 12px 14px; border: 1.5px solid #E0DDD6;
+  background: var(--cream); font-family: 'Lato', sans-serif;
+  font-size: 14px; color: var(--deep); outline: none;
+  transition: border-color .2s;
+}
+.m-field input:focus, .m-field textarea:focus, .m-field select:focus {
+  border-color: var(--captain); background: #fff;
+}
+.m-field select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-color: var(--cream); padding-right: 36px; }
+.m-field textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
+.m-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.m-submit {
+  width: 100%; background: var(--deep); color: var(--sunshine);
+  border: none; font-family: 'League Spartan', sans-serif;
+  font-weight: 900; font-size: 14px; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 16px; cursor: pointer;
+  margin-top: 6px; transition: background .2s;
+}
+.m-submit:hover { background: var(--captain); }
+.m-ok { display: none; text-align: center; padding: 32px 0; }
+.m-ok-icon { font-size: 48px; margin-bottom: 12px; }
+.m-ok h3 { font-family: 'League Spartan', sans-serif; font-weight: 900; font-size: 28px; color: var(--deep); }
+.m-ok p { font-size: 13px; color: #888; margin-top: 8px; }
+
+@media (max-width: 560px) {
+  .headline { font-size: 56px; }
+  .logo img { height: 52px; }
+  .divider { display: none; }
+  .modal { padding: 32px 24px; }
+  .m-grid2 { grid-template-columns: 1fr; }
+  body, html { overflow-y: auto; }
+  .wrapper { height: auto; min-height: 100vh; padding: 60px 24px 100px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Shapes de fondo -->
+<div class="bg-shape bg-shape-1"></div>
+<div class="bg-shape bg-shape-2"></div>
+<div class="bg-shape bg-shape-3"></div>
+
+<!-- Decoración esquinas -->
+<div class="corner corner-tl">
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="0" x2="48" y2="0" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="0" x2="0" y2="48" stroke="white" stroke-width="1"/>
+  </svg>
+</div>
+<div class="corner corner-br">
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="0" x2="48" y2="0" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="0" x2="0" y2="48" stroke="white" stroke-width="1"/>
+  </svg>
+</div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="wrapper">
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="logo-bendito.png" alt="Bendito Lab">
+  </div>
+
+  <!-- Badge -->
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Nueva web en camino
+  </div>
+
+  <!-- Titular -->
+  <h1 class="headline">
+    ALGO<br>
+    <em>BONITO</em><br>
+    LLEGA.
+  </h1>
+
+  <!-- Subtítulo -->
+  <p class="subline">
+    Estamos preparando la nueva web de Bendito Lab. Mientras tanto, si necesitas artículos personalizados para tu empresa o quieres Dilo Bonito en tu evento, escríbenos.
+  </p>
+
+  <!-- CTAs -->
+  <div class="cta-group">
+    <button class="btn-main" onclick="abrirModal()">
+      <span>Solicitar información</span>
+      <span class="btn-arrow">→</span>
+    </button>
+    <a href="https://wa.me/34647444308" target="_blank" class="btn-ghost">
+      💬 WhatsApp
+    </a>
+  </div>
+
+  <!-- Contacto rápido -->
+  <div class="contact-line">
+    <a href="tel:647444308" class="contact-item">
+      <div class="contact-icon">📞</div>
+      647 444 308
+    </a>
+    <div class="divider"></div>
+    <a href="mailto:contacto@benditolab.com" class="contact-item">
+      <div class="contact-icon">✉️</div>
+      contacto@benditolab.com
+    </a>
+    <div class="divider"></div>
+    <a href="https://instagram.com/bendito_lab" target="_blank" class="contact-item">
+      <div class="contact-icon">📸</div>
+      @bendito_lab
+    </a>
+    <div class="divider"></div>
+    <a href="https://tiktok.com/@bendito_lab" target="_blank" class="contact-item">
+      <div class="contact-icon">🎵</div>
+      @bendito_lab
+    </a>
+  </div>
+
+</div>
+
+<!-- Barra inferior -->
+<div class="bottom-bar">Bendito Lab · Personalización que marca · Ciudad Real</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="cerrarModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="cerrarModal()">✕</button>
+    <div id="modal-form">
+      <div class="modal-title">Hablemos</div>
+      <div class="modal-sub">Cuéntanos tu proyecto y te respondemos en menos de 24 horas.</div>
+      <div class="m-grid2">
+        <div class="m-field"><label>Nombre *</label><input type="text" id="m-nombre" placeholder="Tu nombre"></div>
+        <div class="m-field"><label>Teléfono *</label><input type="tel" id="m-tel" placeholder="6XX XXX XXX"></div>
+      </div>
+      <div class="m-field"><label>Email *</label><input type="email" id="m-email" placeholder="tu@email.com"></div>
+      <div class="m-field">
+        <label>Me interesa</label>
+        <select id="m-tipo">
+          <option value="">— Selecciona —</option>
+          <option>Dilo Bonito · Personalización para eventos</option>
+          <option>Bendito Lab · Artículos para empresa</option>
+          <option>Las dos cosas</option>
+        </select>
+      </div>
+      <div class="m-field"><label>Cuéntanos</label><textarea id="m-msg" placeholder="Tipo de evento, fecha, producto, cantidad..."></textarea></div>
+      <button class="m-submit" onclick="enviar()">ENVIAR →</button>
+    </div>
+    <div class="m-ok" id="modal-ok">
+      <div class="m-ok-icon">✓</div>
+      <h3>¡Mensaje recibido!</h3>
+      <p>Te respondemos en menos de 24 horas.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function abrirModal() {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cerrarModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay') && !e.target.classList.contains('modal-close')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') cerrarModal({target: document.getElementById('modal-overlay')});
+});
+
+async function enviar() {
+  var nombre = document.getElementById('m-nombre').value.trim();
+  var tel    = document.getElementById('m-tel').value.trim();
+  var email  = document.getElementById('m-email').value.trim();
+  var tipo   = document.getElementById('m-tipo').value;
+  var msg    = document.getElementById('m-msg').value.trim();
+  if (!nombre || !tel || !email) { alert('Rellena nombre, teléfono y email.'); return; }
+  var btn = document.querySelector('.m-submit');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+  try {
+    await fetch('https://hook.eu1.make.com/0qbbiac8rmdsiftzg2wvhgzgcxf519ba', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tipo_formulario: 'coming_soon', nombre, telefono: tel, email, servicio: tipo, mensaje: msg })
+    });
+    document.getElementById('modal-form').style.display = 'none';
+    document.getElementById('modal-ok').style.display = 'block';
+  } catch(e) {
+    btn.disabled = false; btn.textContent = 'ENVIAR →';
+    alert('Error. Escríbenos a contacto@benditolab.com o al 647 444 308');
+  }
+}
+</script>
+</body>
+</html>
