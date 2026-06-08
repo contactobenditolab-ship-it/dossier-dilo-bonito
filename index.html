@@ -2037,6 +2037,12 @@
     .carousel-banner { height: 260px; }
     .carousel-arrow { display: none; }
   }
+
+  /* SERVICIOS MOBILE */
+  @media (max-width: 640px) {
+    .detalle-grid { grid-template-columns: 1fr !important; }
+    .detalle-grid > div { min-height: 260px !important; }
+  }
 </style>
 </head>
 <body>
@@ -2334,6 +2340,76 @@ document.addEventListener('click', e => {
       </div>
 
     </div>
+  </div>
+</section>
+
+
+<!-- SERVICIOS DILO BONITO -->
+<section style="padding:80px 0;background:var(--cream);">
+  <div class="container">
+    <span class="section-label">Lo que incluye el servicio</span>
+    <h2 class="section-title">NUESTROS<br>SERVICIOS</h2>
+
+    <!-- Personalización en directo -->
+    <div class="detalle-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:60px;">
+      <div id="site-img-personalizacion" style="min-height:400px;background:var(--deep) url('images/personalizacion.jpg') center/cover no-repeat;"></div>
+      <div style="background:var(--white);padding:60px 48px;display:flex;flex-direction:column;justify-content:center;">
+        <span class="section-label">01</span>
+        <h3 style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:clamp(28px,3vw,42px);color:var(--deep);line-height:1;letter-spacing:-1px;margin:12px 0 20px;">PERSONALIZACIÓN<br>EN DIRECTO</h3>
+        <p style="font-size:15px;line-height:1.8;color:var(--mid);">Montamos nuestro taller en tu evento. Cada invitado elige su diseño y personaliza su artículo en el momento — tote bags, gorras, neceseres, camisetas y más.</p>
+        <ul style="margin-top:20px;list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Hasta 150 invitados según pack</li>
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Técnica DTF de alta definición</li>
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Montaje y desmontaje incluidos</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Seating Plan -->
+    <div class="detalle-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px;">
+      <div style="background:var(--white);padding:60px 48px;display:flex;flex-direction:column;justify-content:center;">
+        <span class="section-label">02</span>
+        <h3 style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:clamp(28px,3vw,42px);color:var(--deep);line-height:1;letter-spacing:-1px;margin:12px 0 20px;">SEATING<br>PLAN</h3>
+        <p style="font-size:15px;line-height:1.8;color:var(--mid);">Un seating plan personalizado que combina diseño y funcionalidad. Cada comensal encuentra su sitio de una forma visualmente atractiva y memorable.</p>
+        <ul style="margin-top:20px;list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Diseño adaptado al estilo del evento</li>
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Materiales de calidad</li>
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Coordinado con el producto personalizado</li>
+        </ul>
+      </div>
+      <div id="site-img-seating" style="min-height:400px;background:var(--deep) url('images/seating.jpg') center/cover no-repeat;"></div>
+    </div>
+
+    <!-- Máquinas -->
+    <div class="detalle-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px;">
+      <div id="site-img-maquinas" style="min-height:400px;background:var(--deep) url('images/maquinas.jpg') center/cover no-repeat;"></div>
+      <div style="background:var(--white);padding:60px 48px;display:flex;flex-direction:column;justify-content:center;">
+        <span class="section-label">03</span>
+        <h3 style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:clamp(28px,3vw,42px);color:var(--deep);line-height:1;letter-spacing:-1px;margin:12px 0 20px;">MÁQUINA<br>EXPENDEDORA</h3>
+        <p style="font-size:15px;line-height:1.8;color:var(--mid);">Una máquina expendedora personalizada con la temática de tu evento. Los invitados interactúan, juegan y se llevan un recuerdo sorpresa. Perfecto para dinamizar la celebración.</p>
+        <ul style="margin-top:20px;list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Personalizable con tu diseño</li>
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Experiencia interactiva para invitados</li>
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Consultar disponibilidad</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Merch Corner -->
+    <div class="detalle-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px;">
+      <div style="background:var(--white);padding:60px 48px;display:flex;flex-direction:column;justify-content:center;">
+        <span class="section-label">04</span>
+        <h3 style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:clamp(28px,3vw,42px);color:var(--deep);line-height:1;letter-spacing:-1px;margin:12px 0 20px;">MERCH<br>CORNER</h3>
+        <p style="font-size:15px;line-height:1.8;color:var(--mid);">Un rincón de merchandising para tu evento o activación de marca. Productos ya personalizados con el diseño del evento, listos para entregar o comprar.</p>
+        <ul style="margin-top:20px;list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Artículos pre-personalizados</li>
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Ideal para activaciones de marca</li>
+          <li style="font-size:13px;color:var(--mid);display:flex;gap:10px;"><span style="color:var(--captain);">✓</span> Consultar disponibilidad</li>
+        </ul>
+      </div>
+      <div style="min-height:400px;background:var(--deep) url('images/merch.jpg') center/cover no-repeat;"></div>
+    </div>
+
   </div>
 </section>
 
