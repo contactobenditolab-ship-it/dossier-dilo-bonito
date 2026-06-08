@@ -509,6 +509,25 @@ body::before {
   </div>
 
   <!-- Acceso interno -->
+  <button onclick="pedirAcceso()" style="
+    margin-top:32px;
+    background:none;
+    border:1px solid rgba(255,255,255,.15);
+    color:rgba(168,200,232,.5);
+    font-family:'Lato',sans-serif;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    padding:10px 28px;
+    cursor:pointer;
+    transition:all .2s;
+  "
+  onmouseover="this.style.borderColor='rgba(242,201,76,.4)';this.style.color='rgba(242,201,76,.7)'"
+  onmouseout="this.style.borderColor='rgba(255,255,255,.15)';this.style.color='rgba(168,200,232,.5)'">
+    🔑 Acceso interno
+  </button>
+
+  <!-- Acceso interno -->
   <div class="acceso-wrap">
     <button class="acceso-toggle" onclick="toggleAcceso()" id="acceso-toggle">
       🔒 Acceso interno
