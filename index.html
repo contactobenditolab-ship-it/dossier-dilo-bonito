@@ -546,7 +546,11 @@ body::before {
 </div>
 
 <!-- Barra inferior -->
-<div class="bottom-bar">Bendito Lab · Personalización que marca · Ciudad Real</div>
+<div class="bottom-bar">
+  Bendito Lab · Personalización que marca · Ciudad Real
+  <span style="margin-left:20px;opacity:.4;">·</span>
+  <button onclick="pedirAcceso()" style="background:none;border:none;color:rgba(168,200,232,.3);font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;padding:0;margin-left:12px;font-family:'Lato',sans-serif;transition:color .2s;" onmouseover="this.style.color='rgba(168,200,232,.7)'" onmouseout="this.style.color='rgba(168,200,232,.3)'">Acceso interno</button>
+</div>
 
 <!-- ── MODAL ── -->
 <div class="modal-overlay" id="modal-overlay" onclick="cerrarModal(event)">
@@ -644,6 +648,17 @@ async function enviar() {
   } catch(e) {
     btn.disabled = false; btn.textContent = 'ENVIAR →';
     alert('Error. Escríbenos a contacto@benditolab.com o al 647 444 308');
+  }
+}
+
+function pedirAcceso() {
+  var pwd = prompt('Introduce la clave de acceso:');
+  if (pwd === null) return; // canceló
+  if (pwd === 'h13701aah03') {
+    sessionStorage.setItem('bl-admin-auth', '1');
+    window.location.href = 'portada.html';
+  } else {
+    alert('Clave incorrecta.');
   }
 }
 </script>
