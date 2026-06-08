@@ -1918,25 +1918,9 @@
   }
 
   /* ── CARRUSEL BANNER ── */
-  .carousel-banner {
-    width: 100%;
-    height: 520px;
-    position: relative;
-    overflow: hidden;
-    background: #111;
-  }
-  .carousel-track {
-    display: flex;
-    height: 100%;
-    transition: transform 0.7s cubic-bezier(0.77,0,0.175,1);
-    will-change: transform;
-  }
-  .carousel-slide {
-    min-width: 100%;
-    height: 100%;
-    position: relative;
-    flex-shrink: 0;
-  }
+  
+  
+  
   .carousel-slide img {
     width: 100%;
     height: 100%;
@@ -1953,55 +1937,18 @@
     pointer-events: none;
   }
   /* Puntos navegación */
-  .carousel-dots {
-    position: absolute;
-    bottom: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-  }
-  .carousel-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.45);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.3s, transform 0.3s;
-  }
-  .carousel-dot.active {
-    background: #fff;
-    transform: scale(1.3);
-  }
+  
+  
+  
   /* Flechas */
-  .carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.18);
-    border: 1.5px solid rgba(255,255,255,0.35);
-    color: #fff;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 18px;
-    transition: background 0.2s;
-    backdrop-filter: blur(4px);
-  }
-  .carousel-arrow:hover { background: rgba(255,255,255,0.35); }
-  .carousel-arrow.prev { left: 20px; }
-  .carousel-arrow.next { right: 20px; }
+  
+  
+  
+  
 
   @media (max-width: 640px) {
-    .carousel-banner { height: 260px; }
-    .carousel-arrow { display: none; }
+    
+    
   }
 
   /* SERVICIOS MOBILE */
@@ -2087,47 +2034,6 @@
 );
 </script>
 
-
-<!-- CARRUSEL BANNER -->
-<div class="carousel-banner" id="carousel">
-  <div class="carousel-track" id="carousel-track">
-    <div class="carousel-slide">
-      <img src="images/cabecera.jpg" alt="Personalización en vivo" loading="eager">
-    </div>
-    <div class="carousel-slide">
-      <img src="images/personalizacion.jpg" alt="Artículos personalizados" loading="lazy">
-    </div>
-    <div class="carousel-slide">
-      <img src="images/img-neceser.jpg" alt="Neceseres personalizados" loading="lazy">
-    </div>
-    <div class="carousel-slide">
-      <img src="images/img-gorra.jpg" alt="Gorras personalizadas" loading="lazy">
-    </div>
-    <div class="carousel-slide">
-      <img src="images/img-tote.jpg" alt="Tote bags" loading="lazy">
-    </div>
-    <div class="carousel-slide">
-      <img src="images/merch.jpg" alt="Merchandise" loading="lazy">
-    </div>
-    <div class="carousel-slide">
-      <img src="images/seating.jpg" alt="Seating plan" loading="lazy">
-    </div>
-  </div>
-  <!-- Flechas -->
-  <button class="carousel-arrow prev" onclick="carouselPrev()" aria-label="Anterior">&#8592;</button>
-  <button class="carousel-arrow next" onclick="carouselNext()" aria-label="Siguiente">&#8594;</button>
-  <!-- Puntos -->
-  <div class="carousel-dots" id="carousel-dots">
-    <button class="carousel-dot active" data-idx="0" aria-label="Ir a imagen 1"></button>
-    <button class="carousel-dot" data-idx="1" aria-label="Ir a imagen 2"></button>
-    <button class="carousel-dot" data-idx="2" aria-label="Ir a imagen 3"></button>
-    <button class="carousel-dot" data-idx="3" aria-label="Ir a imagen 4"></button>
-    <button class="carousel-dot" data-idx="4" aria-label="Ir a imagen 5"></button>
-    <button class="carousel-dot" data-idx="5" aria-label="Ir a imagen 6"></button>
-    <button class="carousel-dot" data-idx="6" aria-label="Ir a imagen 7"></button>
-    
-  </div>
-</div>
 
 
 <!-- SERVICIOS DILO BONITO -->
@@ -3094,17 +3000,7 @@ document.addEventListener('DOMContentLoaded', loadSiteImages);
 <script>
 (function() {
   var track = document.getElementById('carousel-track');
-  var dots = document.querySelectorAll('#carousel-dots .carousel-dot');
-  var total = dots.length;
-  var current = 0;
-  var autoTimer;
-
-  function goTo(idx) {
-    current = (idx + total) % total;
-    track.style.transform = 'translateX(-' + (current * 100) + '%)';
-    dots.forEach(function(d, i) {
-      d.classList.toggle('active', i === current);
-    });
+  var dots = document.querySelectorAll('#carousel-dots );
   }
 
   window.carouselPrev = function() { clearInterval(autoTimer); goTo(current - 1); startAuto(); };
