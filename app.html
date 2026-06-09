@@ -671,6 +671,70 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
       </a>
     </div>
 
+
+    <!-- COLABORADORES -->
+    <div class="page" id="vp-colaboradores">
+      <div style="background:var(--deep);padding:24px 20px;margin:-20px -16px 20px;">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--baby);margin-bottom:6px;">Programa de colaboradores</div>
+        <div style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:28px;color:var(--white);line-height:.9;letter-spacing:-1px;">TRABAJEMOS<br>JUNTOS.</div>
+        <div style="font-size:13px;color:rgba(168,200,232,.75);margin-top:10px;">Un servicio diferencial para tus clientes, sin trabajo extra para ti.</div>
+      </div>
+
+      <span class="section-label">¿Qué ganas como colaborador?</span>
+      <div class="list-item" style="cursor:default;">
+        <div class="li-icon deep">💰</div>
+        <div class="li-body"><div class="li-title">Comisión por evento</div><div class="li-sub">Cobra un % cada vez que uno de tus clientes contrata Dilo Bonito</div></div>
+      </div>
+      <div class="list-item" style="cursor:default;">
+        <div class="li-icon deep">🎯</div>
+        <div class="li-body"><div class="li-title">Servicio diferencial</div><div class="li-sub">Ofrece algo que pocos proveedores pueden dar, mejora tu propuesta</div></div>
+      </div>
+      <div class="list-item" style="cursor:default;">
+        <div class="li-icon deep">⚡</div>
+        <div class="li-body"><div class="li-title">Cero trabajo extra</div><div class="li-sub">Nosotros nos encargamos de todo: montaje, materiales y atención</div></div>
+      </div>
+      <div class="list-item" style="cursor:default;">
+        <div class="li-icon deep">📅</div>
+        <div class="li-body"><div class="li-title">Cobro en 3–5 días</div><div class="li-sub">Tu comisión se abona tras la celebración del evento</div></div>
+      </div>
+      <div class="list-item" style="cursor:default;">
+        <div class="li-icon deep">🤝</div>
+        <div class="li-body"><div class="li-title">Fácil integración</div><div class="li-sub">Nos adaptamos al ritmo de tu negocio sin interferir en tu operativa</div></div>
+      </div>
+
+      <hr class="divider">
+      <span class="section-label">Ideal para</span>
+      <div class="card">
+        <div class="card-row"><span class="card-row-label">🌿 Fincas y espacios de eventos</span></div>
+        <div class="card-row"><span class="card-row-label">💍 Wedding planners</span></div>
+        <div class="card-row"><span class="card-row-label">🍽️ Restaurantes y hoteles</span></div>
+        <div class="card-row"><span class="card-row-label">🎪 Organizadores de eventos</span></div>
+      </div>
+
+      <hr class="divider">
+      <span class="section-label">¿Te interesa colaborar?</span>
+      <div class="field"><label>Tu nombre *</label><input type="text" id="vc-nombre" placeholder="Nombre completo"></div>
+      <div class="field"><label>Nombre de tu negocio *</label><input type="text" id="vc-negocio" placeholder="Nombre del espacio o empresa"></div>
+      <div class="field"><label>Teléfono *</label><input type="tel" id="vc-tel" placeholder="6XX XXX XXX"></div>
+      <div class="field"><label>Email</label><input type="email" id="vc-email" placeholder="tu@email.com"></div>
+      <div class="field"><label>Tipo de negocio</label>
+        <select id="vc-tipo">
+          <option>Finca</option>
+          <option>Restaurante</option>
+          <option>Hotel</option>
+          <option>Wedding Planner</option>
+          <option>Espacio de eventos</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="field"><label>Cuéntanos algo sobre tu negocio</label>
+        <textarea id="vc-msg" placeholder="Zona donde trabajas, tipo de eventos que gestionas..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="enviarContactoColab()">QUIERO COLABORAR →</button>
+      <button class="btn btn-wa" style="margin-top:8px;" onclick="window.open('https://wa.me/34647444308?text=Hola%2C%20me%20interesa%20colaborar%20con%20Dilo%20Bonito')">💬 Hablar por WhatsApp</button>
+      <p style="font-size:11px;color:var(--mid);text-align:center;margin-top:12px;">O escríbenos a <a href="mailto:colaboradores@benditolab.com" style="color:var(--captain);">colaboradores@benditolab.com</a></p>
+    </div>
+
   </div>
 
   <!-- BOTTOM NAV VISITANTE -->
@@ -680,6 +744,9 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
     </button>
     <button class="bnav-item" onclick="navVisitante('solicitar',this)">
       <span class="icon">📩</span>Presupuesto
+    </button>
+    <button class="bnav-item" onclick="navVisitante('colaboradores',this)">
+      <span class="icon">🤝</span>Colaborar
     </button>
     <button class="bnav-item" onclick="navVisitante('contacto',this)">
       <span class="icon">📞</span>Contacto
@@ -1364,6 +1431,34 @@ function navVisitante(page, el) {
 }
 
 function verPackV(id) { verPack(id); } // Reutiliza el modal de packs existente
+
+async function enviarContactoColab() {
+  var nombre  = document.getElementById('vc-nombre').value.trim();
+  var negocio = document.getElementById('vc-negocio').value.trim();
+  var tel     = document.getElementById('vc-tel').value.trim();
+  if (!nombre||!negocio||!tel) { showToast('Rellena nombre, negocio y teléfono'); return; }
+  var btn = document.querySelector('#vp-colaboradores .btn-primary');
+  btn.textContent='Enviando...'; btn.disabled=true;
+  try {
+    await fetch('https://hook.eu1.make.com/0qbbiac8rmdsiftzg2wvhgzgcxf519ba', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        tipo_formulario:'colaborador_app',
+        nombre, espacio: negocio,
+        telefono: tel,
+        email: document.getElementById('vc-email').value.trim(),
+        tipo: document.getElementById('vc-tipo').value,
+        mensaje: document.getElementById('vc-msg').value
+      })
+    });
+    showToast('¡Solicitud enviada! Te contactamos pronto ✓');
+    btn.textContent='QUIERO COLABORAR →'; btn.disabled=false;
+    ['vc-nombre','vc-negocio','vc-tel','vc-email','vc-msg'].forEach(function(id){ document.getElementById(id).value=''; });
+  } catch(e) {
+    btn.textContent='QUIERO COLABORAR →'; btn.disabled=false;
+    window.open('https://wa.me/34647444308?text=Hola%2C%20me%20interesa%20colaborar%20con%20Dilo%20Bonito');
+  }
+}
 
 async function enviarSolicitudVisitante() {
   var nombre = document.getElementById('vs-nombre').value.trim();
