@@ -1646,7 +1646,7 @@ function renderColaboradorPortal(colab) {
     var importe = parseFloat(p.importe)||0;
     var pct = parseFloat(p.comision_colab || colab.comision || 0) / 100;
     var comision = Math.round(importe * pct * 100) / 100;
-    return '<div class="list-item" onclick="verEventoColab('' + p.id + '','' + colab.id + '')">'+
+    return '<div class="list-item" onclick="verEventoColab(\'' + p.id + '\',\'' + colab.id + '\')">'+
       '<div class="li-icon deep">📅</div>'+
       '<div class="li-body">'+
         '<div class="li-title">' + p.tipo + ' · ' + (p.cliente||'—') + '</div>'+
