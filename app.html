@@ -289,7 +289,7 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
         </select>
       </div>
       <div class="field"><label>Notas</label><textarea id="pf-notas" placeholder="Detalles del evento, extras..."></textarea></div>
-      <div class="field"><label>Código cliente (para acceso app)</label><input type="text" id="pf-codigo" placeholder="ej: BODA-2025-ANA"></div>
+      <div class="field"><label>Código cliente (para acceso app)</label><input type="text" id="pf-codigo" placeholder="Se genera automáticamente al guardar"></div>
       <div class="field"><label>Colaborador</label>
         <select id="pf-colaborador">
           <option value="">— Sin colaborador —</option>
@@ -1110,6 +1110,7 @@ function fabAction() {
     document.getElementById('pf-delete-btn').style.display = 'none';
     poblarSelectColaboradores('pf-colaborador', '');
     document.getElementById('pf-comision').value = '';
+    document.getElementById('pf-codigo').value = ''; // se genera al guardar
     currentAdminPage = 'presup-form';
     showAdminPage('presup-form');
     document.getElementById('admin-title').textContent = 'Nuevo presupuesto';
@@ -1197,7 +1198,7 @@ function verPresupuesto(id) {
     '<div class="card-row"><span class="card-row-label">Invitados</span><span class="card-row-val">'+(p.invitados||'—')+'</span></div>'+
     (p.email?'<div class="card-row"><span class="card-row-label">Email</span><span class="card-row-val">'+p.email+'</span></div>':'')+
     (p.tel?'<div class="card-row"><span class="card-row-label">Teléfono</span><span class="card-row-val">'+p.tel+'</span></div>':'')+
-    (p.codigo?'<div class="card-row"><span class="card-row-label">Código cliente</span><span class="card-row-val" style="font-family:monospace;font-size:13px;">'+p.codigo+'</span></div>':'')+
+    (p.codigo?'<div class="card-row"><span class="card-row-label">Código cliente</span><div style="display:flex;align-items:center;gap:8px;"><span class="card-row-val" style="font-family:monospace;font-size:13px;">'+p.codigo+'</span><button onclick="copiarCodigo(\''+p.codigo+'\')" style="background:var(--cream);border:1px solid var(--gray);padding:4px 10px;font-size:11px;cursor:pointer;font-family:Lato,sans-serif;">Copiar</button></div></div>':'')+
     (p.notas?'<div class="card-row" style="flex-direction:column;align-items:flex-start;gap:4px;"><span class="card-row-label">Notas</span><span style="font-size:13px;color:var(--mid);line-height:1.5;">'+p.notas+'</span></div>':'')+
     '</div>'+
     '<button class="btn btn-secondary" onclick="editarPresupuesto(\''+id+'\')" style="margin-bottom:8px;">✏️ EDITAR</button>'+
@@ -1232,6 +1233,21 @@ function editarPresupuesto(id) {
   document.getElementById('admin-bottom-nav').style.display = 'none';
 }
 
+function autoCodigoCli(nombre, fecha) {
+  // Ej: ANA-GARCIA-SEP25
+  var parte = (nombre || 'CLIENTE').toUpperCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // quitar tildes
+    .replace(/[^A-Z0-9 ]/g,'').trim()
+    .split(' ').slice(0,2).join('-');
+  var meses = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+  var sufijo = '';
+  if (fecha) {
+    var d = new Date(fecha);
+    sufijo = '-' + meses[d.getMonth()] + String(d.getFullYear()).slice(2);
+  }
+  return parte + sufijo;
+}
+
 function savePresupuesto() {
   var arr = getPresupuestos();
   var data = {
@@ -1246,7 +1262,7 @@ function savePresupuesto() {
     importe: document.getElementById('pf-importe').value,
     estado: document.getElementById('pf-estado').value,
     notas: document.getElementById('pf-notas').value.trim(),
-    codigo: document.getElementById('pf-codigo').value.trim(),
+    codigo: document.getElementById('pf-codigo').value.trim() || autoCodigoCli(document.getElementById('pf-cliente').value.trim(), document.getElementById('pf-fecha').value),
     colaborador: document.getElementById('pf-colaborador').value,
     comision_colab: document.getElementById('pf-comision').value,
     createdAt: editingPresupId ? (arr.find(function(x){return x.id===editingPresupId;})||{}).createdAt : Date.now()
@@ -1482,6 +1498,14 @@ function deleteColab() {
   showToast('Colaborador eliminado');
   editingColabId = null;
   navAdmin('colaboradores', null);
+}
+
+function copiarCodigo(codigo) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(codigo).then(function(){ showToast('Código copiado: ' + codigo + ' ✓'); });
+  } else {
+    showToast('Código: ' + codigo);
+  }
 }
 
 function contactarColabWA() {
