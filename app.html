@@ -584,55 +584,145 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
 
     <!-- SERVICIOS -->
     <div class="page active" id="vp-servicios">
+
+      <!-- HERO -->
       <div style="background:var(--deep);padding:24px 20px;margin:-20px -16px 20px;">
-        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--baby);margin-bottom:6px;">Dilo Bonito por Bendito Lab</div>
-        <div style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:28px;color:var(--white);line-height:.9;letter-spacing:-1px;">PERSONALIZACIÓN<br>EN VIVO.</div>
-        <div style="font-size:13px;color:rgba(168,200,232,.75);margin-top:10px;">Tus invitados eligen, personalizan y se llevan un recuerdo único.</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--baby);margin-bottom:6px;">Bendito Lab · Dilo Bonito</div>
+        <div style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:28px;color:var(--white);line-height:.9;letter-spacing:-1px;">LO QUE<br>HACEMOS.</div>
+        <div style="font-size:13px;color:rgba(168,200,232,.75);margin-top:10px;">Personalización en vivo para eventos y artículos a medida para empresas.</div>
       </div>
 
-      <span class="section-label">Packs disponibles</span>
-      <div class="list-item" onclick="verPackV('mini')">
-        <div class="li-icon deep">✨</div>
-        <div class="li-body"><div class="li-title">Pack MINI</div><div class="li-sub">Hasta 30 invitados · 2 horas</div></div>
-        <div class="li-right"><div class="li-val">299€</div><div class="li-arrow">›</div></div>
-      </div>
-      <div class="list-item" onclick="verPackV('intima')">
-        <div class="li-icon deep">💫</div>
-        <div class="li-body"><div class="li-title">Pack ÍNTIMA</div><div class="li-sub">Hasta 50 invitados · 3 horas</div></div>
-        <div class="li-right"><div class="li-val">499€</div><div class="li-arrow">›</div></div>
-      </div>
-      <div class="list-item" onclick="verPackV('clasica')">
-        <div class="li-icon deep">⭐</div>
-        <div class="li-body"><div class="li-title">Pack CLÁSICA</div><div class="li-sub">Hasta 100 invitados · 4 horas</div></div>
-        <div class="li-right"><div class="li-val">650€</div><div class="li-arrow">›</div></div>
-      </div>
-      <div class="list-item" onclick="verPackV('premium')">
-        <div class="li-icon deep">👑</div>
-        <div class="li-body"><div class="li-title">Pack PREMIUM</div><div class="li-sub">Hasta 150 invitados · 5 horas</div></div>
-        <div class="li-right"><div class="li-val">799€</div><div class="li-arrow">›</div></div>
+      <!-- DILO BONITO -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div style="height:2px;flex:1;background:var(--deep);"></div>
+        <div style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:13px;color:var(--deep);letter-spacing:2px;">DILO BONITO · EVENTOS</div>
+        <div style="height:2px;flex:1;background:var(--deep);"></div>
       </div>
 
-      <hr class="divider">
-      <span class="section-label">Extras</span>
-      <div class="card">
+      <!-- Personalización en directo -->
+      <div class="card" style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+          <div>
+            <div style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:16px;color:var(--deep);">✨ Personalización en directo</div>
+            <div style="font-size:12px;color:var(--mid);margin-top:3px;">Tus invitados eligen y personalizan en el momento</div>
+          </div>
+          <span class="badge badge-ok">⭐ Principal</span>
+        </div>
+        <div class="card-row"><span class="card-row-label">Pack MINI</span><span class="card-row-val">299€</span></div>
+        <div class="card-row"><span class="card-row-label">Pack ÍNTIMA</span><span class="card-row-val">499€</span></div>
+        <div class="card-row"><span class="card-row-label">Pack CLÁSICA</span><span class="card-row-val">650€</span></div>
+        <div class="card-row"><span class="card-row-label">Pack PREMIUM</span><span class="card-row-val">799€</span></div>
+        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+          <button onclick="verPackV('mini')" style="background:var(--cream);border:1px solid var(--gray);padding:6px 12px;font-size:11px;cursor:pointer;font-family:'Lato',sans-serif;">Ver MINI</button>
+          <button onclick="verPackV('intima')" style="background:var(--cream);border:1px solid var(--gray);padding:6px 12px;font-size:11px;cursor:pointer;font-family:'Lato',sans-serif;">Ver ÍNTIMA</button>
+          <button onclick="verPackV('clasica')" style="background:var(--cream);border:1px solid var(--gray);padding:6px 12px;font-size:11px;cursor:pointer;font-family:'Lato',sans-serif;">Ver CLÁSICA</button>
+          <button onclick="verPackV('premium')" style="background:var(--cream);border:1px solid var(--gray);padding:6px 12px;font-size:11px;cursor:pointer;font-family:'Lato',sans-serif;">Ver PREMIUM</button>
+        </div>
+      </div>
+
+      <!-- Seating Plan -->
+      <div class="list-item" style="margin-bottom:8px;cursor:default;">
+        <div class="li-icon deep">🪑</div>
+        <div class="li-body">
+          <div class="li-title">Seating Plan personalizado</div>
+          <div class="li-sub">Diseño exclusivo adaptado al estilo de tu evento</div>
+        </div>
+        <span class="badge badge-pend">Consultar</span>
+      </div>
+
+      <!-- Máquina -->
+      <div class="list-item" style="margin-bottom:8px;cursor:default;">
+        <div class="li-icon deep">🎰</div>
+        <div class="li-body">
+          <div class="li-title">Máquina expendedora / gancho</div>
+          <div class="li-sub">Experiencia interactiva para invitados — sorpresas personalizadas</div>
+        </div>
+        <span class="badge badge-pend">Consultar</span>
+      </div>
+
+      <!-- Merch Corner -->
+      <div class="list-item" style="margin-bottom:16px;cursor:default;">
+        <div class="li-icon deep">🛍️</div>
+        <div class="li-body">
+          <div class="li-title">Merch Corner</div>
+          <div class="li-sub">Rincón de merchandising pre-personalizado para tu evento</div>
+        </div>
+        <span class="badge badge-pend">Consultar</span>
+      </div>
+
+      <!-- Extras -->
+      <span class="section-label">Extras Dilo Bonito</span>
+      <div class="card" style="margin-bottom:16px;">
         <div class="card-row"><span class="card-row-label">Hora extra + máquina</span><span class="card-row-val">150€</span></div>
         <div class="card-row"><span class="card-row-label">Diseño exclusivo</span><span class="card-row-val">80€</span></div>
-        <div class="card-row"><span class="card-row-label">Regalo infantil</span><span class="card-row-val">8€/ud</span></div>
+        <div class="card-row"><span class="card-row-label">Regalo infantil /ud</span><span class="card-row-val">8€</span></div>
         <div class="card-row"><span class="card-row-label">Post-evento</span><span class="card-row-val">15–30€</span></div>
         <div class="card-row"><span class="card-row-label">Desplazamiento</span><span class="card-row-val">0,40€/km</span></div>
       </div>
 
-      <hr class="divider">
+      <!-- Productos personalizables -->
       <span class="section-label">Productos personalizables</span>
-      <div class="card">
-        <div class="card-row"><span class="card-row-label">🛍️ Tote bag</span><span class="badge badge-ok">Incluido</span></div>
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-row"><span class="card-row-label">🛍️ Tote bag algodón</span><span class="badge badge-ok">Incluido</span></div>
         <div class="card-row"><span class="card-row-label">🧢 Gorra</span><span class="badge badge-ok">Incluido</span></div>
         <div class="card-row"><span class="card-row-label">👜 Neceser</span><span class="badge badge-ok">Incluido</span></div>
         <div class="card-row"><span class="card-row-label">👕 Camiseta</span><span class="badge badge-pend">Consultar</span></div>
         <div class="card-row"><span class="card-row-label">🎒 Riñonera</span><span class="badge badge-pend">Consultar</span></div>
+        <div class="card-row"><span class="card-row-label">Otros artículos</span><span class="badge badge-pend">Consultar</span></div>
       </div>
 
-      <button class="btn btn-primary" style="margin-top:16px;" onclick="navVisitante('solicitar', document.querySelectorAll('#s-visitante .bnav-item')[1])">PEDIR PRESUPUESTO →</button>
+      <!-- BENDITO LAB -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div style="height:2px;flex:1;background:var(--captain);"></div>
+        <div style="font-family:'League Spartan',sans-serif;font-weight:900;font-size:13px;color:var(--captain);letter-spacing:2px;">BENDITO LAB · EMPRESAS</div>
+        <div style="height:2px;flex:1;background:var(--captain);"></div>
+      </div>
+
+      <!-- Artículos personalizados -->
+      <div class="list-item" style="margin-bottom:8px;cursor:default;">
+        <div class="li-icon" style="background:var(--captain);color:#fff;">🏢</div>
+        <div class="li-body">
+          <div class="li-title">Artículos personalizados para empresas</div>
+          <div class="li-sub">Gorras, tote bags, neceseres, camisetas y más con tu logo</div>
+        </div>
+        <div class="li-arrow">›</div>
+      </div>
+
+      <!-- Regalos corporativos -->
+      <div class="list-item" style="margin-bottom:8px;cursor:default;">
+        <div class="li-icon" style="background:var(--captain);color:#fff;">🎁</div>
+        <div class="li-body">
+          <div class="li-title">Regalos corporativos</div>
+          <div class="li-sub">Detalles de empresa a medida para clientes y equipo</div>
+        </div>
+        <div class="li-arrow">›</div>
+      </div>
+
+      <!-- Uniformes y merchandising -->
+      <div class="list-item" style="margin-bottom:8px;cursor:default;">
+        <div class="li-icon" style="background:var(--captain);color:#fff;">👔</div>
+        <div class="li-body">
+          <div class="li-title">Uniformes y merchandising</div>
+          <div class="li-sub">Ropa de trabajo y colecciones de marca personalizadas</div>
+        </div>
+        <div class="li-arrow">›</div>
+      </div>
+
+      <!-- Catálogo a medida -->
+      <div class="list-item" style="margin-bottom:16px;cursor:default;">
+        <div class="li-icon" style="background:var(--captain);color:#fff;">📦</div>
+        <div class="li-body">
+          <div class="li-title">Catálogo completo a medida</div>
+          <div class="li-sub">Cualquier artículo textil o promocional con tu identidad de marca</div>
+        </div>
+        <div class="li-arrow">›</div>
+      </div>
+
+      <div class="card" style="background:var(--deep);border-color:var(--deep);margin-bottom:8px;">
+        <p style="font-size:13px;color:var(--baby);line-height:1.6;margin-bottom:12px;">¿Tienes un proyecto B2B? Cuéntanos qué necesitas y te preparamos una propuesta personalizada.</p>
+        <button class="btn" style="background:var(--sunshine);color:var(--deep);padding:12px;" onclick="navVisitante('solicitar', document.querySelectorAll('#s-visitante .bnav-item')[1])">PEDIR PRESUPUESTO →</button>
+      </div>
+
     </div>
 
     <!-- SOLICITAR -->
