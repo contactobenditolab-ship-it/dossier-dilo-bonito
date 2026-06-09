@@ -55,8 +55,8 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
 
 /* ── BOTTOM NAV ───────────────────────────────────────── */
 .bottom-nav{height:var(--bottom-h);background:var(--white);border-top:1px solid var(--gray);display:flex;align-items:stretch;flex-shrink:0;}
-.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;background:none;border:none;color:var(--mid);font-family:'Lato',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;transition:color .15s;padding-bottom:6px;}
-.bnav-item .icon{font-size:22px;line-height:1;}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;background:none;border:none;color:var(--mid);font-family:'Lato',sans-serif;font-size:9px;font-weight:700;letter-spacing:0;transition:color .15s;padding-bottom:4px;}
+.bnav-item .icon{font-size:20px;line-height:1;}
 .bnav-item.active{color:var(--deep);}
 .bnav-item.active .icon{filter:drop-shadow(0 0 0 var(--deep));}
 
@@ -393,13 +393,16 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
       <span class="icon">🏠</span>Inicio
     </button>
     <button class="bnav-item" onclick="navAdmin('presupuestos',this)">
-      <span class="icon">📋</span>Presupuestos
+      <span class="icon">📋</span>Presup.
     </button>
     <button class="bnav-item" onclick="navAdmin('eventos',this)">
       <span class="icon">📅</span>Eventos
     </button>
     <button class="bnav-item" onclick="navAdmin('clientes',this)">
       <span class="icon">👥</span>Clientes
+    </button>
+    <button class="bnav-item" onclick="navAdmin('colaboradores',this)">
+      <span class="icon">🤝</span>Colabs
     </button>
     <button class="bnav-item" onclick="navAdmin('ingresos',this)">
       <span class="icon">💰</span>Ingresos
