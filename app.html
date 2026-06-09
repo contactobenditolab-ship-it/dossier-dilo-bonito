@@ -337,6 +337,12 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
 
     <!-- NUEVO COLABORADOR -->
     <div class="page" id="p-colab-form">
+      <div id="cf-contacto-rapido" style="display:none;margin-bottom:16px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button id="cf-wa-btn" class="btn btn-wa btn-sm" onclick="contactarColabWA()" style="flex:1;">💬 WhatsApp</button>
+          <a id="cf-email-link" href="#" style="flex:1;text-decoration:none;"><button class="btn btn-secondary btn-sm" style="width:100%;">✉️ Email</button></a>
+        </div>
+      </div>
       <div class="field"><label>Nombre *</label><input type="text" id="cf-nombre" placeholder="Nombre completo"></div>
       <div class="field"><label>Espacio / empresa</label><input type="text" id="cf-espacio" placeholder="Nombre del negocio"></div>
       <div class="field"><label>Email</label><input type="email" id="cf-email"></div>
@@ -1112,6 +1118,7 @@ function fabAction() {
   if (currentAdminPage === 'colaboradores') {
     editingColabId = null;
     limpiarFormColab();
+    document.getElementById('cf-contacto-rapido').style.display = 'none';
     document.getElementById('cf-delete-btn').style.display = 'none';
     currentAdminPage = 'colab-form';
     showAdminPage('colab-form');
@@ -1394,7 +1401,25 @@ function renderColaboradores() {
     return;
   }
   container.innerHTML = cols.map(function(c){
-    return '<div class="list-item" onclick="editarColab(\''+c.id+'\')"><div class="li-icon deep">🤝</div><div class="li-body"><div class="li-title">'+c.nombre+'</div><div class="li-sub">'+c.tipo+' · '+c.espacio+'</div></div><div class="li-right"><div class="li-val">'+c.comision+'%</div><div class="li-arrow">›</div></div></div>';
+    var wa = c.tel ? '<a href="https://wa.me/34'+c.tel.replace(/\D/g,'')+'" onclick="event.stopPropagation()" style="text-decoration:none;"><button style="background:#25D366;color:#fff;border:none;padding:7px 12px;font-size:11px;font-family:Lato,sans-serif;font-weight:700;cursor:pointer;">💬 WA</button></a>' : '';
+    var em = c.email ? '<a href="mailto:'+c.email+'" onclick="event.stopPropagation()" style="text-decoration:none;"><button style="background:var(--captain);color:#fff;border:none;padding:7px 12px;font-size:11px;font-family:Lato,sans-serif;font-weight:700;cursor:pointer;">✉️ Email</button></a>' : '';
+    return '<div class="card" style="margin-bottom:10px;">'+
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;" onclick="editarColab(\''+c.id+'\')">'+
+        '<div class="li-icon deep">🤝</div>'+
+        '<div style="flex:1;min-width:0;">'+
+          '<div class="li-title">'+c.nombre+'</div>'+
+          '<div class="li-sub">'+c.tipo+(c.espacio?' · '+c.espacio:'')+'</div>'+
+        '</div>'+
+        '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">'+
+          '<div class="li-val">'+c.comision+'%</div>'+
+          '<div style="font-size:10px;color:var(--mid);">comisión</div>'+
+        '</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;">'+
+        wa + em +
+        '<button onclick="editarColab(\''+c.id+'\');" style="background:var(--cream);color:var(--deep);border:1px solid var(--gray);padding:7px 12px;font-size:11px;font-family:Lato,sans-serif;font-weight:700;cursor:pointer;">✏️ Editar</button>'+
+      '</div>'+
+    '</div>';
   }).join('');
 }
 
@@ -1411,6 +1436,15 @@ function editarColab(id) {
   document.getElementById('cf-zona').value = c.zona||'';
   document.getElementById('cf-notas').value = c.notas||'';
   document.getElementById('cf-codigo').value = c.codigo||'';
+  // Mostrar botones de contacto rápido
+  var crapido = document.getElementById('cf-contacto-rapido');
+  crapido.style.display = 'block';
+  var waBtn = document.getElementById('cf-wa-btn');
+  var emLink = document.getElementById('cf-email-link');
+  if (c.tel) { waBtn.style.display='block'; waBtn.setAttribute('data-tel', c.tel); }
+  else { waBtn.style.display='none'; }
+  if (c.email) { emLink.href='mailto:'+c.email; emLink.style.display='block'; }
+  else { emLink.style.display='none'; }
   document.getElementById('cf-delete-btn').style.display = 'block';
   currentAdminPage = 'colab-form';
   showAdminPage('colab-form');
@@ -1448,6 +1482,12 @@ function deleteColab() {
   showToast('Colaborador eliminado');
   editingColabId = null;
   navAdmin('colaboradores', null);
+}
+
+function contactarColabWA() {
+  var btn = document.getElementById('cf-wa-btn');
+  var tel = (btn.getAttribute('data-tel')||'').replace(/\D/g,'');
+  if (tel) window.open('https://wa.me/34'+tel);
 }
 
 function limpiarFormColab() {
