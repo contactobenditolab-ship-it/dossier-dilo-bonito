@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1E3A5F">
+<title>Bendito Lab · App</title>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ─────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --deep:#1E3A5F; --captain:#3B6BA5; --baby:#A8C8E8;
+  --sunshine:#F2C94C; --poppy:#E8704A; --cream:#F5F0E0;
+  --white:#FDFCF8; --mid:#666; --gray:#D8D4C8; --dark:#1A1A1A;
+  --green:#27AE60; --red:#C0392B; --orange:#E8704A;
+  --nav-h:64px; --bottom-h:68px;
+}
+html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:var(--cream);color:var(--dark);}
+
+/* ── PANTALLAS ────────────────────────────────────────── */
+.screen{position:fixed;inset:0;display:none;flex-direction:column;}
+.screen.active{display:flex;}
+
+/* ── LOGIN ────────────────────────────────────────────── */
+#s-login{background:var(--deep);align-items:center;justify-content:center;padding:32px 24px;}
+.login-logo{font-family:'League Spartan',sans-serif;font-weight:900;font-size:36px;color:var(--sunshine);letter-spacing:-1px;margin-bottom:4px;}
+.login-sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(168,200,232,.6);margin-bottom:48px;}
+.login-box{background:var(--white);width:100%;max-width:360px;padding:36px 28px;}
+.login-box h2{font-family:'League Spartan',sans-serif;font-weight:900;font-size:22px;color:var(--deep);margin-bottom:20px;}
+.l-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.l-field label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mid);}
+.l-field input{padding:13px 14px;border:1.5px solid var(--gray);background:var(--cream);font-size:15px;font-family:'Lato',sans-serif;outline:none;}
+.l-field input:focus{border-color:var(--captain);}
+.l-btn{width:100%;background:var(--deep);color:var(--sunshine);border:none;font-family:'League Spartan',sans-serif;font-weight:900;font-size:15px;letter-spacing:1px;padding:16px;cursor:pointer;margin-top:4px;}
+.l-btn:hover{background:var(--captain);}
+.l-err{font-size:12px;color:var(--red);text-align:center;margin-top:8px;display:none;}
+.l-alt{margin-top:20px;text-align:center;font-size:13px;color:var(--mid);}
+.l-alt button{background:none;border:none;color:var(--captain);font-size:13px;cursor:pointer;font-family:'Lato',sans-serif;text-decoration:underline;}
+
+/* ── TOP BAR ──────────────────────────────────────────── */
+.topbar{height:var(--nav-h);background:var(--deep);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;position:relative;}
+.topbar-logo{font-family:'League Spartan',sans-serif;font-weight:900;font-size:20px;color:var(--sunshine);letter-spacing:-0.5px;}
+.topbar-title{font-family:'League Spartan',sans-serif;font-weight:700;font-size:17px;color:var(--white);flex:1;}
+.topbar-back{background:none;border:none;color:var(--baby);font-size:22px;cursor:pointer;padding:8px;margin-left:-8px;}
+.topbar-action{background:none;border:none;color:var(--sunshine);font-size:13px;font-family:'League Spartan',sans-serif;font-weight:700;letter-spacing:1px;cursor:pointer;padding:8px;}
+.topbar-badge{background:rgba(242,201,76,.2);color:var(--sunshine);font-size:9px;letter-spacing:2px;padding:3px 8px;border:1px solid rgba(242,201,76,.3);}
+
+/* ── CONTENT AREA ─────────────────────────────────────── */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--bottom-h) + 16px);}
+.content.no-bottom{padding-bottom:16px;}
+.page{display:none;padding:20px 16px;}
+.page.active{display:block;}
+
+/* ── BOTTOM NAV ───────────────────────────────────────── */
+.bottom-nav{height:var(--bottom-h);background:var(--white);border-top:1px solid var(--gray);display:flex;align-items:stretch;flex-shrink:0;}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;background:none;border:none;color:var(--mid);font-family:'Lato',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;transition:color .15s;padding-bottom:6px;}
+.bnav-item .icon{font-size:22px;line-height:1;}
+.bnav-item.active{color:var(--deep);}
+.bnav-item.active .icon{filter:drop-shadow(0 0 0 var(--deep));}
+
+/* ── CARDS ────────────────────────────────────────────── */
+.card{background:var(--white);border:1px solid var(--gray);padding:16px;margin-bottom:12px;}
+.card-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:13px;color:var(--deep);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.card-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--cream);}
+.card-row:last-child{border:none;padding-bottom:0;}
+.card-row-label{font-size:13px;color:var(--mid);}
+.card-row-val{font-size:14px;font-weight:700;color:var(--dark);}
+
+/* ── STAT CARDS ───────────────────────────────────────── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.stat-card{background:var(--white);border:1px solid var(--gray);padding:16px;display:flex;flex-direction:column;gap:4px;}
+.stat-card.accent{background:var(--deep);border-color:var(--deep);}
+.stat-card.accent .stat-val{color:var(--sunshine);}
+.stat-card.accent .stat-lbl{color:var(--baby);}
+.stat-val{font-family:'League Spartan',sans-serif;font-weight:900;font-size:28px;color:var(--deep);line-height:1;}
+.stat-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);}
+
+/* ── LISTAS ───────────────────────────────────────────── */
+.list-item{background:var(--white);border:1px solid var(--gray);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s;}
+.list-item:active{border-color:var(--captain);}
+.li-icon{width:40px;height:40px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.li-icon.deep{background:var(--deep);color:var(--sunshine);}
+.li-body{flex:1;min-width:0;}
+.li-title{font-size:14px;font-weight:700;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.li-sub{font-size:12px;color:var(--mid);margin-top:2px;}
+.li-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.li-val{font-family:'League Spartan',sans-serif;font-weight:900;font-size:16px;color:var(--deep);}
+.li-arrow{color:var(--gray);font-size:18px;}
+
+/* ── BADGES ───────────────────────────────────────────── */
+.badge{display:inline-block;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.badge-ok{background:#E8F5E9;color:var(--green);}
+.badge-warn{background:#FFF3E0;color:var(--orange);}
+.badge-pend{background:#E3F2FD;color:var(--captain);}
+.badge-red{background:#FFEBEE;color:var(--red);}
+
+/* ── CAMPOS FORMULARIO ────────────────────────────────── */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.field label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mid);}
+.field input,.field select,.field textarea{padding:13px 14px;border:1.5px solid var(--gray);background:var(--cream);font-family:'Lato',sans-serif;font-size:14px;color:var(--dark);outline:none;width:100%;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--captain);background:var(--white);}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:var(--cream);padding-right:36px;}
+.field textarea{min-height:80px;resize:vertical;line-height:1.6;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ── BOTONES ──────────────────────────────────────────── */
+.btn{display:block;width:100%;padding:15px;font-family:'League Spartan',sans-serif;font-weight:900;font-size:14px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;text-align:center;transition:all .2s;}
+.btn-primary{background:var(--deep);color:var(--sunshine);}
+.btn-primary:active{background:var(--captain);}
+.btn-secondary{background:var(--cream);color:var(--deep);border:1.5px solid var(--gray);}
+.btn-secondary:active{background:var(--gray);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-sm{width:auto;display:inline-block;padding:8px 18px;font-size:12px;}
+.btn-wa{background:#25D366;color:#fff;}
+.btn-wa:active{background:#1da851;}
+
+/* ── FAB ──────────────────────────────────────────────── */
+.fab{position:fixed;bottom:calc(var(--bottom-h) + 16px);right:20px;width:56px;height:56px;background:var(--sunshine);border:none;border-radius:0;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(30,58,95,.25);z-index:50;transition:transform .15s;}
+.fab:active{transform:scale(.94);}
+.fab.hidden{display:none;}
+
+/* ── SECCIÓN ──────────────────────────────────────────── */
+.section-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--mid);margin-bottom:12px;display:block;}
+.divider{border:none;border-top:1px solid var(--gray);margin:16px 0;}
+.empty-state{text-align:center;padding:48px 24px;color:var(--mid);}
+.empty-state .es-icon{font-size:48px;margin-bottom:12px;}
+.empty-state p{font-size:14px;line-height:1.6;}
+
+/* ── MODAL ────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--white);width:100%;max-height:90vh;overflow-y:auto;padding:24px 20px;transform:translateY(100%);transition:transform .3s ease;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-handle{width:40px;height:4px;background:var(--gray);margin:0 auto 20px;}
+.modal-title{font-family:'League Spartan',sans-serif;font-weight:900;font-size:22px;color:var(--deep);margin-bottom:16px;letter-spacing:-0.5px;}
+
+/* ── CALENDARIO ───────────────────────────────────────── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px;}
+.cal-day-name{font-size:10px;font-weight:700;text-align:center;color:var(--mid);padding:4px 0;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;position:relative;}
+.cal-day.other{color:var(--gray);}
+.cal-day.today{background:var(--deep);color:var(--sunshine);font-weight:700;}
+.cal-day.has-event::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;background:var(--poppy);border-radius:50%;}
+.cal-day.today.has-event::after{background:var(--sunshine);}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cal-nav-btn{background:none;border:1px solid var(--gray);width:36px;height:36px;cursor:pointer;font-size:16px;}
+.cal-month{font-family:'League Spartan',sans-serif;font-weight:900;font-size:18px;color:var(--deep);}
+
+/* ── PROGRESO ─────────────────────────────────────────── */
+.progress-bar{height:6px;background:var(--cream);margin:8px 0;}
+.progress-fill{height:100%;background:var(--deep);transition:width .4s;}
+
+/* ── MODO CLIENTE ─────────────────────────────────────── */
+.cliente-hero{background:var(--deep);padding:28px 20px;margin:-20px -16px 20px;color:var(--white);}
+.cliente-hero h1{font-family:'League Spartan',sans-serif;font-weight:900;font-size:26px;color:var(--white);line-height:1;letter-spacing:-0.5px;margin-bottom:4px;}
+.cliente-hero p{font-size:13px;color:var(--baby);margin-top:6px;}
+.estado-timeline{display:flex;flex-direction:column;gap:0;}
+.et-step{display:flex;gap:14px;padding:12px 0;}
+.et-dot{width:20px;height:20px;border-radius:50%;background:var(--gray);flex-shrink:0;margin-top:2px;position:relative;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;}
+.et-dot.done{background:var(--green);}
+.et-dot.current{background:var(--deep);box-shadow:0 0 0 3px rgba(30,58,95,.2);}
+.et-line{position:absolute;left:9px;top:22px;width:2px;height:calc(100% - 20px);background:var(--gray);}
+.et-dot.done .et-line{background:var(--green);}
+.et-body{flex:1;}
+.et-title{font-size:14px;font-weight:700;color:var(--dark);}
+.et-sub{font-size:12px;color:var(--mid);margin-top:2px;}
+
+/* ── TOAST ────────────────────────────────────────────── */
+.toast{position:fixed;bottom:calc(var(--bottom-h) + 80px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:10px 20px;font-size:13px;opacity:0;transition:all .3s;z-index:300;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── HEADER CLIENTE ───────────────────────────────────── */
+.cliente-topbar{background:var(--captain);}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     LOGIN
+══════════════════════════════════════════════════════════ -->
+<div class="screen active" id="s-login">
+  <div class="login-logo">BENDITO LAB</div>
+  <div class="login-sub">Gestión interna</div>
+  <div class="login-box">
+    <h2>Acceder</h2>
+    <div class="l-field">
+      <label>Usuario</label>
+      <input type="text" id="l-user" placeholder="admin / cliente">
+    </div>
+    <div class="l-field">
+      <label>Contraseña / Código</label>
+      <input type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="l-btn" onclick="doLogin()">ENTRAR →</button>
+    <div class="l-err" id="l-err">Usuario o contraseña incorrectos</div>
+    <div class="l-alt">
+      ¿Eres cliente? <button onclick="showClienteLogin()">Accede aquí</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     APP ADMIN
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="s-admin">
+  <div class="topbar">
+    <div class="topbar-logo">BL</div>
+    <div class="topbar-title" id="admin-title">Dashboard</div>
+    <div class="topbar-badge" id="admin-badge">ADMIN</div>
+    <button class="topbar-action" onclick="logout()">Salir</button>
+  </div>
+
+  <div class="content" id="admin-content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="p-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card accent">
+          <div class="stat-val" id="d-ingresos">0€</div>
+          <div class="stat-lbl">Este mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="d-eventos">0</div>
+          <div class="stat-lbl">Eventos próximos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="d-presup">0</div>
+          <div class="stat-lbl">Presupuestos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="d-clientes">0</div>
+          <div class="stat-lbl">Clientes</div>
+        </div>
+      </div>
+
+      <span class="section-label">Próximos eventos</span>
+      <div id="d-proximos-list"></div>
+
+      <span class="section-label" style="margin-top:16px;display:block;">Presupuestos pendientes</span>
+      <div id="d-pendientes-list"></div>
+    </div>
+
+    <!-- PRESUPUESTOS -->
+    <div class="page" id="p-presupuestos">
+      <div id="presup-list"></div>
+    </div>
+
+    <!-- NUEVO / EDITAR PRESUPUESTO -->
+    <div class="page" id="p-presup-form">
+      <div class="field"><label>Cliente *</label><input type="text" id="pf-cliente" placeholder="Nombre del cliente"></div>
+      <div class="field"><label>Email</label><input type="email" id="pf-email" placeholder="email@ejemplo.com"></div>
+      <div class="field"><label>Teléfono</label><input type="tel" id="pf-tel" placeholder="6XX XXX XXX"></div>
+      <div class="grid2">
+        <div class="field"><label>Tipo evento</label>
+          <select id="pf-tipo">
+            <option>Boda</option><option>Comunión</option><option>Cumpleaños</option>
+            <option>Corporativo</option><option>Privado</option><option>B2B</option>
+          </select>
+        </div>
+        <div class="field"><label>Pack</label>
+          <select id="pf-pack">
+            <option value="299">MINI — 299€</option>
+            <option value="499">ÍNTIMA — 499€</option>
+            <option value="650">CLÁSICA — 650€</option>
+            <option value="799">PREMIUM — 799€</option>
+            <option value="0">Personalizado</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Fecha evento</label><input type="date" id="pf-fecha"></div>
+        <div class="field"><label>Invitados</label><input type="number" id="pf-invitados" placeholder="50"></div>
+      </div>
+      <div class="field"><label>Importe total (€)</label><input type="number" id="pf-importe" placeholder="650"></div>
+      <div class="field"><label>Estado</label>
+        <select id="pf-estado">
+          <option value="pendiente">Pendiente</option>
+          <option value="enviado">Enviado al cliente</option>
+          <option value="aceptado">Aceptado</option>
+          <option value="rechazado">Rechazado</option>
+          <option value="completado">Completado</option>
+        </select>
+      </div>
+      <div class="field"><label>Notas</label><textarea id="pf-notas" placeholder="Detalles del evento, extras..."></textarea></div>
+      <div class="field"><label>Código cliente (para acceso app)</label><input type="text" id="pf-codigo" placeholder="ej: BODA-2025-ANA"></div>
+      <button class="btn btn-primary" style="margin-top:8px;" onclick="savePresupuesto()">GUARDAR PRESUPUESTO</button>
+      <button class="btn btn-secondary" style="margin-top:8px;" id="pf-delete-btn" onclick="deletePresupuesto()">ELIMINAR</button>
+    </div>
+
+    <!-- DETALLE PRESUPUESTO -->
+    <div class="page" id="p-presup-detail">
+      <div id="pd-content"></div>
+    </div>
+
+    <!-- EVENTOS -->
+    <div class="page" id="p-eventos">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calPrev()">‹</button>
+        <div class="cal-month" id="cal-month-label"></div>
+        <button class="cal-nav-btn" onclick="calNext()">›</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <hr class="divider">
+      <span class="section-label" id="cal-selected-label">Todos los eventos</span>
+      <div id="cal-events-list"></div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div class="page" id="p-clientes">
+      <div id="clientes-list"></div>
+    </div>
+
+    <!-- DETALLE CLIENTE -->
+    <div class="page" id="p-cliente-detail">
+      <div id="cld-content"></div>
+    </div>
+
+    <!-- COLABORADORES -->
+    <div class="page" id="p-colaboradores">
+      <div id="colab-list"></div>
+    </div>
+
+    <!-- NUEVO COLABORADOR -->
+    <div class="page" id="p-colab-form">
+      <div class="field"><label>Nombre *</label><input type="text" id="cf-nombre" placeholder="Nombre completo"></div>
+      <div class="field"><label>Espacio / empresa</label><input type="text" id="cf-espacio" placeholder="Nombre del negocio"></div>
+      <div class="field"><label>Email</label><input type="email" id="cf-email"></div>
+      <div class="field"><label>Teléfono</label><input type="tel" id="cf-tel"></div>
+      <div class="field"><label>Tipo</label>
+        <select id="cf-tipo">
+          <option>Finca</option><option>Restaurante</option><option>Hotel</option>
+          <option>Wedding Planner</option><option>Espacio de eventos</option><option>Otro</option>
+        </select>
+      </div>
+      <div class="field"><label>Comisión (%)</label><input type="number" id="cf-comision" placeholder="10" min="0" max="100"></div>
+      <div class="field"><label>Zona</label><input type="text" id="cf-zona" placeholder="Ciudad Real, Toledo..."></div>
+      <div class="field"><label>Notas</label><textarea id="cf-notas"></textarea></div>
+      <button class="btn btn-primary" style="margin-top:8px;" onclick="saveColab()">GUARDAR</button>
+      <button class="btn btn-secondary" style="margin-top:8px;" id="cf-delete-btn" onclick="deleteColab()">ELIMINAR</button>
+    </div>
+
+    <!-- INGRESOS -->
+    <div class="page" id="p-ingresos">
+      <div class="stats-grid">
+        <div class="stat-card accent">
+          <div class="stat-val" id="ing-mes">0€</div>
+          <div class="stat-lbl">Este mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="ing-anio">0€</div>
+          <div class="stat-lbl">Este año</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="ing-total">0€</div>
+          <div class="stat-lbl">Total histórico</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="ing-pendiente">0€</div>
+          <div class="stat-lbl">Pendiente cobro</div>
+        </div>
+      </div>
+      <span class="section-label">Por estado</span>
+      <div id="ing-por-estado"></div>
+      <span class="section-label" style="margin-top:16px;display:block;">Eventos completados</span>
+      <div id="ing-completados"></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- BOTTOM NAV ADMIN -->
+  <nav class="bottom-nav" id="admin-bottom-nav">
+    <button class="bnav-item active" onclick="navAdmin('dashboard',this)">
+      <span class="icon">🏠</span>Inicio
+    </button>
+    <button class="bnav-item" onclick="navAdmin('presupuestos',this)">
+      <span class="icon">📋</span>Presupuestos
+    </button>
+    <button class="bnav-item" onclick="navAdmin('eventos',this)">
+      <span class="icon">📅</span>Eventos
+    </button>
+    <button class="bnav-item" onclick="navAdmin('clientes',this)">
+      <span class="icon">👥</span>Clientes
+    </button>
+    <button class="bnav-item" onclick="navAdmin('ingresos',this)">
+      <span class="icon">💰</span>Ingresos
+    </button>
+  </nav>
+
+  <!-- FAB -->
+  <button class="fab" id="fab-btn" onclick="fabAction()">＋</button>
+</div><!-- /s-admin -->
+
+<!-- ══════════════════════════════════════════════════════
+     APP CLIENTE
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="s-cliente">
+  <div class="topbar cliente-topbar">
+    <div class="topbar-logo">BL</div>
+    <div class="topbar-title" id="cliente-title">Mi evento</div>
+    <button class="topbar-action" onclick="logout()">Salir</button>
+  </div>
+
+  <div class="content" id="cliente-content">
+
+    <!-- MI EVENTO -->
+    <div class="page active" id="cp-mievento">
+      <div class="cliente-hero">
+        <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--baby);margin-bottom:8px;">Tu presupuesto</div>
+        <h1 id="c-evento-titulo">—</h1>
+        <p id="c-evento-fecha">—</p>
+      </div>
+
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-title">Estado de tu reserva</div>
+        <div class="estado-timeline" id="c-timeline"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Detalles</div>
+        <div class="card-row"><span class="card-row-label">Pack</span><span class="card-row-val" id="c-pack">—</span></div>
+        <div class="card-row"><span class="card-row-label">Invitados</span><span class="card-row-val" id="c-invitados">—</span></div>
+        <div class="card-row"><span class="card-row-label">Importe</span><span class="card-row-val" id="c-importe">—</span></div>
+      </div>
+
+      <div class="card" id="c-notas-card" style="display:none;">
+        <div class="card-title">Notas</div>
+        <p id="c-notas" style="font-size:14px;color:var(--mid);line-height:1.6;"></p>
+      </div>
+
+      <button class="btn btn-wa" style="margin-top:4px;" onclick="contactarWA()">💬 Contactar por WhatsApp</button>
+      <button class="btn btn-secondary" style="margin-top:8px;" onclick="navCliente('solicitar',null)">📩 Hacer nueva consulta</button>
+    </div>
+
+    <!-- SERVICIOS -->
+    <div class="page" id="cp-servicios">
+      <span class="section-label">Packs disponibles</span>
+      <div class="list-item" onclick="verPack('mini')">
+        <div class="li-icon deep">✨</div>
+        <div class="li-body"><div class="li-title">Pack MINI</div><div class="li-sub">Hasta 30 invitados · 2 horas</div></div>
+        <div class="li-right"><div class="li-val">299€</div><div class="li-arrow">›</div></div>
+      </div>
+      <div class="list-item" onclick="verPack('intima')">
+        <div class="li-icon deep">💫</div>
+        <div class="li-body"><div class="li-title">Pack ÍNTIMA</div><div class="li-sub">Hasta 50 invitados · 3 horas</div></div>
+        <div class="li-right"><div class="li-val">499€</div><div class="li-arrow">›</div></div>
+      </div>
+      <div class="list-item" onclick="verPack('clasica')">
+        <div class="li-icon deep">⭐</div>
+        <div class="li-body"><div class="li-title">Pack CLÁSICA</div><div class="li-sub">Hasta 100 invitados · 4 horas</div></div>
+        <div class="li-right"><div class="li-val">650€</div><div class="li-arrow">›</div></div>
+      </div>
+      <div class="list-item" onclick="verPack('premium')">
+        <div class="li-icon deep">👑</div>
+        <div class="li-body"><div class="li-title">Pack PREMIUM</div><div class="li-sub">Hasta 150 invitados · 5 horas</div></div>
+        <div class="li-right"><div class="li-val">799€</div><div class="li-arrow">›</div></div>
+      </div>
+      <hr class="divider">
+      <span class="section-label">Extras</span>
+      <div class="card">
+        <div class="card-row"><span class="card-row-label">Hora extra + máquina</span><span class="card-row-val">150€</span></div>
+        <div class="card-row"><span class="card-row-label">Diseño exclusivo</span><span class="card-row-val">80€</span></div>
+        <div class="card-row"><span class="card-row-label">Regalo infantil</span><span class="card-row-val">8€/ud</span></div>
+        <div class="card-row"><span class="card-row-label">Post-evento</span><span class="card-row-val">15–30€</span></div>
+        <div class="card-row"><span class="card-row-label">Desplazamiento</span><span class="card-row-val">0,40€/km</span></div>
+      </div>
+      <span class="section-label" style="margin-top:16px;display:block;">Productos personalizables</span>
+      <div class="card">
+        <div class="card-row"><span class="card-row-label">🛍️ Tote bag</span><span class="badge badge-ok">Incluido</span></div>
+        <div class="card-row"><span class="card-row-label">🧢 Gorra</span><span class="badge badge-ok">Incluido</span></div>
+        <div class="card-row"><span class="card-row-label">👜 Neceser</span><span class="badge badge-ok">Incluido</span></div>
+        <div class="card-row"><span class="card-row-label">👕 Camiseta</span><span class="badge badge-pend">Consultar</span></div>
+        <div class="card-row"><span class="card-row-label">🎒 Riñonera</span><span class="badge badge-pend">Consultar</span></div>
+      </div>
+    </div>
+
+    <!-- SOLICITAR -->
+    <div class="page" id="cp-solicitar">
+      <div class="card" style="margin-bottom:16px;">
+        <p style="font-size:14px;color:var(--mid);line-height:1.6;">Cuéntanos tu evento y te respondemos en menos de 24 horas con una propuesta personalizada.</p>
+      </div>
+      <div class="field"><label>Nombre *</label><input type="text" id="cs-nombre" placeholder="Tu nombre"></div>
+      <div class="field"><label>Teléfono *</label><input type="tel" id="cs-tel" placeholder="6XX XXX XXX"></div>
+      <div class="field"><label>Email *</label><input type="email" id="cs-email" placeholder="tu@email.com"></div>
+      <div class="field"><label>Tipo de evento</label>
+        <select id="cs-tipo">
+          <option>Boda</option><option>Comunión</option><option>Cumpleaños</option>
+          <option>Corporativo</option><option>Privado</option>
+        </select>
+      </div>
+      <div class="field"><label>Fecha aproximada</label><input type="date" id="cs-fecha"></div>
+      <div class="field"><label>Número de invitados</label><input type="number" id="cs-invitados" placeholder="50"></div>
+      <div class="field"><label>Cuéntanos más</label><textarea id="cs-msg" placeholder="Productos que te interesan, lugar del evento, dudas..."></textarea></div>
+      <button class="btn btn-primary" onclick="enviarSolicitud()">ENVIAR SOLICITUD →</button>
+      <div style="margin-top:12px;text-align:center;">
+        <button class="btn btn-wa btn-sm" onclick="contactarWA()">💬 WhatsApp directo</button>
+      </div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div class="page" id="cp-contacto">
+      <div class="cliente-hero" style="margin-bottom:20px;">
+        <h1>Hablamos</h1>
+        <p>Estamos aquí para lo que necesites</p>
+      </div>
+      <a href="tel:647444308" style="text-decoration:none;">
+        <div class="list-item">
+          <div class="li-icon deep">📞</div>
+          <div class="li-body"><div class="li-title">Llamar</div><div class="li-sub">647 444 308</div></div>
+          <div class="li-arrow">›</div>
+        </div>
+      </a>
+      <a href="mailto:contacto@benditolab.com" style="text-decoration:none;">
+        <div class="list-item">
+          <div class="li-icon deep">✉️</div>
+          <div class="li-body"><div class="li-title">Email</div><div class="li-sub">contacto@benditolab.com</div></div>
+          <div class="li-arrow">›</div>
+        </div>
+      </a>
+      <div class="list-item" onclick="contactarWA()">
+        <div class="li-icon" style="background:#25D366;color:#fff;">💬</div>
+        <div class="li-body"><div class="li-title">WhatsApp</div><div class="li-sub">647 444 308</div></div>
+        <div class="li-arrow">›</div>
+      </div>
+      <a href="https://instagram.com/bendito_lab" target="_blank" style="text-decoration:none;">
+        <div class="list-item">
+          <div class="li-icon" style="background:#E1306C;color:#fff;">📸</div>
+          <div class="li-body"><div class="li-title">Instagram</div><div class="li-sub">@bendito_lab</div></div>
+          <div class="li-arrow">›</div>
+        </div>
+      </a>
+    </div>
+
+  </div><!-- /cliente-content -->
+
+  <!-- BOTTOM NAV CLIENTE -->
+  <nav class="bottom-nav">
+    <button class="bnav-item active" onclick="navCliente('mievento',this)">
+      <span class="icon">🎉</span>Mi evento
+    </button>
+    <button class="bnav-item" onclick="navCliente('servicios',this)">
+      <span class="icon">✨</span>Servicios
+    </button>
+    <button class="bnav-item" onclick="navCliente('solicitar',this)">
+      <span class="icon">📩</span>Solicitar
+    </button>
+    <button class="bnav-item" onclick="navCliente('contacto',this)">
+      <span class="icon">📞</span>Contacto
+    </button>
+  </nav>
+</div><!-- /s-cliente -->
+
+<!-- MODAL PACK DETALLE -->
+<div class="modal-overlay" id="pack-modal" onclick="closeModal('pack-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="pack-modal-title"></div>
+    <div id="pack-modal-body"></div>
+    <button class="btn btn-primary" style="margin-top:16px;" onclick="navCliente('solicitar',null);closeModal('pack-modal')">SOLICITAR ESTE PACK →</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATOS Y ESTADO
+// ══════════════════════════════════════════════════════════
+var ADMIN_PASS = 'h13701aah03';
+var STORE = 'bl-app-v1';
+var currentMode = null;
+var currentClienteCode = null;
+var editingPresupId = null;
+var editingColabId = null;
+var calDate = new Date();
+var calSelectedDay = null;
+var currentAdminPage = 'dashboard';
+
+function getData() { try { return JSON.parse(localStorage.getItem(STORE)||'{}'); } catch(e){ return {}; } }
+function saveData(d) { localStorage.setItem(STORE, JSON.stringify(d)); }
+
+function getPresupuestos() { return getData().presupuestos || []; }
+function getColaboradores() { return getData().colaboradores || []; }
+
+function savePresupuestos(arr) { var d=getData(); d.presupuestos=arr; saveData(d); }
+function saveColaboradores(arr) { var d=getData(); d.colaboradores=arr; saveData(d); }
+
+// IDs
+function genId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,4); }
+
+// ══════════════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════════════
+function doLogin() {
+  var user = document.getElementById('l-user').value.trim().toLowerCase();
+  var pass = document.getElementById('l-pass').value.trim();
+  var err  = document.getElementById('l-err');
+  err.style.display = 'none';
+
+  if (pass === ADMIN_PASS) {
+    // Admin
+    currentMode = 'admin';
+    showScreen('s-admin');
+    renderDashboard();
+    return;
+  }
+  // Buscar código cliente
+  var presups = getPresupuestos();
+  var found = presups.find(function(p){ return p.codigo && p.codigo.toLowerCase() === pass.toLowerCase(); });
+  if (found) {
+    currentMode = 'cliente';
+    currentClienteCode = found.id;
+    showScreen('s-cliente');
+    renderClienteEvento(found);
+    return;
+  }
+  err.style.display = 'block';
+}
+
+function showClienteLogin() {
+  document.getElementById('l-user').value = 'cliente';
+  document.getElementById('l-pass').placeholder = 'Tu código de acceso';
+  document.getElementById('l-user').closest('.l-field').style.display = 'none';
+}
+
+function logout() {
+  currentMode = null;
+  currentClienteCode = null;
+  showScreen('s-login');
+  document.getElementById('l-pass').value = '';
+  document.getElementById('l-user').value = '';
+}
+
+// ══════════════════════════════════════════════════════════
+// PANTALLAS
+// ══════════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════════
+// NAV ADMIN
+// ══════════════════════════════════════════════════════════
+var adminPageTitles = {
+  dashboard:'Dashboard', presupuestos:'Presupuestos', eventos:'Agenda',
+  clientes:'Clientes', colaboradores:'Colaboradores', ingresos:'Ingresos',
+  'presup-form':'Nuevo presupuesto', 'presup-detail':'Detalle',
+  'cliente-detail':'Cliente', 'colab-form':'Colaborador'
+};
+var fabPages = { presupuestos:true, clientes:false, colaboradores:true, dashboard:false };
+
+function navAdmin(page, el) {
+  // Páginas "secundarias" no tienen nav item
+  showAdminPage(page);
+  currentAdminPage = page;
+  if (el) {
+    document.querySelectorAll('#admin-bottom-nav .bnav-item').forEach(function(b){ b.classList.remove('active'); });
+    el.classList.add('active');
+  }
+  // Renderizar según página
+  if (page==='dashboard') renderDashboard();
+  if (page==='presupuestos') renderPresupuestos();
+  if (page==='eventos') renderCalendario();
+  if (page==='clientes') renderClientes();
+  if (page==='colaboradores') renderColaboradores();
+  if (page==='ingresos') renderIngresos();
+  // FAB
+  var fab = document.getElementById('fab-btn');
+  fab.classList.toggle('hidden', !fabPages[page]);
+}
+
+function showAdminPage(page) {
+  document.querySelectorAll('#admin-content .page').forEach(function(p){ p.classList.remove('active'); });
+  var el = document.getElementById('p-'+page);
+  if (el) el.classList.add('active');
+  document.getElementById('admin-title').textContent = adminPageTitles[page] || page;
+  document.getElementById('admin-bottom-nav').style.display = ['presup-form','presup-detail','cliente-detail','colab-form'].includes(page) ? 'none' : '';
+  document.getElementById('fab-btn').classList.toggle('hidden', !fabPages[page]);
+}
+
+function goBack() {
+  var prev = {'presup-form':'presupuestos','presup-detail':'presupuestos','cliente-detail':'clientes','colab-form':'colaboradores'};
+  var target = prev[currentAdminPage] || 'dashboard';
+  document.getElementById('admin-bottom-nav').style.display = '';
+  navAdmin(target, null);
+  // Re-activar el nav item correcto
+  var navMap = {presupuestos:1, clientes:3, colaboradores:4};
+  var idx = navMap[target];
+  if (idx !== undefined) {
+    var items = document.querySelectorAll('#admin-bottom-nav .bnav-item');
+    items.forEach(function(b){ b.classList.remove('active'); });
+    if(items[idx]) items[idx].classList.add('active');
+  }
+}
+
+function fabAction() {
+  if (currentAdminPage === 'presupuestos') {
+    editingPresupId = null;
+    limpiarFormPresup();
+    document.getElementById('pf-delete-btn').style.display = 'none';
+    currentAdminPage = 'presup-form';
+    showAdminPage('presup-form');
+    document.getElementById('admin-title').textContent = 'Nuevo presupuesto';
+    document.getElementById('admin-bottom-nav').style.display = 'none';
+  }
+  if (currentAdminPage === 'colaboradores') {
+    editingColabId = null;
+    limpiarFormColab();
+    document.getElementById('cf-delete-btn').style.display = 'none';
+    currentAdminPage = 'colab-form';
+    showAdminPage('colab-form');
+    document.getElementById('admin-title').textContent = 'Nuevo colaborador';
+    document.getElementById('admin-bottom-nav').style.display = 'none';
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════════
+function renderDashboard() {
+  var presups = getPresupuestos();
+  var hoy = new Date();
+  var mesActual = hoy.getMonth();
+  var anioActual = hoy.getFullYear();
+
+  var ingresosMes = presups.filter(function(p){
+    if (p.estado !== 'completado') return false;
+    var f = new Date(p.fecha);
+    return f.getMonth() === mesActual && f.getFullYear() === anioActual;
+  }).reduce(function(acc,p){ return acc + (parseFloat(p.importe)||0); }, 0);
+
+  var proximos = presups.filter(function(p){
+    if (!p.fecha) return false;
+    var f = new Date(p.fecha);
+    return f >= hoy && p.estado !== 'rechazado';
+  }).sort(function(a,b){ return new Date(a.fecha)-new Date(b.fecha); }).slice(0,3);
+
+  var pendientes = presups.filter(function(p){ return p.estado === 'pendiente' || p.estado === 'enviado'; }).slice(0,3);
+  var clientes = [...new Set(presups.map(function(p){ return p.cliente; }))];
+
+  document.getElementById('d-ingresos').textContent = ingresosMes.toLocaleString('es-ES')+'€';
+  document.getElementById('d-eventos').textContent = proximos.length;
+  document.getElementById('d-presup').textContent = presups.length;
+  document.getElementById('d-clientes').textContent = clientes.length;
+
+  renderListItems('d-proximos-list', proximos, function(p){
+    return '<div class="list-item" onclick="verPresupuesto(\''+p.id+'\')"><div class="li-icon">📅</div><div class="li-body"><div class="li-title">'+p.cliente+'</div><div class="li-sub">'+formatDate(p.fecha)+'</div></div><div class="li-right"><div class="li-val">'+p.importe+'€</div><span class="badge '+badgeClass(p.estado)+'">'+p.estado+'</span></div></div>';
+  }, 'Sin eventos próximos');
+
+  renderListItems('d-pendientes-list', pendientes, function(p){
+    return '<div class="list-item" onclick="verPresupuesto(\''+p.id+'\')"><div class="li-icon">📋</div><div class="li-body"><div class="li-title">'+p.cliente+'</div><div class="li-sub">'+p.tipo+' · '+p.pack+'€</div></div><div class="li-right"><span class="badge '+badgeClass(p.estado)+'">'+p.estado+'</span><div class="li-arrow">›</div></div></div>';
+  }, 'Sin presupuestos pendientes');
+}
+
+// ══════════════════════════════════════════════════════════
+// PRESUPUESTOS
+// ══════════════════════════════════════════════════════════
+function renderPresupuestos() {
+  var presups = getPresupuestos();
+  var container = document.getElementById('presup-list');
+  if (!presups.length) {
+    container.innerHTML = '<div class="empty-state"><div class="es-icon">📋</div><p>Aún no hay presupuestos.<br>Pulsa ＋ para crear uno.</p></div>';
+    return;
+  }
+  container.innerHTML = presups.sort(function(a,b){ return new Date(b.createdAt)-new Date(a.createdAt); }).map(function(p){
+    return '<div class="list-item" onclick="verPresupuesto(\''+p.id+'\')"><div class="li-icon deep">📋</div><div class="li-body"><div class="li-title">'+p.cliente+'</div><div class="li-sub">'+p.tipo+' · '+formatDate(p.fecha)+'</div></div><div class="li-right"><div class="li-val">'+(p.importe||'—')+'€</div><span class="badge '+badgeClass(p.estado)+'">'+p.estado+'</span></div></div>';
+  }).join('');
+}
+
+function verPresupuesto(id) {
+  var p = getPresupuestos().find(function(x){ return x.id===id; });
+  if (!p) return;
+  var estados = ['pendiente','enviado','aceptado','completado'];
+  var prog = (estados.indexOf(p.estado)+1) / estados.length * 100;
+  document.getElementById('pd-content').innerHTML =
+    '<div class="card" style="margin-bottom:12px;">'+
+    '<div class="card-title">'+p.cliente+'</div>'+
+    '<div class="card-row"><span class="card-row-label">Estado</span><span class="badge '+badgeClass(p.estado)+'">'+p.estado+'</span></div>'+
+    '<div class="progress-bar"><div class="progress-fill" style="width:'+prog+'%"></div></div>'+
+    '<div class="card-row"><span class="card-row-label">Tipo</span><span class="card-row-val">'+p.tipo+'</span></div>'+
+    '<div class="card-row"><span class="card-row-label">Pack</span><span class="card-row-val">'+p.pack+'€</span></div>'+
+    '<div class="card-row"><span class="card-row-label">Importe total</span><span class="card-row-val">'+(p.importe||'—')+'€</span></div>'+
+    '<div class="card-row"><span class="card-row-label">Fecha</span><span class="card-row-val">'+formatDate(p.fecha)+'</span></div>'+
+    '<div class="card-row"><span class="card-row-label">Invitados</span><span class="card-row-val">'+(p.invitados||'—')+'</span></div>'+
+    (p.email?'<div class="card-row"><span class="card-row-label">Email</span><span class="card-row-val">'+p.email+'</span></div>':'')+
+    (p.tel?'<div class="card-row"><span class="card-row-label">Teléfono</span><span class="card-row-val">'+p.tel+'</span></div>':'')+
+    (p.codigo?'<div class="card-row"><span class="card-row-label">Código cliente</span><span class="card-row-val" style="font-family:monospace;font-size:13px;">'+p.codigo+'</span></div>':'')+
+    (p.notas?'<div class="card-row" style="flex-direction:column;align-items:flex-start;gap:4px;"><span class="card-row-label">Notas</span><span style="font-size:13px;color:var(--mid);line-height:1.5;">'+p.notas+'</span></div>':'')+
+    '</div>'+
+    '<button class="btn btn-secondary" onclick="editarPresupuesto(\''+id+'\')" style="margin-bottom:8px;">✏️ EDITAR</button>'+
+    (p.tel?'<button class="btn btn-wa" onclick="window.open(\'https://wa.me/34'+p.tel.replace(/\s/g,'')+'\')">💬 WHATSAPP AL CLIENTE</button>':'');
+  currentAdminPage = 'presup-detail';
+  showAdminPage('presup-detail');
+  document.getElementById('admin-bottom-nav').style.display = 'none';
+}
+
+function editarPresupuesto(id) {
+  var p = getPresupuestos().find(function(x){ return x.id===id; });
+  if (!p) return;
+  editingPresupId = id;
+  document.getElementById('pf-cliente').value = p.cliente||'';
+  document.getElementById('pf-email').value = p.email||'';
+  document.getElementById('pf-tel').value = p.tel||'';
+  document.getElementById('pf-tipo').value = p.tipo||'Boda';
+  document.getElementById('pf-pack').value = p.pack||'299';
+  document.getElementById('pf-fecha').value = p.fecha||'';
+  document.getElementById('pf-invitados').value = p.invitados||'';
+  document.getElementById('pf-importe').value = p.importe||'';
+  document.getElementById('pf-estado').value = p.estado||'pendiente';
+  document.getElementById('pf-notas').value = p.notas||'';
+  document.getElementById('pf-codigo').value = p.codigo||'';
+  document.getElementById('pf-delete-btn').style.display = 'block';
+  currentAdminPage = 'presup-form';
+  showAdminPage('presup-form');
+  document.getElementById('admin-title').textContent = 'Editar presupuesto';
+  document.getElementById('admin-bottom-nav').style.display = 'none';
+}
+
+function savePresupuesto() {
+  var arr = getPresupuestos();
+  var data = {
+    id: editingPresupId || genId(),
+    cliente: document.getElementById('pf-cliente').value.trim(),
+    email: document.getElementById('pf-email').value.trim(),
+    tel: document.getElementById('pf-tel').value.trim(),
+    tipo: document.getElementById('pf-tipo').value,
+    pack: document.getElementById('pf-pack').value,
+    fecha: document.getElementById('pf-fecha').value,
+    invitados: document.getElementById('pf-invitados').value,
+    importe: document.getElementById('pf-importe').value,
+    estado: document.getElementById('pf-estado').value,
+    notas: document.getElementById('pf-notas').value.trim(),
+    codigo: document.getElementById('pf-codigo').value.trim(),
+    createdAt: editingPresupId ? (arr.find(function(x){return x.id===editingPresupId;})||{}).createdAt : Date.now()
+  };
+  if (!data.cliente) { showToast('El nombre del cliente es obligatorio'); return; }
+  if (editingPresupId) {
+    var idx = arr.findIndex(function(x){ return x.id===editingPresupId; });
+    arr[idx] = data;
+  } else {
+    arr.push(data);
+  }
+  savePresupuestos(arr);
+  showToast('Presupuesto guardado ✓');
+  editingPresupId = null;
+  navAdmin('presupuestos', document.querySelectorAll('#admin-bottom-nav .bnav-item')[1]);
+}
+
+function deletePresupuesto() {
+  if (!editingPresupId) return;
+  if (!confirm('¿Eliminar este presupuesto?')) return;
+  var arr = getPresupuestos().filter(function(x){ return x.id!==editingPresupId; });
+  savePresupuestos(arr);
+  showToast('Presupuesto eliminado');
+  editingPresupId = null;
+  navAdmin('presupuestos', document.querySelectorAll('#admin-bottom-nav .bnav-item')[1]);
+}
+
+function limpiarFormPresup() {
+  ['pf-cliente','pf-email','pf-tel','pf-fecha','pf-invitados','pf-importe','pf-notas','pf-codigo'].forEach(function(id){
+    document.getElementById(id).value='';
+  });
+  document.getElementById('pf-tipo').value='Boda';
+  document.getElementById('pf-pack').value='299';
+  document.getElementById('pf-estado').value='pendiente';
+}
+
+// ══════════════════════════════════════════════════════════
+// CALENDARIO
+// ══════════════════════════════════════════════════════════
+var DIAS = ['L','M','X','J','V','S','D'];
+var MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function renderCalendario() {
+  var y = calDate.getFullYear(), m = calDate.getMonth();
+  document.getElementById('cal-month-label').textContent = MESES[m]+' '+y;
+  var presups = getPresupuestos();
+  var eventDays = presups.filter(function(p){ return p.fecha; }).map(function(p){
+    var d = new Date(p.fecha); return d.getFullYear()===y && d.getMonth()===m ? d.getDate() : null;
+  }).filter(Boolean);
+
+  var firstDay = new Date(y, m, 1).getDay();
+  firstDay = firstDay === 0 ? 6 : firstDay - 1;
+  var daysInMonth = new Date(y, m+1, 0).getDate();
+  var prevDays = new Date(y, m, 0).getDate();
+  var hoy = new Date();
+
+  var html = DIAS.map(function(d){ return '<div class="cal-day-name">'+d+'</div>'; }).join('');
+  for (var i = firstDay-1; i >= 0; i--) {
+    html += '<div class="cal-day other">'+(prevDays-i)+'</div>';
+  }
+  for (var d2 = 1; d2 <= daysInMonth; d2++) {
+    var isToday = d2===hoy.getDate() && m===hoy.getMonth() && y===hoy.getFullYear();
+    var hasEv = eventDays.includes(d2);
+    var dayStr = d2;
+    html += '<div class="cal-day'+(isToday?' today':'')+(hasEv?' has-event':'')+'" onclick="selectDay('+d2+')">'+(calSelectedDay===d2?'<strong>'+dayStr+'</strong>':dayStr)+'</div>';
+  }
+  document.getElementById('cal-grid').innerHTML = html;
+  renderEventosDelDia();
+}
+
+function calPrev() { calDate.setMonth(calDate.getMonth()-1); calSelectedDay=null; renderCalendario(); }
+function calNext() { calDate.setMonth(calDate.getMonth()+1); calSelectedDay=null; renderCalendario(); }
+function selectDay(d) { calSelectedDay = calSelectedDay===d ? null : d; renderCalendario(); }
+
+function renderEventosDelDia() {
+  var presups = getPresupuestos();
+  var y = calDate.getFullYear(), m = calDate.getMonth();
+  var eventos;
+  if (calSelectedDay) {
+    var dateStr = y+'-'+(m+1<10?'0':'')+(m+1)+'-'+(calSelectedDay<10?'0':'')+calSelectedDay;
+    eventos = presups.filter(function(p){ return p.fecha && p.fecha.startsWith(dateStr.substr(0,8)); });
+    document.getElementById('cal-selected-label').textContent = calSelectedDay+' de '+MESES[m];
+  } else {
+    eventos = presups.filter(function(p){
+      if (!p.fecha) return false;
+      var d = new Date(p.fecha);
+      return d.getFullYear()===y && d.getMonth()===m;
+    });
+    document.getElementById('cal-selected-label').textContent = 'Todos en '+MESES[m];
+  }
+  renderListItems('cal-events-list', eventos, function(p){
+    return '<div class="list-item" onclick="verPresupuesto(\''+p.id+'\')"><div class="li-icon deep">📅</div><div class="li-body"><div class="li-title">'+p.cliente+'</div><div class="li-sub">'+formatDate(p.fecha)+' · '+p.tipo+'</div></div><div class="li-right"><div class="li-val">'+(p.importe||'—')+'€</div></div></div>';
+  }, 'Sin eventos este mes');
+}
+
+// ══════════════════════════════════════════════════════════
+// CLIENTES
+// ══════════════════════════════════════════════════════════
+function renderClientes() {
+  var presups = getPresupuestos();
+  var mapa = {};
+  presups.forEach(function(p){
+    if (!p.cliente) return;
+    if (!mapa[p.cliente]) mapa[p.cliente] = [];
+    mapa[p.cliente].push(p);
+  });
+  var clientes = Object.keys(mapa).sort();
+  var container = document.getElementById('clientes-list');
+  if (!clientes.length) {
+    container.innerHTML = '<div class="empty-state"><div class="es-icon">👥</div><p>Aún no hay clientes.</p></div>';
+    return;
+  }
+  container.innerHTML = clientes.map(function(nombre){
+    var ps = mapa[nombre];
+    var ultimo = ps[ps.length-1];
+    var total = ps.reduce(function(a,p){ return a+(parseFloat(p.importe)||0);},0);
+    return '<div class="list-item" onclick="verCliente(\''+encodeURIComponent(nombre)+'\')"><div class="li-icon deep">👤</div><div class="li-body"><div class="li-title">'+nombre+'</div><div class="li-sub">'+ps.length+' evento'+(ps.length>1?'s':'')+' · último: '+formatDate(ultimo.fecha)+'</div></div><div class="li-right"><div class="li-val">'+total+'€</div><div class="li-arrow">›</div></div></div>';
+  }).join('');
+}
+
+function verCliente(nombre) {
+  nombre = decodeURIComponent(nombre);
+  var ps = getPresupuestos().filter(function(p){ return p.cliente===nombre; });
+  var total = ps.reduce(function(a,p){ return a+(parseFloat(p.importe)||0);},0);
+  var ul = ps[0]||{};
+  document.getElementById('cld-content').innerHTML =
+    '<div class="card" style="margin-bottom:12px;">'+
+    '<div class="card-title">'+nombre+'</div>'+
+    (ul.email?'<div class="card-row"><span class="card-row-label">Email</span><span class="card-row-val">'+ul.email+'</span></div>':'')+
+    (ul.tel?'<div class="card-row"><span class="card-row-label">Teléfono</span><span class="card-row-val">'+ul.tel+'</span></div>':'')+
+    '<div class="card-row"><span class="card-row-label">Eventos totales</span><span class="card-row-val">'+ps.length+'</span></div>'+
+    '<div class="card-row"><span class="card-row-label">Facturación total</span><span class="card-row-val">'+total+'€</span></div>'+
+    '</div>'+
+    (ul.tel?'<button class="btn btn-wa" style="margin-bottom:8px;" onclick="window.open(\'https://wa.me/34'+ul.tel.replace(/\s/g,'')+'\')">💬 WHATSAPP</button>':'')+
+    '<span class="section-label" style="margin-top:8px;display:block;">Eventos</span>'+
+    ps.map(function(p){
+      return '<div class="list-item" onclick="verPresupuesto(\''+p.id+'\')"><div class="li-icon">📋</div><div class="li-body"><div class="li-title">'+p.tipo+'</div><div class="li-sub">'+formatDate(p.fecha)+'</div></div><div class="li-right"><div class="li-val">'+(p.importe||'—')+'€</div><span class="badge '+badgeClass(p.estado)+'">'+p.estado+'</span></div></div>';
+    }).join('');
+  currentAdminPage = 'cliente-detail';
+  showAdminPage('cliente-detail');
+  document.getElementById('admin-bottom-nav').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════════════════
+// COLABORADORES
+// ══════════════════════════════════════════════════════════
+function renderColaboradores() {
+  var cols = getColaboradores();
+  var container = document.getElementById('colab-list');
+  if (!cols.length) {
+    container.innerHTML = '<div class="empty-state"><div class="es-icon">🤝</div><p>Sin colaboradores aún.<br>Pulsa ＋ para añadir.</p></div>';
+    return;
+  }
+  container.innerHTML = cols.map(function(c){
+    return '<div class="list-item" onclick="editarColab(\''+c.id+'\')"><div class="li-icon deep">🤝</div><div class="li-body"><div class="li-title">'+c.nombre+'</div><div class="li-sub">'+c.tipo+' · '+c.espacio+'</div></div><div class="li-right"><div class="li-val">'+c.comision+'%</div><div class="li-arrow">›</div></div></div>';
+  }).join('');
+}
+
+function editarColab(id) {
+  var c = getColaboradores().find(function(x){ return x.id===id; });
+  if (!c) return;
+  editingColabId = id;
+  document.getElementById('cf-nombre').value = c.nombre||'';
+  document.getElementById('cf-espacio').value = c.espacio||'';
+  document.getElementById('cf-email').value = c.email||'';
+  document.getElementById('cf-tel').value = c.tel||'';
+  document.getElementById('cf-tipo').value = c.tipo||'Finca';
+  document.getElementById('cf-comision').value = c.comision||'';
+  document.getElementById('cf-zona').value = c.zona||'';
+  document.getElementById('cf-notas').value = c.notas||'';
+  document.getElementById('cf-delete-btn').style.display = 'block';
+  currentAdminPage = 'colab-form';
+  showAdminPage('colab-form');
+  document.getElementById('admin-title').textContent = 'Editar colaborador';
+  document.getElementById('admin-bottom-nav').style.display = 'none';
+}
+
+function saveColab() {
+  var arr = getColaboradores();
+  var data = {
+    id: editingColabId || genId(),
+    nombre: document.getElementById('cf-nombre').value.trim(),
+    espacio: document.getElementById('cf-espacio').value.trim(),
+    email: document.getElementById('cf-email').value.trim(),
+    tel: document.getElementById('cf-tel').value.trim(),
+    tipo: document.getElementById('cf-tipo').value,
+    comision: document.getElementById('cf-comision').value,
+    zona: document.getElementById('cf-zona').value.trim(),
+    notas: document.getElementById('cf-notas').value.trim(),
+  };
+  if (!data.nombre) { showToast('El nombre es obligatorio'); return; }
+  if (editingColabId) {
+    arr[arr.findIndex(function(x){ return x.id===editingColabId; })] = data;
+  } else { arr.push(data); }
+  saveColaboradores(arr);
+  showToast('Colaborador guardado ✓');
+  editingColabId = null;
+  navAdmin('colaboradores', null);
+}
+
+function deleteColab() {
+  if (!editingColabId || !confirm('¿Eliminar colaborador?')) return;
+  saveColaboradores(getColaboradores().filter(function(x){ return x.id!==editingColabId; }));
+  showToast('Colaborador eliminado');
+  editingColabId = null;
+  navAdmin('colaboradores', null);
+}
+
+function limpiarFormColab() {
+  ['cf-nombre','cf-espacio','cf-email','cf-tel','cf-comision','cf-zona','cf-notas'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('cf-tipo').value='Finca';
+}
+
+// ══════════════════════════════════════════════════════════
+// INGRESOS
+// ══════════════════════════════════════════════════════════
+function renderIngresos() {
+  var presups = getPresupuestos();
+  var hoy = new Date();
+  var mes = hoy.getMonth(), anio = hoy.getFullYear();
+
+  var completados = presups.filter(function(p){ return p.estado==='completado' && p.importe; });
+  var pendienteCobro = presups.filter(function(p){ return (p.estado==='aceptado'||p.estado==='enviado') && p.importe; });
+
+  var ingresosMes = completados.filter(function(p){ var d=new Date(p.fecha); return d.getMonth()===mes&&d.getFullYear()===anio; }).reduce(function(a,p){ return a+(parseFloat(p.importe)||0);},0);
+  var ingresosAnio = completados.filter(function(p){ var d=new Date(p.fecha); return d.getFullYear()===anio; }).reduce(function(a,p){ return a+(parseFloat(p.importe)||0);},0);
+  var ingresosTotal = completados.reduce(function(a,p){ return a+(parseFloat(p.importe)||0);},0);
+  var pendienteTotal = pendienteCobro.reduce(function(a,p){ return a+(parseFloat(p.importe)||0);},0);
+
+  document.getElementById('ing-mes').textContent = ingresosMes.toLocaleString('es-ES')+'€';
+  document.getElementById('ing-anio').textContent = ingresosAnio.toLocaleString('es-ES')+'€';
+  document.getElementById('ing-total').textContent = ingresosTotal.toLocaleString('es-ES')+'€';
+  document.getElementById('ing-pendiente').textContent = pendienteTotal.toLocaleString('es-ES')+'€';
+
+  var porEstado = {};
+  presups.forEach(function(p){ porEstado[p.estado] = (porEstado[p.estado]||0) + (parseFloat(p.importe)||0); });
+  document.getElementById('ing-por-estado').innerHTML = Object.keys(porEstado).map(function(e){
+    return '<div class="card-row"><span class="card-row-label" style="display:flex;align-items:center;gap:8px;"><span class="badge '+badgeClass(e)+'">'+e+'</span></span><span class="card-row-val">'+porEstado[e].toLocaleString('es-ES')+'€</span></div>';
+  }).join('');
+
+  renderListItems('ing-completados', completados.sort(function(a,b){ return new Date(b.fecha)-new Date(a.fecha); }), function(p){
+    return '<div class="list-item" onclick="verPresupuesto(\''+p.id+'\')"><div class="li-icon">✅</div><div class="li-body"><div class="li-title">'+p.cliente+'</div><div class="li-sub">'+formatDate(p.fecha)+'</div></div><div class="li-right"><div class="li-val">'+(p.importe)+'€</div></div></div>';
+  }, 'Sin eventos completados');
+}
+
+// ══════════════════════════════════════════════════════════
+// MODO CLIENTE
+// ══════════════════════════════════════════════════════════
+function renderClienteEvento(p) {
+  document.getElementById('c-evento-titulo').textContent = p.cliente+' · '+p.tipo;
+  document.getElementById('c-evento-fecha').textContent = p.fecha ? formatDate(p.fecha) : '—';
+  document.getElementById('c-pack').textContent = p.pack ? p.pack+'€' : '—';
+  document.getElementById('c-invitados').textContent = p.invitados || '—';
+  document.getElementById('c-importe').textContent = p.importe ? p.importe+'€' : '—';
+  document.getElementById('cliente-title').textContent = 'Hola, '+p.cliente.split(' ')[0];
+
+  if (p.notas) {
+    document.getElementById('c-notas').textContent = p.notas;
+    document.getElementById('c-notas-card').style.display = 'block';
+  }
+
+  var estados = [
+    {key:'pendiente', label:'Presupuesto enviado', sub:'Esperando confirmación'},
+    {key:'enviado',   label:'Propuesta enviada', sub:'Revisa tu email'},
+    {key:'aceptado',  label:'Reserva confirmada', sub:'¡Ya está en nuestra agenda!'},
+    {key:'completado',label:'Evento realizado', sub:'¡Gracias por confiar en nosotros!'},
+  ];
+  var estadoActual = estados.findIndex(function(e){ return e.key===p.estado; });
+  var timeline = estados.map(function(e, i){
+    var done = i < estadoActual;
+    var current = i === estadoActual;
+    var hasLine = i < estados.length-1;
+    return '<div class="et-step"><div class="et-dot'+(done?' done':'')+(current?' current':'')+'">'+
+      (done?'✓':'')+(hasLine?'<div class="et-line"></div>':'')+
+    '</div><div class="et-body"><div class="et-title">'+e.label+'</div><div class="et-sub">'+e.sub+'</div></div></div>';
+  }).join('');
+  document.getElementById('c-timeline').innerHTML = timeline;
+}
+
+function navCliente(page, el) {
+  document.querySelectorAll('#cliente-content .page').forEach(function(p){ p.classList.remove('active'); });
+  var pg = document.getElementById('cp-'+page);
+  if (pg) pg.classList.add('active');
+  if (el) {
+    document.querySelectorAll('#s-cliente .bnav-item').forEach(function(b){ b.classList.remove('active'); });
+    el.classList.add('active');
+  }
+}
+
+function contactarWA() {
+  window.open('https://wa.me/34647444308?text=Hola%2C%20soy%20cliente%20de%20Bendito%20Lab%20y%20tengo%20una%20consulta.');
+}
+
+async function enviarSolicitud() {
+  var nombre = document.getElementById('cs-nombre').value.trim();
+  var tel    = document.getElementById('cs-tel').value.trim();
+  var email  = document.getElementById('cs-email').value.trim();
+  if (!nombre||!tel||!email) { showToast('Rellena nombre, teléfono y email'); return; }
+  var btn = document.querySelector('#cp-solicitar .btn-primary');
+  btn.textContent='Enviando...'; btn.disabled=true;
+  try {
+    await fetch('https://hook.eu1.make.com/0qbbiac8rmdsiftzg2wvhgzgcxf519ba', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        tipo_formulario:'solicitud_app',
+        nombre, telefono:tel, email,
+        tipo_evento: document.getElementById('cs-tipo').value,
+        fecha: document.getElementById('cs-fecha').value,
+        invitados: document.getElementById('cs-invitados').value,
+        mensaje: document.getElementById('cs-msg').value
+      })
+    });
+    showToast('¡Solicitud enviada! Te respondemos en 24h ✓');
+    btn.textContent='ENVIAR SOLICITUD →'; btn.disabled=false;
+    ['cs-nombre','cs-tel','cs-email','cs-fecha','cs-invitados','cs-msg'].forEach(function(id){ document.getElementById(id).value=''; });
+  } catch(e) {
+    btn.textContent='ENVIAR SOLICITUD →'; btn.disabled=false;
+    contactarWA();
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// PACKS MODAL
+// ══════════════════════════════════════════════════════════
+var PACKS = {
+  mini:    { titulo:'Pack MINI — 299€', invitados:'Hasta 30', horas:'2 horas', items:['Stand de personalización en directo','1 máquina de personalización','Tote bag, gorra o neceser a elegir','Diseño principal del evento','Selección cerrada de diseños','Asesoramiento a invitados','Montaje y desmontaje incluidos'] },
+  intima:  { titulo:'Pack ÍNTIMA — 499€', invitados:'Hasta 50', horas:'3 horas', items:['Todo lo del pack MINI','Mayor capacidad de producción','Tiempo ampliado de servicio'] },
+  clasica: { titulo:'Pack CLÁSICA — 650€', invitados:'Hasta 100', horas:'4 horas', items:['Todo lo del pack ÍNTIMA','Ideal para bodas medianas','Eventos corporativos','Producción fluida para grupos grandes'] },
+  premium: { titulo:'Pack PREMIUM — 799€', invitados:'Hasta 150', horas:'5 horas', items:['Todo lo del pack CLÁSICA','Máxima capacidad','Equipo reforzado','Servicio completo de alta gama'] },
+};
+
+function verPack(id) {
+  var p = PACKS[id];
+  document.getElementById('pack-modal-title').textContent = p.titulo;
+  document.getElementById('pack-modal-body').innerHTML =
+    '<div class="card-row"><span class="card-row-label">Invitados</span><span class="card-row-val">'+p.invitados+'</span></div>'+
+    '<div class="card-row"><span class="card-row-label">Duración</span><span class="card-row-val">'+p.horas+'</span></div>'+
+    '<hr class="divider">'+
+    p.items.map(function(i){ return '<div style="display:flex;gap:10px;padding:6px 0;font-size:14px;"><span style="color:var(--green);">✓</span><span>'+i+'</span></div>'; }).join('');
+  openModal('pack-modal');
+}
+
+// ══════════════════════════════════════════════════════════
+// UTILIDADES
+// ══════════════════════════════════════════════════════════
+function renderListItems(containerId, items, renderFn, emptyMsg) {
+  var c = document.getElementById(containerId);
+  if (!c) return;
+  if (!items.length) { c.innerHTML = '<div style="font-size:13px;color:var(--mid);padding:12px 0;">'+emptyMsg+'</div>'; return; }
+  c.innerHTML = items.map(renderFn).join('');
+}
+
+function badgeClass(estado) {
+  var m = {completado:'badge-ok',aceptado:'badge-ok',pendiente:'badge-pend',enviado:'badge-warn',rechazado:'badge-red'};
+  return m[estado] || 'badge-pend';
+}
+
+function formatDate(str) {
+  if (!str) return '—';
+  var parts = str.split('-');
+  if (parts.length < 3) return str;
+  return parts[2]+'/'+parts[1]+'/'+parts[0];
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+var toastTimer;
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+
+// DATOS DE DEMO
+function initDemoData() {
+  if (getData().presupuestos) return;
+  var demos = [
+    {id:genId(),cliente:'Ana García',email:'ana@mail.com',tel:'611222333',tipo:'Boda',pack:'650',fecha:'2025-09-15',invitados:'80',importe:'750',estado:'aceptado',notas:'Quiere neceseres personalizados con los nombres de las invitadas.',codigo:'BODA-ANA-25',createdAt:Date.now()-86400000*10},
+    {id:genId(),cliente:'Carlos López',email:'carlos@mail.com',tel:'622333444',tipo:'Comunión',pack:'299',fecha:'2025-06-28',invitados:'25',importe:'299',estado:'completado',notas:'',codigo:'COMUN-CARLOS',createdAt:Date.now()-86400000*30},
+    {id:genId(),cliente:'Empresa Tech SA',email:'eventos@tech.com',tel:'633444555',tipo:'Corporativo',pack:'799',fecha:'2025-10-05',invitados:'120',importe:'950',estado:'pendiente',notas:'Necesitan gorras con el logo de la empresa.',codigo:'TECH-OCT25',createdAt:Date.now()-86400000*2},
+  ];
+  var d = getData();
+  d.presupuestos = demos;
+  d.colaboradores = [
+    {id:genId(),nombre:'María Sánchez',espacio:'Finca El Roble',email:'maria@finca.com',tel:'644555666',tipo:'Finca',comision:'10',zona:'Ciudad Real',notas:''},
+    {id:genId(),nombre:'Pedro Ruiz',espacio:'Wedding Love',email:'pedro@wedding.com',tel:'655666777',tipo:'Wedding Planner',comision:'12',zona:'Toledo, Ciudad Real',notas:''},
+  ];
+  saveData(d);
+}
+
+// INIT
+initDemoData();
+</script>
+</body>
+</html>
