@@ -776,23 +776,115 @@ function renderImages(grpId,imgs){
   var c=document.getElementById('grp-'+grpId);
   if(!c)return;
   c.innerHTML='';
-  imgs.forEach(function(img){
+  imgs.forEach(function(img,i){
     var url='https://dossier-dilo-bonito.vercel.app/'+img.path;
     var uid=img.key.replace(/[^a-z0-9]/gi,'-');
     var div=document.createElement('div');
     div.className='img-card';
     div.innerHTML=
-      '<div class="img-preview" id="prev-'+uid+'"><img src="'+url+'?t='+Date.now()+'" alt="'+img.name+'" onerror="this.parentElement.innerHTML=\'Sin imagen\'"></div>'+
+      '<div class="img-preview" id="prev-'+uid+'" style="cursor:zoom-in;" onclick="verImgGrande(\''+url+'\')">'+
+        '<img src="'+url+'?t='+Date.now()+'" alt="'+img.name+'" onerror="this.parentElement.innerHTML=\'Sin imagen\'">'+
+      '</div>'+
       '<div class="img-info">'+
         '<div class="img-name">'+img.name+'</div>'+
         '<div class="img-key">'+img.path+'</div>'+
-        '<label class="img-btn" for="file-'+uid+'">📤 Subir imagen</label>'+
-        '<input type="file" id="file-'+uid+'" accept="image/*" onchange="uploadImg(this,\''+img.path+'\',\''+uid+'\')">'+
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">'+
+          '<label class="img-btn" for="file-'+uid+'">📤 Cambiar</label>'+
+          '<input type="file" id="file-'+uid+'" accept="image/*" onchange="uploadImg(this,\''+img.path+'\',\''+uid+'\')">'+
+          '<button onclick="eliminarImg(\''+grpId+'\','+i+',\''+img.path+'\',\''+uid+'\')" style="background:#FFEBEE;color:#C0392B;border:1px solid #FFCDD2;padding:6px 12px;font-size:11px;cursor:pointer;font-family:Lato,sans-serif;font-weight:700;">🗑 Quitar</button>'+
+        '</div>'+
         '<div class="prog-wrap" id="prog-'+uid+'"><div class="prog-bar" id="pb-'+uid+'"></div></div>'+
         '<div class="img-status" id="st-'+uid+'"></div>'+
       '</div>';
     c.appendChild(div);
   });
+  // Añadir nueva imagen
+  var addDiv=document.createElement('div');
+  addDiv.style.cssText='border:2px dashed #D8D4C8;padding:20px;text-align:center;margin-top:8px;background:#FAFAF8;';
+  addDiv.innerHTML=
+    '<p style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#888;margin-bottom:10px;">Añadir nueva foto</p>'+
+    '<label for="file-add-'+grpId+'" style="background:#1E3A5F;color:#F2C94C;font-family:League Spartan,sans-serif;font-weight:900;font-size:11px;letter-spacing:1px;padding:8px 18px;cursor:pointer;display:inline-block;">+ AÑADIR FOTO</label>'+
+    '<input type="file" id="file-add-'+grpId+'" accept="image/*" style="display:none" onchange="anadirImg(this,\''+grpId+'\')">';
+  c.appendChild(addDiv);
+}
+
+function verImgGrande(url){
+  var o=document.getElementById('img-overlay');
+  if(!o){
+    o=document.createElement('div');
+    o.id='img-overlay';
+    o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
+    o.onclick=function(){this.style.display='none';};
+    var img=document.createElement('img');
+    img.id='img-overlay-img';
+    img.style.cssText='max-width:95vw;max-height:95vh;object-fit:contain;';
+    o.appendChild(img);
+    document.body.appendChild(o);
+  }
+  document.getElementById('img-overlay-img').src=url;
+  o.style.display='flex';
+}
+
+async function eliminarImg(grpId,idx,filePath,uid){
+  if(!confirm('¿Eliminar esta imagen de la web?\n\nSe borrará del servidor permanentemente.'))return;
+  var token=localStorage.getItem('bl-gh-token');
+  if(!token){alert('Añade el token de GitHub en Ajustes.');return;}
+  var ghUser=document.getElementById('gh-user').value||'contactobenditolab-ship-it';
+  var ghRepo=document.getElementById('gh-repo').value||'dossier-dilo-bonito';
+  var st=document.getElementById('st-'+uid);
+  if(st){st.style.display='block';st.style.color='#888';st.textContent='Eliminando...';}
+  try{
+    var r=await fetch('https://api.github.com/repos/'+ghUser+'/'+ghRepo+'/contents/'+filePath,
+      {headers:{'Authorization':'token '+token,'User-Agent':'BenditoAdmin'}});
+    if(!r.ok)throw new Error('Archivo no encontrado en el servidor');
+    var fd=await r.json();
+    var del=await fetch('https://api.github.com/repos/'+ghUser+'/'+ghRepo+'/contents/'+filePath,{
+      method:'DELETE',
+      headers:{'Authorization':'token '+token,'Content-Type':'application/json','User-Agent':'BenditoAdmin'},
+      body:JSON.stringify({message:'Admin: eliminar '+filePath,sha:fd.sha})
+    });
+    if(!del.ok)throw new Error('Error al eliminar en GitHub');
+    IMG_GROUPS[grpId].splice(idx,1);
+    renderImages(grpId,IMG_GROUPS[grpId]);
+    showToast('Imagen eliminada ✓');
+  }catch(err){
+    if(st){st.style.color='#C0392B';st.textContent='Error: '+err.message;}
+    showToast('Error: '+err.message);
+  }
+}
+
+async function anadirImg(input,grpId){
+  var file=input.files[0];
+  if(!file)return;
+  var token=localStorage.getItem('bl-gh-token');
+  if(!token){alert('Añade el token de GitHub en Ajustes.');return;}
+  var ghUser=document.getElementById('gh-user').value||'contactobenditolab-ship-it';
+  var ghRepo=document.getElementById('gh-repo').value||'dossier-dilo-bonito';
+  var ext=file.name.split('.').pop().toLowerCase()||'jpg';
+  var num=IMG_GROUPS[grpId]?IMG_GROUPS[grpId].length+1:1;
+  var newKey=grpId.replace(/_/g,'-')+'-extra-'+num+'-'+Date.now()+'.'+ext;
+  var folder=(grpId==='logos')?'':'images/';
+  var newPath=folder+newKey;
+  var newName=grpId.replace(/_/g,' ')+' — Foto '+num;
+  showToast('Subiendo '+file.name+'...');
+  var reader=new FileReader();
+  reader.onload=async function(e){
+    var b64=e.target.result.split(',')[1];
+    try{
+      var put=await fetch('https://api.github.com/repos/'+ghUser+'/'+ghRepo+'/contents/'+newPath,{
+        method:'PUT',
+        headers:{'Authorization':'token '+token,'Content-Type':'application/json','User-Agent':'BenditoAdmin'},
+        body:JSON.stringify({message:'Admin: nueva imagen '+newPath,content:b64})
+      });
+      if(!put.ok)throw new Error((await put.json()).message||put.status);
+      if(!IMG_GROUPS[grpId])IMG_GROUPS[grpId]=[];
+      IMG_GROUPS[grpId].push({key:newKey,path:newPath,name:newName});
+      renderImages(grpId,IMG_GROUPS[grpId]);
+      showToast('✓ Imagen añadida. Visible en ~30s');
+    }catch(err){showToast('Error: '+err.message);}
+  };
+  reader.readAsDataURL(file);
+  input.value='';
 }
 
 async function uploadImg(input,filePath,uid){
