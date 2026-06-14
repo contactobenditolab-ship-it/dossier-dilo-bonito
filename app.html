@@ -456,6 +456,18 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
         <p id="c-notas" style="font-size:14px;color:var(--mid);line-height:1.6;"></p>
       </div>
 
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-title">Archivos</div>
+        <p style="font-size:13px;color:var(--mid);margin-bottom:12px;line-height:1.5;">Sube aquí tu logo, fotos de inspiración o cualquier referencia para tu evento.</p>
+        <div class="file-list" id="c-files-list"></div>
+        <div class="file-zone" id="c-file-zone" onclick="document.getElementById('c-file-input').click()">
+          <div class="file-zone-icon">📎</div>
+          <div class="file-zone-txt">Sube fotos o documentos<br><small>JPG, PNG, PDF · máx 10MB</small></div>
+          <div class="file-zone-btn">SUBIR ARCHIVO</div>
+        </div>
+        <input type="file" id="c-file-input" accept="image/*,.pdf" style="display:none" multiple>
+      </div>
+
       <button class="btn btn-wa" style="margin-top:4px;" onclick="contactarWA()">💬 Contactar por WhatsApp</button>
       <button class="btn btn-secondary" style="margin-top:8px;" onclick="navCliente('solicitar',null)">📩 Hacer nueva consulta</button>
     </div>
@@ -913,6 +925,17 @@ html,body{height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:v
     <!-- DETALLE EVENTO -->
     <div class="page" id="colp-evento-detail">
       <div id="colp-evento-content"></div>
+      <div class="card" style="margin-top:12px;">
+        <div class="card-title">Archivos del evento</div>
+        <p style="font-size:13px;color:var(--mid);margin-bottom:12px;">Sube documentos o fotos relacionadas con este evento.</p>
+        <div class="file-list" id="colab-files-list"></div>
+        <div class="file-zone" onclick="document.getElementById('colab-file-input').click()">
+          <div class="file-zone-icon">📎</div>
+          <div class="file-zone-txt">Sube archivos<br><small>JPG, PNG, PDF · máx 10MB</small></div>
+          <div class="file-zone-btn">SUBIR</div>
+        </div>
+        <input type="file" id="colab-file-input" accept="image/*,.pdf" style="display:none" multiple>
+      </div>
       <button class="btn btn-secondary" style="margin-top:16px;" onclick="navColabPortal('resumen',null)">← Volver</button>
     </div>
 
@@ -1880,6 +1903,158 @@ function poblarSelectColaboradores(selectId, selectedId) {
       return '<option value="' + c.id + '"' + (c.id===selectedId?' selected':'') + '>' + c.nombre + (c.espacio?' ('+c.espacio+')':'') + '</option>';
     }).join('');
 }
+
+
+// ══════════════════════════════════════════════════════════
+// SISTEMA DE ARCHIVOS
+// ══════════════════════════════════════════════════════════
+var WEBHOOK_FILES = 'https://hook.eu1.make.com/mq9p9vhujumqorqyoy72fgce79jhp2op';
+
+// Subir archivo via Make → Google Drive
+async function subirArchivo(input, tipo, entidadId, nombreEntidad) {
+  var files = Array.from(input.files);
+  if (!files.length) return;
+
+  // Determinar el contenedor de la lista
+  var listId = tipo === 'presupuesto' ? 'files-presup-'+entidadId :
+               tipo === 'cliente'     ? 'files-cli-'+entidadId.replace(/ /g,'_') :
+               tipo === 'colab-evento'? 'colab-files-list' :
+               tipo === 'cliente-app' ? 'c-files-list' : null;
+
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    if (file.size > 10 * 1024 * 1024) { showToast('Archivo demasiado grande (máx 10MB)'); continue; }
+
+    // Crear item en la lista
+    var itemId = 'fitem-' + Date.now() + '-' + i;
+    var listEl = document.getElementById(listId);
+    if (listEl) {
+      var icon = file.type.includes('pdf') ? '📄' : '🖼️';
+      var item = document.createElement('div');
+      item.className = 'file-item';
+      item.id = itemId;
+      item.innerHTML =
+        '<span class="file-item-icon">' + icon + '</span>'+
+        '<div class="file-item-info">'+
+          '<div class="file-item-name">' + file.name + '</div>'+
+          '<div class="file-item-meta">' + (file.size/1024).toFixed(0) + ' KB · Subiendo...</div>'+
+          '<div class="file-prog"><div class="file-prog-bar" id="pb-'+itemId+'"></div></div>'+
+        '</div>'+
+        '<span class="file-item-status">⏳</span>';
+      listEl.appendChild(item);
+    }
+
+    // Leer como base64
+    try {
+      var b64 = await readFileB64(file);
+      var pb = document.getElementById('pb-'+itemId);
+      if (pb) pb.style.width = '50%';
+
+      // Enviar a Make
+      await fetch(WEBHOOK_FILES, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          tipo: tipo,
+          entidad_id: entidadId,
+          entidad_nombre: nombreEntidad,
+          archivo_nombre: file.name,
+          archivo_tipo: file.type,
+          archivo_b64: b64,
+          subido_por: currentMode,
+          fecha: new Date().toISOString()
+        })
+      });
+
+      if (pb) pb.style.width = '100%';
+
+      // Actualizar item
+      var el = document.getElementById(itemId);
+      if (el) {
+        el.querySelector('.file-item-meta').textContent = (file.size/1024).toFixed(0) + ' KB · Subido ✓';
+        el.querySelector('.file-item-status').textContent = '✅';
+        el.querySelector('.file-prog').style.display = 'none';
+      }
+
+      // Guardar referencia en localStorage
+      guardarRefArchivo(tipo, entidadId, {
+        nombre: file.name,
+        tipo: file.type,
+        size: file.size,
+        fecha: new Date().toISOString(),
+        subido_por: currentMode
+      });
+
+      showToast(file.name + ' subido ✓');
+    } catch(err) {
+      var el2 = document.getElementById(itemId);
+      if (el2) {
+        el2.querySelector('.file-item-meta').textContent = 'Error al subir';
+        el2.querySelector('.file-item-status').textContent = '❌';
+      }
+      showToast('Error al subir ' + file.name);
+    }
+  }
+  input.value = ''; // reset input
+}
+
+function readFileB64(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function(e) { resolve(e.target.result.split(',')[1]); };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Guardar referencia local de archivos subidos
+function guardarRefArchivo(tipo, id, meta) {
+  var d = getData();
+  if (!d.archivos) d.archivos = {};
+  var key = tipo + '_' + id;
+  if (!d.archivos[key]) d.archivos[key] = [];
+  d.archivos[key].push(meta);
+  saveData(d);
+}
+
+// Cargar lista de archivos en un contenedor
+function cargarArchivos(tipo, id, containerId) {
+  var d = getData();
+  var key = tipo + '_' + id;
+  var files = (d.archivos && d.archivos[key]) || [];
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  if (!files.length) { container.innerHTML = ''; return; }
+  container.innerHTML = files.map(function(f, i) {
+    var icon = f.tipo && f.tipo.includes('pdf') ? '📄' : '🖼️';
+    return '<div class="file-item">'+
+      '<span class="file-item-icon">' + icon + '</span>'+
+      '<div class="file-item-info">'+
+        '<div class="file-item-name">' + f.nombre + '</div>'+
+        '<div class="file-item-meta">' + (f.size/1024).toFixed(0) + ' KB · ' + new Date(f.fecha).toLocaleDateString('es-ES') + ' · ' + f.subido_por + '</div>'+
+      '</div>'+
+      '<span class="file-item-status">✅</span>'+
+    '</div>';
+  }).join('');
+}
+
+// Inicializar inputs de archivo del cliente y colaborador
+document.addEventListener('DOMContentLoaded', function() {
+  // Cliente
+  var cInput = document.getElementById('c-file-input');
+  if (cInput) {
+    cInput.addEventListener('change', function() {
+      subirArchivo(this, 'cliente-app', currentClienteCode || 'cliente', 'Cliente');
+    });
+  }
+  // Colaborador
+  var colInput = document.getElementById('colab-file-input');
+  if (colInput) {
+    colInput.addEventListener('change', function() {
+      subirArchivo(this, 'colab-evento', currentColabCode || 'colab', 'Colaborador');
+    });
+  }
+});
 
 // DATOS DE DEMO
 function initDemoData() {
